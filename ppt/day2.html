@@ -515,6 +515,46 @@
   .yt-anatomy li { margin-bottom: 3mm; }
   .yt-anatomy code { font-size: 10pt; }
 
+  /* VS Code 延伸模組（暫時佔位） */
+  .ext-list { display: flex; flex-direction: column; gap: 3mm; margin-top: 2mm; }
+  .ext-item {
+    display: flex; align-items: center; gap: 4mm;
+    border: 1.5px dashed #d1d5db; border-radius: 4px;
+    padding: 4mm 5mm; background: #fafafa;
+  }
+  .ext-item .ext-icon {
+    width: 9mm; height: 9mm; border-radius: 3px;
+    background: #e5e7eb; flex-shrink: 0;
+  }
+  .ext-item .ext-ph { color: #9ca3af; font-size: 11pt; letter-spacing: 0.05em; }
+
+  /* 快捷鍵清單 */
+  .shortcut-list { display: flex; flex-direction: column; margin-top: 1mm; }
+  .shortcut-row {
+    display: flex; align-items: baseline; gap: 5mm;
+    padding: 2.4mm 0; border-bottom: 1px solid var(--line);
+  }
+  .shortcut-row:last-child { border-bottom: none; }
+  .shortcut-row .keys {
+    flex-shrink: 0; width: 54mm;
+    display: flex; flex-wrap: wrap; align-items: center; gap: 1.5mm;
+  }
+  .shortcut-row .desc { font-size: 11.5pt; color: #2d2d2d; line-height: 1.5; }
+  .shortcut-row .plus { color: var(--muted); font-size: 9pt; }
+
+  kbd {
+    font-family: "JetBrains Mono", Consolas, monospace;
+    font-size: 9.5pt;
+    background: #fff;
+    border: 1px solid #d1d5db;
+    border-bottom-width: 2px;
+    border-radius: 4px;
+    padding: 0.6mm 2.2mm;
+    color: #111;
+    white-space: nowrap;
+    line-height: 1;
+  }
+
   /* 列印優化 */
   @page {
     size: A4 landscape;
@@ -827,7 +867,65 @@ btn.dataset.action;     <span class="cmt">// "add-to-cart"</span></code></pre>
   <div class="big-sub">看懂之後，自己動手切一次</div>
 </section>
 
-<!-- 12. 手刻實作 — YouTube Card -->
+<!-- 12. 實作工具 — VS Code 延伸模組 & 快捷鍵 -->
+<section class="slide">
+  <div class="eyebrow">06 · 手刻實作</div>
+  <h1>實作工具 — VS Code 延伸模組 &amp; 快捷鍵</h1>
+  <div class="title-rule"></div>
+  <p class="lead">動手切版前，先把編輯器調順手 —— 工具對了，速度差很多。</p>
+  <div class="split">
+    <div class="col-text">
+      <h3>常用延伸模組</h3>
+      <div class="ext-list">
+        <div class="ext-item"><span class="ext-icon"></span><span class="ext-ph">待補</span></div>
+        <div class="ext-item"><span class="ext-icon"></span><span class="ext-ph">待補</span></div>
+        <div class="ext-item"><span class="ext-icon"></span><span class="ext-ph">待補</span></div>
+        <div class="ext-item"><span class="ext-icon"></span><span class="ext-ph">待補</span></div>
+      </div>
+    </div>
+    <div class="col-text">
+      <h3>我個人常用快捷鍵</h3>
+      <div class="shortcut-list">
+        <div class="shortcut-row">
+          <span class="keys"><kbd>Ctrl</kbd><span class="plus">+</span><kbd>P</kbd></span>
+          <span class="desc">快速開啟檔案（輸入檔名直接跳）</span>
+        </div>
+        <div class="shortcut-row">
+          <span class="keys"><kbd>Ctrl</kbd><span class="plus">+</span><kbd>`</kbd></span>
+          <span class="desc">開啟 / 切換終端機</span>
+        </div>
+        <div class="shortcut-row">
+          <span class="keys"><kbd>Ctrl</kbd><span class="plus">+</span><kbd>Shift</kbd><span class="plus">+</span><kbd>`</kbd></span>
+          <span class="desc">新增一個終端機</span>
+        </div>
+        <div class="shortcut-row">
+          <span class="keys"><kbd>Ctrl</kbd><span class="plus">+</span><kbd>Shift</kbd><span class="plus">+</span><kbd>P</kbd></span>
+          <span class="desc">命令面板（所有指令的入口）</span>
+        </div>
+        <div class="shortcut-row">
+          <span class="keys"><kbd>Ctrl</kbd><span class="plus">+</span><kbd>D</kbd></span>
+          <span class="desc">選取下一個相同的字（多游標編輯）</span>
+        </div>
+        <div class="shortcut-row">
+          <span class="keys"><kbd>Alt</kbd><span class="plus">+</span><kbd>↑</kbd><span class="plus">/</span><kbd>↓</kbd></span>
+          <span class="desc">將整行往上 / 往下移動</span>
+        </div>
+        <div class="shortcut-row">
+          <span class="keys"><kbd>Ctrl</kbd><span class="plus">+</span><kbd>K</kbd><span class="plus">,</span><kbd>O</kbd></span>
+          <span class="desc">在新視窗開啟目前檔案 / 資料夾</span>
+        </div>
+        <div class="shortcut-row">
+          <span class="keys"><kbd>Ctrl</kbd><span class="plus">+</span><kbd>K</kbd><span class="plus">,</span><kbd>0</kbd><span class="plus">/</span><kbd>J</kbd></span>
+          <span class="desc">摺疊全部 / 展開全部程式碼</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-section">06 · 手刻實作</div>
+  <div class="page-num">11</div>
+</section>
+
+<!-- 13. 手刻實作 — YouTube Card -->
 <section class="slide">
   <div class="eyebrow">06 · 手刻實作</div>
   <h1>手刻實作 — YouTube Card</h1>
@@ -859,7 +957,7 @@ btn.dataset.action;     <span class="cmt">// "add-to-cart"</span></code></pre>
     </ul>
   </div>
   <div class="page-section">06 · 手刻實作</div>
-  <div class="page-num">11</div>
+  <div class="page-num">12</div>
 </section>
 
 <script src="script.js"></script>

@@ -37,6 +37,7 @@
     const slides = Array.from(document.querySelectorAll(CONFIG.slideSelector));
     if (slides.length === 0) return; // 沒有投影片就不啟動
 
+    numberSlides(slides); // 自動編頁碼（在建立縮圖前先寫好）
     injectStyles();
     const ui = buildUI(slides.length);
 
@@ -53,6 +54,35 @@
     bindEvents(state, ui);
     layoutThumbs(state, ui);
     render(state, ui);
+  }
+
+  /* ---------- 自動頁碼 ----------
+   * 規則（沿用 ppt.md 慣例）：
+   *   - 封面（.cover）：算第 1 張，但不顯示頁碼。
+   *   - 過場大字頁（.statement）：不顯示頁碼，也不佔號。
+   *   - 其餘內容頁：從 02 起連續編號，補零兩位。
+   * .page-num 元素自動建立，所以新增投影片不必再手寫頁碼。
+   */
+  function numberSlides(slides) {
+    let n = 1; // 封面佔第 1 號
+    slides.forEach((slide) => {
+      const skip =
+        slide.classList.contains("cover") ||
+        slide.classList.contains("statement");
+      if (skip) {
+        const existing = slide.querySelector(".page-num");
+        if (existing) existing.remove(); // 清掉殘留的手寫頁碼
+        return; // 不增加號碼
+      }
+      n += 1;
+      let pageNum = slide.querySelector(".page-num");
+      if (!pageNum) {
+        pageNum = document.createElement("div");
+        pageNum.className = "page-num";
+        slide.appendChild(pageNum);
+      }
+      pageNum.textContent = String(n).padStart(2, "0");
+    });
   }
 
   /* ---------- 索引工具 ---------- */
