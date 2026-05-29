@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 2 — 看懂結構 &amp; 自己切版</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --text: #1a1a1a;
+    --muted: #6b7280;
+    --line: #e5e7eb;
+    --bg: #fafafa;
+    --accent: #111;
+    --code-bg: #f3f4f6;
+    --good: #059669;
+    --bad: #dc2626;
+  }
+
+  html, body {
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+                 "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  .slide {
+    width: 297mm;
+    height: 210mm;
+    margin: 16px auto;
+    background: #fff;
+    padding: 22mm 26mm;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    page-break-after: always;
+    break-after: page;
+  }
+
+  .slide:last-child {
+    page-break-after: auto;
+    break-after: auto;
+  }
+
+  /* 頂部 eyebrow */
+  .eyebrow {
+    font-size: 11pt;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8mm;
+    font-weight: 500;
+  }
+
+  /* 標題層級 */
+  h1 {
+    font-size: 32pt;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    margin-bottom: 6mm;
+  }
+
+  h2 {
+    font-size: 18pt;
+    font-weight: 600;
+    margin: 4mm 0 3mm;
+    color: var(--text);
+  }
+
+  h3 {
+    font-size: 14pt;
+    font-weight: 600;
+    margin: 3mm 0 2mm;
+    color: #374151;
+  }
+
+  /* 標題下方裝飾線 */
+  .title-rule {
+    width: 56px;
+    height: 3px;
+    background: var(--accent);
+    margin-bottom: 8mm;
+    border-radius: 2px;
+  }
+
+  p, li {
+    font-size: 13pt;
+    line-height: 1.7;
+    color: #2d2d2d;
+  }
+
+  ul {
+    padding-left: 6mm;
+    margin: 2mm 0;
+  }
+
+  ul li {
+    margin-bottom: 2mm;
+    list-style: none;
+    position: relative;
+    padding-left: 5mm;
+  }
+
+  ul li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 11pt;
+    width: 5px;
+    height: 5px;
+    background: var(--text);
+    border-radius: 50%;
+  }
+
+  ol {
+    padding-left: 6mm;
+    margin: 2mm 0;
+    counter-reset: item;
+    list-style: none;
+  }
+
+  ol li {
+    counter-increment: item;
+    margin-bottom: 2mm;
+    padding-left: 8mm;
+    position: relative;
+  }
+
+  ol li::before {
+    content: counter(item);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 6mm;
+    font-weight: 600;
+    color: var(--muted);
+  }
+
+  code {
+    background: var(--code-bg);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: "JetBrains Mono", "Fira Code", Consolas, monospace;
+    font-size: 11pt;
+    color: #111;
+  }
+
+  /* 多行程式碼區塊 */
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 4mm 6mm;
+    margin: 3mm 0;
+    overflow: hidden;
+  }
+
+  pre code {
+    background: none;
+    padding: 0;
+    font-size: 10.5pt;
+    line-height: 1.65;
+    color: #1a1a1a;
+    white-space: pre;
+    display: block;
+  }
+
+  pre code .cmt { color: var(--muted); }
+  pre code .tag { color: #2563eb; }
+  pre code .key { color: #7c3aed; }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 3mm 0;
+    font-size: 11.5pt;
+  }
+
+  th, td {
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+
+  th {
+    background: #f9fafb;
+    font-weight: 600;
+    border-bottom: 2px solid #d1d5db;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  td.center, th.center { text-align: center; }
+
+  blockquote {
+    border-left: 3px solid var(--text);
+    padding: 3mm 6mm;
+    margin: 4mm 0;
+    color: #4b5563;
+    background: #fafafa;
+    font-size: 12pt;
+  }
+
+  .lead {
+    font-size: 14pt;
+    color: #374151;
+    margin-bottom: 4mm;
+    line-height: 1.7;
+  }
+
+  .note {
+    font-size: 11pt;
+    color: var(--muted);
+    margin-top: auto;
+    padding-top: 4mm;
+    font-style: italic;
+  }
+
+  /* 封面投影片 */
+  .cover {
+    justify-content: center;
+    align-items: flex-start;
+    padding: 30mm 26mm;
+  }
+
+  .cover .day-tag {
+    font-size: 14pt;
+    color: var(--muted);
+    letter-spacing: 0.3em;
+    margin-bottom: 8mm;
+    font-weight: 500;
+  }
+
+  .cover h1 {
+    font-size: 44pt;
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    margin-bottom: 10mm;
+  }
+
+  .cover .subtitle {
+    font-size: 14pt;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 200mm;
+  }
+
+  .cover .footer-line {
+    position: absolute;
+    bottom: 22mm;
+    left: 26mm;
+    right: 26mm;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 5mm;
+    border-top: 1px solid var(--line);
+    font-size: 10pt;
+    color: var(--muted);
+  }
+
+  /* 頁碼 */
+  .page-num {
+    position: absolute;
+    bottom: 10mm;
+    right: 14mm;
+    font-size: 9pt;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  .page-section {
+    position: absolute;
+    bottom: 10mm;
+    left: 14mm;
+    font-size: 9pt;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  /* 左文右視覺：兩欄版型 */
+  .split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10mm;
+    align-items: start;
+    flex: 1;
+    min-height: 0;
+  }
+  .split.wide-left { grid-template-columns: 1.15fr 0.85fr; }
+  .split .col-visual {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 0;
+    height: 100%;
+  }
+
+  /* 純大字標語頁 */
+  .statement {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  .statement .big-text {
+    font-size: 64pt;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+  .statement .big-sub {
+    font-size: 15pt;
+    color: var(--muted);
+    margin-top: 8mm;
+    letter-spacing: 0.04em;
+  }
+
+  /* HTML 樹狀圖：標示 head / body 色塊 */
+  .tree-tag {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-family: "JetBrains Mono", Consolas, monospace;
+    font-size: 9.5pt;
+  }
+
+  /* 語意 / 非語意 對照卡 */
+  .two-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6mm;
+    margin-top: 2mm;
+  }
+  .info-card {
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 4mm 5mm;
+    background: #fff;
+  }
+  .info-card.good-card { border-top: 3px solid var(--good); }
+  .info-card.muted-card { border-top: 3px solid #9ca3af; }
+  .info-card .ic-title {
+    font-size: 12pt;
+    font-weight: 600;
+    margin-bottom: 2mm;
+  }
+  .info-card .ic-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2mm;
+    margin-bottom: 3mm;
+  }
+  .info-card .ic-tags span {
+    background: var(--code-bg);
+    padding: 1.5mm 3mm;
+    border-radius: 3px;
+    font-family: "JetBrains Mono", Consolas, monospace;
+    font-size: 10pt;
+  }
+  .info-card .ic-desc {
+    font-size: 10.5pt;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* SEO 能做到什麼 — 三格 */
+  .seo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6mm;
+    margin-top: 4mm;
+  }
+  .seo-grid .seo-cell {
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 5mm;
+    background: #fff;
+  }
+  .seo-grid .seo-cell .num {
+    font-size: 20pt;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 2mm;
+  }
+  .seo-grid .seo-cell .t { font-size: 12pt; font-weight: 600; margin-bottom: 1.5mm; }
+  .seo-grid .seo-cell .d { font-size: 10pt; color: var(--muted); line-height: 1.55; }
+
+  /* 標籤實況 demo */
+  .tag-live {
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 5mm;
+    background: #fafafa;
+    display: flex;
+    flex-direction: column;
+    gap: 4mm;
+    justify-content: center;
+    height: 100%;
+  }
+  .tag-live .row { display: flex; align-items: center; gap: 4mm; }
+  .tag-live .lbl {
+    width: 20mm;
+    font-family: "JetBrains Mono", Consolas, monospace;
+    font-size: 9.5pt;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+  .tag-live button {
+    font-family: inherit;
+    background: #111; color: #fff; border: none;
+    padding: 2mm 5mm; border-radius: 3px; font-size: 10pt; cursor: pointer;
+  }
+  .tag-live a { color: #2563eb; text-decoration: underline; font-size: 11pt; }
+  .tag-live input {
+    font-family: inherit;
+    border: 1px solid #d1d5db; border-radius: 3px;
+    padding: 1.5mm 3mm; font-size: 10pt; width: 50mm;
+  }
+  .tag-live .img-ph {
+    width: 22mm; height: 14mm;
+    background: linear-gradient(135deg, #e5e7eb, #f3f4f6);
+    border-radius: 3px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 8pt; color: #9ca3af;
+  }
+  .tag-live .media-ph {
+    width: 40mm; height: 16mm;
+    background: #111; border-radius: 3px;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 10pt;
+  }
+
+  /* Flex / Grid 視覺 */
+  .layout-demo { border: 1px solid var(--line); border-radius: 4px; padding: 5mm; background: #fafafa; }
+  .layout-demo .cap {
+    font-size: 9pt; color: var(--muted); letter-spacing: 0.08em;
+    text-transform: uppercase; margin-bottom: 3mm; font-weight: 600;
+  }
+  .flex-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 3mm;
+  }
+  .flex-box .item, .grid-box .item {
+    background: #111; color: #fff;
+    border-radius: 3px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10pt; font-weight: 600;
+    height: 14mm;
+  }
+  .flex-box .item { flex: 1; }
+  .grid-box {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3mm;
+  }
+  .grid-box .item { background: #374151; }
+
+  /* YouTube Card 手刻 */
+  .yt-stage {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14mm;
+    min-height: 0;
+  }
+  .yt-card { width: 95mm; }
+  .yt-thumb {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 6px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #e5e7eb 0%, #f3f4f6 100%);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .yt-thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .yt-thumb .ph-label {
+    color: #9ca3af; font-size: 10pt; letter-spacing: 0.05em;
+  }
+  .yt-thumb .dur {
+    position: absolute;
+    bottom: 2mm; right: 2mm;
+    background: rgba(0,0,0,0.8); color: #fff;
+    font-size: 9pt; padding: 0.5mm 2mm; border-radius: 3px;
+    font-weight: 600;
+  }
+  .yt-meta { display: flex; gap: 3mm; margin-top: 3mm; }
+  .yt-avatar {
+    width: 9mm; height: 9mm; border-radius: 50%;
+    background: linear-gradient(135deg, #dc2626, #f97316);
+    flex-shrink: 0;
+  }
+  .yt-info .yt-title {
+    font-size: 11pt; font-weight: 600; color: #0f0f0f;
+    line-height: 1.4; margin-bottom: 1mm;
+  }
+  .yt-info .yt-channel { font-size: 9.5pt; color: var(--muted); }
+  .yt-info .yt-stats { font-size: 9.5pt; color: var(--muted); }
+
+  .yt-anatomy { font-size: 11pt; }
+  .yt-anatomy li { margin-bottom: 3mm; }
+  .yt-anatomy code { font-size: 10pt; }
+
+  /* 列印優化 */
+  @page {
+    size: A4 landscape;
+    margin: 0;
+  }
+
+  @media print {
+    html, body {
+      background: #fff;
+    }
+    .slide {
+      margin: 0;
+      box-shadow: none;
+      width: 297mm;
+      height: 210mm;
+      page-break-after: always;
+      break-after: page;
+    }
+    .slide:last-child {
+      page-break-after: auto;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- 1. 封面 -->
+<section class="slide cover">
+  <div class="day-tag">DAY 2</div>
+  <h1>看懂結構<br>&amp; 自己切版</h1>
+  <div class="subtitle">
+    AI 生出來的 HTML，你要能讀懂每一行在做什麼<br>
+    從樹狀結構、語意標籤，到親手切出第一個卡片
+  </div>
+  <div class="footer-line">
+    <span>Web Course · Day 2</span>
+    <span>2026</span>
+  </div>
+</section>
+
+<!-- 2. 看懂 HTML 結構 -->
+<section class="slide">
+  <div class="eyebrow">01 · HTML 結構</div>
+  <h1>看懂 HTML 結構</h1>
+  <div class="title-rule"></div>
+  <div class="split wide-left">
+    <div class="col-text">
+      <p class="lead">HTML 是一棵<strong>樹</strong>：所有標籤層層包覆，有上下層關係。</p>
+      <ul>
+        <li><code>&lt;head&gt;</code>　給瀏覽器看的設定（標題、CSS 引入），<strong>使用者看不到</strong></li>
+        <li><code>&lt;body&gt;</code>　使用者真正看到的所有內容</li>
+        <li>父層包子層，縮排就是「層級關係」的視覺呈現</li>
+      </ul>
+    </div>
+    <div class="col-visual">
+      <pre><code><span class="tag">html</span>
+├── <span class="tag">head</span>          <span class="cmt"># 給瀏覽器看的設定</span>
+│   ├── title
+│   └── link          <span class="cmt"># CSS 引入</span>
+└── <span class="tag">body</span>          <span class="cmt"># 使用者看到的內容</span>
+    ├── header
+    ├── main
+    │   ├── section
+    │   └── article
+    └── footer</code></pre>
+    </div>
+  </div>
+  <div class="page-section">01 · HTML 結構</div>
+  <div class="page-num">02</div>
+</section>
+
+<!-- 3. 語意化 vs 非語意化 -->
+<section class="slide">
+  <div class="eyebrow">01 · HTML 結構</div>
+  <h1>語意化標籤 vs 非語意化標籤</h1>
+  <div class="title-rule"></div>
+  <p class="lead">同樣是容器，差別在「有沒有告訴機器這塊是什麼」。</p>
+  <div class="two-card">
+    <div class="info-card good-card">
+      <div class="ic-title">語意化標籤 — 有意義</div>
+      <div class="ic-tags">
+        <span>&lt;header&gt;</span><span>&lt;nav&gt;</span>
+        <span>&lt;main&gt;</span><span>&lt;article&gt;</span><span>&lt;footer&gt;</span>
+      </div>
+      <div class="ic-desc">標籤本身就說明了用途，對 SEO 友好、無障礙閱讀器也讀得懂。</div>
+    </div>
+    <div class="info-card muted-card">
+      <div class="ic-title">非語意化標籤 — 純排版</div>
+      <div class="ic-tags">
+        <span>&lt;div&gt;</span><span>&lt;span&gt;</span>
+      </div>
+      <div class="ic-desc">沒有任何語意，只是個盒子。機器不知道裡面裝的是導覽列還是廣告。</div>
+    </div>
+  </div>
+  <blockquote>為什麼重要：Google 爬蟲靠語意標籤理解網頁內容 — 用對標籤，等於主動告訴搜尋引擎你的網頁在講什麼。</blockquote>
+  <div class="page-section">01 · HTML 結構</div>
+  <div class="page-num">03</div>
+</section>
+
+<!-- 4. SEO 是什麼 -->
+<section class="slide">
+  <div class="eyebrow">01 · HTML 結構</div>
+  <h1>SEO 是什麼？</h1>
+  <div class="title-rule"></div>
+  <p class="lead">
+    <strong>SEO（Search Engine Optimization，搜尋引擎最佳化）</strong><br>
+    讓你的網頁在 Google 搜尋結果「排得更前面、被更多人看到」的一整套做法。
+  </p>
+  <div class="seo-grid">
+    <div class="seo-cell">
+      <div class="num">01</div>
+      <div class="t">被搜尋到</div>
+      <div class="d">用對語意標籤與關鍵字，讓 Google 正確收錄、理解你的內容。</div>
+    </div>
+    <div class="seo-cell">
+      <div class="num">02</div>
+      <div class="t">排名更前</div>
+      <div class="d">結構清楚、載入快、行動裝置友善，搜尋名次往前，自然流量變多。</div>
+    </div>
+    <div class="seo-cell">
+      <div class="num">03</div>
+      <div class="t">點擊更高</div>
+      <div class="d">好的標題與描述（meta），讓人在結果頁就想點進來。</div>
+    </div>
+  </div>
+  <p class="note">不用花錢買廣告，靠「把網頁寫對」就能帶來長期流量。</p>
+  <div class="page-section">01 · HTML 結構</div>
+  <div class="page-num">04</div>
+</section>
+
+<!-- 5. 核心標籤介紹 -->
+<section class="slide">
+  <div class="eyebrow">02 · 核心標籤</div>
+  <h1>核心標籤介紹</h1>
+  <div class="title-rule"></div>
+  <div class="split">
+    <div class="col-text">
+      <h2>區塊元素（Block）</h2>
+      <p style="color:var(--muted);font-size:11pt;margin-bottom:2mm;">佔滿整行，自己另起一行</p>
+      <pre><code><span class="tag">&lt;div&gt;</span>      通用容器，無語意
+<span class="tag">&lt;p&gt;</span>        段落
+<span class="tag">&lt;h1&gt;~&lt;h6&gt;</span>  標題層次
+<span class="tag">&lt;section&gt;</span>  邏輯區塊
+<span class="tag">&lt;article&gt;</span>  獨立內容（文章、卡片）
+<span class="tag">&lt;ul&gt;&lt;ol&gt;&lt;li&gt;</span>  清單</code></pre>
+    </div>
+    <div class="col-text">
+      <h2>行內元素（Inline）</h2>
+      <p style="color:var(--muted);font-size:11pt;margin-bottom:2mm;">跟著文字流動，不換行</p>
+      <pre><code><span class="tag">&lt;span&gt;</span>    通用行內容器
+<span class="tag">&lt;a&gt;</span>       超連結
+<span class="tag">&lt;strong&gt;</span>  粗體（語意：重要）
+<span class="tag">&lt;em&gt;</span>      斜體（語意：強調）
+<span class="tag">&lt;img&gt;</span>     圖片</code></pre>
+    </div>
+  </div>
+  <div class="page-section">02 · 核心標籤</div>
+  <div class="page-num">05</div>
+</section>
+
+<!-- 6. 常用標籤 -->
+<section class="slide">
+  <div class="eyebrow">02 · 核心標籤</div>
+  <h1>常用標籤</h1>
+  <div class="title-rule"></div>
+  <div class="split">
+    <div class="col-text">
+      <table>
+        <thead><tr><th>標籤</th><th>用途</th></tr></thead>
+        <tbody>
+          <tr><td><code>&lt;button&gt;</code></td><td>可點擊的按鈕</td></tr>
+          <tr><td><code>&lt;a&gt;</code></td><td>超連結，跳到別頁</td></tr>
+          <tr><td><code>&lt;img&gt;</code></td><td>顯示圖片</td></tr>
+          <tr><td><code>&lt;video&gt;</code></td><td>嵌入影片</td></tr>
+          <tr><td><code>&lt;audio&gt;</code></td><td>嵌入音訊</td></tr>
+          <tr><td><code>&lt;form&gt;</code></td><td>表單容器（收集資料）</td></tr>
+          <tr><td><code>&lt;input&gt;</code></td><td>輸入欄位</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-visual">
+      <div class="tag-live">
+        <div class="row"><span class="lbl">button</span><button>送出</button></div>
+        <div class="row"><span class="lbl">a</span><a>點我前往 →</a></div>
+        <div class="row"><span class="lbl">img</span><span class="img-ph">圖片</span></div>
+        <div class="row"><span class="lbl">video</span><span class="media-ph">▶ 影片</span></div>
+        <div class="row"><span class="lbl">input</span><input type="text" placeholder="輸入你的名字"></div>
+      </div>
+    </div>
+  </div>
+  <div class="page-section">02 · 核心標籤</div>
+  <div class="page-num">06</div>
+</section>
+
+<!-- 7. Class vs ID（表格） -->
+<section class="slide">
+  <div class="eyebrow">03 · Class &amp; ID</div>
+  <h1>Class vs ID</h1>
+  <div class="title-rule"></div>
+  <p class="lead">兩者都是用來「標記元素」，但定位完全不同。</p>
+  <table>
+    <thead>
+      <tr><th></th><th><code>class</code></th><th><code>id</code></th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>用途</strong></td><td>樣式、重複元素</td><td>唯一識別、JS 操作</td></tr>
+      <tr><td><strong>可重複</strong></td><td class="center">✅ 一頁可多個</td><td class="center">❌ 一頁只能一個</td></tr>
+      <tr><td><strong>CSS 選擇器</strong></td><td><code>.card</code></td><td><code>#navbar</code></td></tr>
+      <tr><td><strong>優先度</strong></td><td>低</td><td>高（盡量少用來寫樣式）</td></tr>
+    </tbody>
+  </table>
+  <div class="page-section">03 · Class &amp; ID</div>
+  <div class="page-num">07</div>
+</section>
+
+<!-- 8. Class vs ID（程式碼） -->
+<section class="slide">
+  <div class="eyebrow">03 · Class &amp; ID</div>
+  <h1>Class vs ID — 實際用法</h1>
+  <div class="title-rule"></div>
+  <p class="lead">記住一句話：<strong>class 是「分類」，id 是「身分證」。</strong></p>
+  <pre><code><span class="cmt">&lt;!-- 好的用法 --&gt;</span>
+<span class="tag">&lt;div</span> <span class="key">class</span>=<span class="tag">"card"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;div</span> <span class="key">class</span>=<span class="tag">"card"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/div&gt;</span>   <span class="cmt">&lt;!-- class 可以重複 --&gt;</span>
+<span class="tag">&lt;nav</span> <span class="key">id</span>=<span class="tag">"main-nav"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/nav&gt;</span>  <span class="cmt">&lt;!-- id 用在唯一元素 --&gt;</span></code></pre>
+  <ul>
+    <li>同一種樣式套在很多元素 → 用 <code>class</code></li>
+    <li>整頁只有一個、要給 JS 抓取操作 → 用 <code>id</code></li>
+  </ul>
+  <div class="page-section">03 · Class &amp; ID</div>
+  <div class="page-num">08</div>
+</section>
+
+<!-- 9. data-* 屬性 -->
+<section class="slide">
+  <div class="eyebrow">04 · data 屬性</div>
+  <h1><code>data-*</code> 屬性</h1>
+  <div class="title-rule"></div>
+  <p class="lead">自定義資料屬性，讓 HTML <strong>攜帶資料</strong>供 JS 讀取。</p>
+  <div class="split">
+    <div class="col-text">
+      <h3>HTML — 把資料掛在標籤上</h3>
+      <pre><code><span class="tag">&lt;button</span>
+  <span class="key">data-product-id</span>=<span class="tag">"42"</span>
+  <span class="key">data-action</span>=<span class="tag">"add-to-cart"</span><span class="tag">&gt;</span>
+  加入購物車
+<span class="tag">&lt;/button&gt;</span></code></pre>
+    </div>
+    <div class="col-text">
+      <h3>JS — 用 dataset 讀回來</h3>
+      <pre><code><span class="cmt">// JS 讀取</span>
+<span class="key">const</span> btn = document
+  .querySelector(<span class="tag">'button'</span>);
+
+btn.dataset.productId;  <span class="cmt">// "42"</span>
+btn.dataset.action;     <span class="cmt">// "add-to-cart"</span></code></pre>
+    </div>
+  </div>
+  <blockquote>使用場景：不想為了傳資料而多一個隱藏 <code>input</code> — 直接把資料寫在元素上最乾淨。</blockquote>
+  <div class="page-section">04 · data 屬性</div>
+  <div class="page-num">09</div>
+</section>
+
+<!-- 10. CSS 排版核心 — Flexbox & Grid -->
+<section class="slide">
+  <div class="eyebrow">05 · CSS 排版</div>
+  <h1>CSS 排版核心 — Flexbox &amp; Grid</h1>
+  <div class="title-rule"></div>
+  <div class="split">
+    <div class="col-text">
+      <h3>Flexbox — 一維排列（一行或一列）</h3>
+      <pre><code><span class="key">.container</span> {
+  <span class="key">display</span>: flex;
+  <span class="key">justify-content</span>: space-between;
+  <span class="key">align-items</span>: center;
+  <span class="key">gap</span>: 16px;
+}</code></pre>
+      <div class="layout-demo" style="margin-top:3mm;">
+        <div class="cap">Flex — 一排分佈</div>
+        <div class="flex-box">
+          <div class="item">1</div><div class="item">2</div><div class="item">3</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-text">
+      <h3>Grid — 二維排列（同時控制行和列）</h3>
+      <pre><code><span class="key">.grid</span> {
+  <span class="key">display</span>: grid;
+  <span class="key">grid-template-columns</span>:
+    repeat(3, 1fr);
+  <span class="key">gap</span>: 24px;
+}</code></pre>
+      <div class="layout-demo" style="margin-top:3mm;">
+        <div class="cap">Grid — 行列網格</div>
+        <div class="grid-box">
+          <div class="item">1</div><div class="item">2</div><div class="item">3</div>
+          <div class="item">4</div><div class="item">5</div><div class="item">6</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <blockquote>記憶口訣：<strong>一維用 Flex，二維用 Grid。</strong></blockquote>
+  <div class="page-section">05 · CSS 排版</div>
+  <div class="page-num">10</div>
+</section>
+
+<!-- 11. 匠人精神（純大字） -->
+<section class="slide statement">
+  <div class="big-text">匠人精神<br>手刻程式碼</div>
+  <div class="big-sub">看懂之後，自己動手切一次</div>
+</section>
+
+<!-- 12. 手刻實作 — YouTube Card -->
+<section class="slide">
+  <div class="eyebrow">06 · 手刻實作</div>
+  <h1>手刻實作 — YouTube Card</h1>
+  <div class="title-rule"></div>
+  <p class="lead">目標：切出一個 YouTube 影片卡片，把今天學的標籤與排版全部用上。</p>
+  <div class="yt-stage">
+    <div class="yt-card">
+      <div class="yt-thumb">
+        <img src="../imgs/yt.png" alt="YouTube 影片縮圖"
+             onerror="this.style.display='none';this.parentNode.querySelector('.ph-label').style.display='block';">
+        <span class="ph-label" style="display:none;">yt.png（待補）</span>
+        <span class="dur">12:34</span>
+      </div>
+      <div class="yt-meta">
+        <div class="yt-avatar"></div>
+        <div class="yt-info">
+          <div class="yt-title">10 分鐘看懂 HTML 結構，AI 生的程式碼再也不怕</div>
+          <div class="yt-channel">Web Course</div>
+          <div class="yt-stats">12 萬次觀看 · 3 天前</div>
+        </div>
+      </div>
+    </div>
+    <ul class="yt-anatomy">
+      <li><code>&lt;img&gt;</code>　縮圖 + 角落時長 badge</li>
+      <li><code>&lt;div class="avatar"&gt;</code>　圓形頻道頭像</li>
+      <li><code>&lt;h3&gt;</code>　影片標題（最多兩行）</li>
+      <li><code>&lt;span&gt;</code>　頻道名稱、觀看數、時間</li>
+      <li>整體用 <strong>Flexbox</strong> 把頭像與文字並排</li>
+    </ul>
+  </div>
+  <div class="page-section">06 · 手刻實作</div>
+  <div class="page-num">11</div>
+</section>
+
+<script src="script.js"></script>
+</body>
+</html>

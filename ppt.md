@@ -245,7 +245,39 @@ color: #9ca3af; font-size: 11pt;
 
 ---
 
-## 9. 生成新簡報時的檢查清單（Checklist）
+## 9. 放映腳本（script.js）
+
+簡報共用 `ppt/script.js`，提供「放映模式」而不破壞捲動瀏覽與列印。
+在每份簡報 `</body>` 前加入一行即可：
+
+```html
+<script src="script.js"></script>
+```
+
+**運作方式**
+- 自動抓取所有 `<section class="slide">`，無需額外標記。
+- 放映用 CSS 由腳本自行注入（`#ppt-script-styles`），HTML 保持乾淨。
+- 投影片為固定 `mm` 尺寸，放映時等比縮放並置中（`scaleActive`）。
+- 列印（`beforeprint`）時自動退出放映，維持每頁一張的 PDF 輸出。
+- 進度／頁碼同步至網址 `#slide-N`，重整可保留位置。
+
+**操作快捷鍵**
+
+| 操作 | 按鍵 |
+|------|------|
+| 進入放映（嘗試全螢幕） | `F` 或 雙擊投影片 / 右下「▶ 放映」鈕 |
+| 退出 / 關閉總覽 | `Esc` |
+| 下一張 | `→` `↓` `Space` `PageDown` / 點畫面右半 / 滾輪 |
+| 上一張 | `←` `↑` `PageUp` / 點畫面左半 |
+| 第一張 / 最後一張 | `Home` / `End` |
+| 縮圖總覽 | `O`（點縮圖跳轉） |
+| 跳至指定頁 | 輸入數字 + `Enter` |
+
+> 腳本為通用設計：任何遵循本規範的簡報都能直接共用同一支 `script.js`。
+
+---
+
+## 10. 生成新簡報時的檢查清單（Checklist）
 
 - [ ] 每張投影片用 `<section class="slide">`，封面加 `.cover`。
 - [ ] 內容頁四件套：`eyebrow` → `h1` → `title-rule` → 內容。

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Web Course — 簡報目錄</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --text: #1a1a1a;
+    --muted: #6b7280;
+    --line: #e5e7eb;
+    --bg: #fafafa;
+    --accent: #111;
+    --code-bg: #f3f4f6;
+  }
+
+  html, body {
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+                 "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 80px 32px 96px;
+  }
+
+  /* 頁首 */
+  .eyebrow {
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 16px;
+  }
+
+  h1 {
+    font-size: 44px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+
+  .title-rule {
+    width: 56px;
+    height: 3px;
+    background: var(--accent);
+    border-radius: 2px;
+    margin: 20px 0 28px;
+  }
+
+  .subtitle {
+    font-size: 16px;
+    color: var(--muted);
+    max-width: 620px;
+    line-height: 1.7;
+  }
+
+  /* 課程卡片列表 */
+  .deck-list {
+    margin-top: 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .deck-card {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    padding: 28px 32px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+  }
+
+  .deck-card:hover {
+    border-color: #111;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.07);
+    transform: translateY(-2px);
+  }
+
+  .deck-card .day-tag {
+    flex-shrink: 0;
+    width: 88px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    color: var(--muted);
+  }
+
+  .deck-card .day-tag .n {
+    display: block;
+    font-size: 40px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #111;
+    line-height: 1;
+    margin-top: 4px;
+  }
+
+  .deck-card .body { flex: 1; min-width: 0; }
+
+  .deck-card .body h2 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+
+  .deck-card .body p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .deck-card .arrow {
+    flex-shrink: 0;
+    font-size: 22px;
+    color: #d1d5db;
+    transition: color 0.18s ease, transform 0.18s ease;
+  }
+
+  .deck-card:hover .arrow {
+    color: #111;
+    transform: translateX(4px);
+  }
+
+  /* 即將推出（佔位） */
+  .deck-card.soon {
+    pointer-events: none;
+    opacity: 0.55;
+    border-style: dashed;
+  }
+  .deck-card.soon .day-tag .n { color: #9ca3af; }
+
+  /* 頁尾 */
+  footer {
+    margin-top: 56px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  footer .hint code {
+    background: var(--code-bg);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: "JetBrains Mono", "Fira Code", Consolas, monospace;
+    font-size: 12px;
+    color: #111;
+  }
+
+  @media (max-width: 560px) {
+    .wrap { padding: 56px 20px 72px; }
+    h1 { font-size: 34px; }
+    .deck-card { flex-direction: row; gap: 18px; padding: 20px 22px; }
+    .deck-card .day-tag { width: 64px; }
+    .deck-card .day-tag .n { font-size: 30px; }
+    footer { flex-direction: column; gap: 8px; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="eyebrow">Web Course · 2026</div>
+    <h1>網頁開發入門</h1>
+    <div class="title-rule"></div>
+    <p class="subtitle">
+      從零開始理解 Web，搭配 AI 工具快速做出作品，並學會讀懂每一行程式碼。
+      點選下方任一天的課程，進入對應簡報。
+    </p>
+
+    <nav class="deck-list">
+      <a class="deck-card" href="ppt/day1.html">
+        <div class="day-tag">DAY<span class="n">1</span></div>
+        <div class="body">
+          <h2>認識網頁世界 &amp; 用 AI 快速出作品</h2>
+          <p>從網頁歷史、設計關鍵字到 Prompt 工程，10 分鐘做出第一個屬於你的網頁並部署上線。</p>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+
+      <a class="deck-card" href="ppt/day2.html">
+        <div class="day-tag">DAY<span class="n">2</span></div>
+        <div class="body">
+          <h2>看懂結構 &amp; 自己切版</h2>
+          <p>樹狀結構、語意化標籤、Class / ID、data 屬性、Flexbox &amp; Grid，最後親手切出 YouTube 卡片。</p>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+
+      <span class="deck-card soon">
+        <div class="day-tag">DAY<span class="n">3</span></div>
+        <div class="body">
+          <h2>即將推出</h2>
+          <p>更多課程內容陸續更新中。</p>
+        </div>
+        <span class="arrow">→</span>
+      </span>
+    </nav>
+
+    <footer>
+      <span>Web Course · 簡報目錄</span>
+      <span class="hint">放映模式：開啟簡報後按 <code>F</code></span>
+    </footer>
+  </main>
+</body>
+</html>
