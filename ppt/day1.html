@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 1 — 認識網頁世界 & 用 AI 快速出作品</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --text: #1a1a1a;
+    --muted: #6b7280;
+    --line: #e5e7eb;
+    --bg: #fafafa;
+    --accent: #111;
+    --code-bg: #f3f4f6;
+    --good: #059669;
+    --bad: #dc2626;
+  }
+
+  html, body {
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+                 "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  .slide {
+    width: 297mm;
+    height: 210mm;
+    margin: 16px auto;
+    background: #fff;
+    padding: 22mm 26mm;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    page-break-after: always;
+    break-after: page;
+  }
+
+  .slide:last-child {
+    page-break-after: auto;
+    break-after: auto;
+  }
+
+  /* 頂部 eyebrow */
+  .eyebrow {
+    font-size: 11pt;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8mm;
+    font-weight: 500;
+  }
+
+  /* 標題層級 */
+  h1 {
+    font-size: 32pt;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    margin-bottom: 6mm;
+  }
+
+  h2 {
+    font-size: 18pt;
+    font-weight: 600;
+    margin: 4mm 0 3mm;
+    color: var(--text);
+  }
+
+  h3 {
+    font-size: 14pt;
+    font-weight: 600;
+    margin: 3mm 0 2mm;
+    color: #374151;
+  }
+
+  /* 標題下方裝飾線 */
+  .title-rule {
+    width: 56px;
+    height: 3px;
+    background: var(--accent);
+    margin-bottom: 8mm;
+    border-radius: 2px;
+  }
+
+  p, li {
+    font-size: 13pt;
+    line-height: 1.7;
+    color: #2d2d2d;
+  }
+
+  ul {
+    padding-left: 6mm;
+    margin: 2mm 0;
+  }
+
+  ul li {
+    margin-bottom: 2mm;
+    list-style: none;
+    position: relative;
+    padding-left: 5mm;
+  }
+
+  ul li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 11pt;
+    width: 5px;
+    height: 5px;
+    background: var(--text);
+    border-radius: 50%;
+  }
+
+  ol {
+    padding-left: 6mm;
+    margin: 2mm 0;
+    counter-reset: item;
+    list-style: none;
+  }
+
+  ol li {
+    counter-increment: item;
+    margin-bottom: 2mm;
+    padding-left: 8mm;
+    position: relative;
+  }
+
+  ol li::before {
+    content: counter(item);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 6mm;
+    font-weight: 600;
+    color: var(--muted);
+  }
+
+  code {
+    background: var(--code-bg);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: "JetBrains Mono", "Fira Code", Consolas, monospace;
+    font-size: 11pt;
+    color: #111;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 3mm 0;
+    font-size: 11.5pt;
+  }
+
+  th, td {
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--line);
+  }
+
+  th {
+    background: #f9fafb;
+    font-weight: 600;
+    border-bottom: 2px solid #d1d5db;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  blockquote {
+    border-left: 3px solid var(--text);
+    padding: 3mm 6mm;
+    margin: 4mm 0;
+    color: #4b5563;
+    background: #fafafa;
+    font-size: 12pt;
+  }
+
+  .placeholder {
+    flex: 1;
+    min-height: 70mm;
+    background: #fafafa;
+    border: 1.5px dashed #d1d5db;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9ca3af;
+    font-size: 11pt;
+    margin-top: 4mm;
+    letter-spacing: 0.05em;
+  }
+
+  /* 封面投影片 */
+  .cover {
+    justify-content: center;
+    align-items: flex-start;
+    padding: 30mm 26mm;
+  }
+
+  .cover .day-tag {
+    font-size: 14pt;
+    color: var(--muted);
+    letter-spacing: 0.3em;
+    margin-bottom: 8mm;
+    font-weight: 500;
+  }
+
+  .cover h1 {
+    font-size: 44pt;
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    margin-bottom: 10mm;
+  }
+
+  .cover .subtitle {
+    font-size: 14pt;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 200mm;
+  }
+
+  .cover .footer-line {
+    position: absolute;
+    bottom: 22mm;
+    left: 26mm;
+    right: 26mm;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 5mm;
+    border-top: 1px solid var(--line);
+    font-size: 10pt;
+    color: var(--muted);
+  }
+
+  /* 頁碼 */
+  .page-num {
+    position: absolute;
+    bottom: 10mm;
+    right: 14mm;
+    font-size: 9pt;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  .page-section {
+    position: absolute;
+    bottom: 10mm;
+    left: 14mm;
+    font-size: 9pt;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  /* 對比範例 */
+  .compare-row {
+    display: flex;
+    gap: 6mm;
+    margin: 2mm 0;
+    align-items: flex-start;
+  }
+
+  .compare-row .icon {
+    flex-shrink: 0;
+    width: 6mm;
+    font-size: 13pt;
+    font-weight: 700;
+    margin-top: 1pt;
+  }
+
+  .compare-row .icon.bad { color: var(--bad); }
+  .compare-row .icon.good { color: var(--good); }
+
+  .compare-row .content {
+    flex: 1;
+    font-size: 12pt;
+    line-height: 1.7;
+  }
+
+  .compare-row .content strong {
+    font-weight: 600;
+  }
+
+  /* keyword grid */
+  .keyword-list {
+    list-style: none;
+    padding: 0;
+    margin: 3mm 0;
+  }
+
+  .keyword-list li {
+    padding: 2.5mm 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 12pt;
+    padding-left: 0;
+  }
+
+  .keyword-list li::before { display: none; }
+
+  .keyword-list .kw {
+    display: inline-block;
+    background: var(--code-bg);
+    color: #111;
+    padding: 2px 10px;
+    border-radius: 4px;
+    font-family: "JetBrains Mono", Consolas, monospace;
+    font-size: 11pt;
+    margin-right: 8px;
+    font-weight: 500;
+  }
+
+  .lead {
+    font-size: 14pt;
+    color: #374151;
+    margin-bottom: 4mm;
+    line-height: 1.7;
+  }
+
+  /* 1991 歷史頁圖文排版 */
+  .history-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 10mm;
+    align-items: center;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .history-figure {
+    margin: 0;
+    text-align: center;
+  }
+
+  .history-figure img {
+    width: 100%;
+    height: auto;
+    max-height: 110mm;
+    object-fit: contain;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    background: #fff;
+  }
+
+  .history-figure figcaption {
+    font-size: 10pt;
+    color: var(--muted);
+    margin-top: 3mm;
+    font-style: italic;
+  }
+
+  /* 還原 1991 風格的第一個網頁 */
+  .first-page {
+    flex: 1;
+    margin-top: 4mm;
+    padding: 8mm 12mm;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    font-family: "Times New Roman", Times, serif;
+    color: #000;
+    overflow: hidden;
+  }
+
+  .first-page .fp-h1 {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 22pt;
+    font-weight: 700;
+    margin: 0 0 4mm;
+    color: #000;
+    letter-spacing: 0;
+  }
+
+  .first-page p {
+    font-size: 11.5pt;
+    line-height: 1.5;
+    margin-bottom: 3mm;
+    color: #000;
+  }
+
+  .first-page a {
+    color: #0000ee;
+    text-decoration: underline;
+  }
+
+  .first-page dl {
+    margin-top: 3mm;
+  }
+
+  .first-page dt {
+    font-size: 11.5pt;
+    margin-top: 2mm;
+  }
+
+  .first-page dd {
+    font-size: 10.5pt;
+    margin-left: 8mm;
+    color: #111;
+    line-height: 1.5;
+    margin-bottom: 1.5mm;
+  }
+
+  /* 元件範例頁 - 通用網格 */
+  .demo-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto 1fr;
+    gap: 6mm;
+    margin-top: 4mm;
+    min-height: 0;
+  }
+
+  .demo-grid .demo-cell.full {
+    grid-column: 1 / -1;
+  }
+
+  .demo-cell {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 4mm 5mm;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .demo-label {
+    font-size: 9pt;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 3mm;
+    font-weight: 600;
+  }
+
+  .demo-body {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 0;
+  }
+
+  /* Navbar */
+  .ui-navbar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 3mm 5mm;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+  }
+  .ui-navbar .logo { font-weight: 700; font-size: 11pt; }
+  .ui-navbar nav { display: flex; gap: 6mm; font-size: 10pt; color: #4b5563; }
+  .ui-navbar .cta {
+    background: #111; color: #fff;
+    padding: 2mm 4mm; border-radius: 3px;
+    font-size: 9.5pt;
+  }
+
+  /* Hero */
+  .ui-hero {
+    width: 100%;
+    text-align: center;
+    padding: 3mm 4mm;
+  }
+  .ui-hero h4 {
+    font-size: 18pt; font-weight: 700;
+    margin-bottom: 2mm; letter-spacing: -0.01em;
+  }
+  .ui-hero p {
+    font-size: 10pt; color: var(--muted);
+    margin-bottom: 4mm;
+  }
+  .ui-hero .btn {
+    display: inline-block;
+    background: #111; color: #fff;
+    padding: 2.5mm 6mm; border-radius: 3px;
+    font-size: 10pt;
+  }
+
+  /* Card */
+  .ui-card {
+    width: 100%;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+    background: #fff;
+  }
+  .ui-card .img {
+    height: 18mm;
+    background: linear-gradient(135deg, #e5e7eb 0%, #f3f4f6 100%);
+  }
+  .ui-card .body {
+    padding: 3mm 4mm;
+  }
+  .ui-card .body .t {
+    font-weight: 600; font-size: 10pt; margin-bottom: 1mm;
+  }
+  .ui-card .body .d {
+    font-size: 9pt; color: var(--muted); line-height: 1.5;
+  }
+
+  /* Chip */
+  .ui-chips { display: flex; flex-wrap: wrap; gap: 2mm; }
+  .ui-chips .chip {
+    padding: 1.5mm 4mm;
+    background: var(--code-bg);
+    border-radius: 999px;
+    font-size: 9.5pt;
+    color: #111;
+  }
+  .ui-chips .chip.dark { background: #111; color: #fff; }
+  .ui-chips .chip.badge {
+    background: #dc2626; color: #fff;
+    padding: 1mm 2.5mm; font-size: 8pt; font-weight: 600;
+  }
+
+  /* Sidebar */
+  .ui-sidebar {
+    width: 100%; height: 100%;
+    display: flex;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+    background: #fff;
+  }
+  .ui-sidebar .side {
+    width: 32mm;
+    background: #fafafa;
+    border-right: 1px solid var(--line);
+    padding: 3mm;
+    display: flex;
+    flex-direction: column;
+    gap: 1mm;
+  }
+  .ui-sidebar .item {
+    padding: 1.5mm 3mm;
+    font-size: 9pt;
+    color: #4b5563;
+    border-radius: 3px;
+  }
+  .ui-sidebar .item.active {
+    background: #111; color: #fff; font-weight: 500;
+  }
+  .ui-sidebar .main {
+    flex: 1;
+    padding: 4mm;
+    font-size: 9pt;
+    color: var(--muted);
+    background: #fff;
+  }
+
+  /* Modal */
+  .ui-modal-wrap {
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.4);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3mm;
+  }
+  .ui-modal {
+    background: #fff;
+    border-radius: 4px;
+    padding: 4mm 5mm;
+    width: 70mm;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  .ui-modal .t { font-weight: 600; font-size: 11pt; margin-bottom: 2mm; }
+  .ui-modal .d { font-size: 9.5pt; color: var(--muted); margin-bottom: 4mm; }
+  .ui-modal .actions { display: flex; justify-content: flex-end; gap: 2mm; }
+  .ui-modal .btn {
+    padding: 1.5mm 4mm;
+    border-radius: 3px;
+    font-size: 9pt;
+    border: 1px solid var(--line);
+  }
+  .ui-modal .btn.primary { background: #111; color: #fff; border-color: #111; }
+
+  /* Toast */
+  .ui-toast-wrap {
+    width: 100%; height: 100%;
+    background: #fafafa;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+  }
+  .ui-toast {
+    position: absolute;
+    bottom: 4mm; left: 50%;
+    transform: translateX(-50%);
+    background: #111; color: #fff;
+    padding: 2.5mm 5mm;
+    border-radius: 4px;
+    font-size: 9.5pt;
+    display: flex;
+    align-items: center;
+    gap: 3mm;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+  .ui-toast .dot {
+    width: 6px; height: 6px;
+    background: var(--good); border-radius: 50%;
+  }
+
+  /* Breadcrumb */
+  .ui-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 2mm;
+    font-size: 10pt;
+    color: var(--muted);
+  }
+  .ui-breadcrumb a { color: #4b5563; }
+  .ui-breadcrumb .sep { color: #d1d5db; }
+  .ui-breadcrumb .current { color: #111; font-weight: 500; }
+
+  /* Skeleton */
+  .ui-skeleton {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 2mm;
+  }
+  .ui-skeleton .line {
+    height: 3mm;
+    background: linear-gradient(90deg, #f3f4f6, #e5e7eb, #f3f4f6);
+    border-radius: 2px;
+  }
+  .ui-skeleton .line.s { width: 60%; }
+  .ui-skeleton .line.m { width: 80%; }
+  .ui-skeleton .row {
+    display: flex; gap: 3mm; align-items: center;
+  }
+  .ui-skeleton .circle {
+    width: 8mm; height: 8mm;
+    background: #e5e7eb; border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .ui-skeleton .col { flex: 1; display: flex; flex-direction: column; gap: 1.5mm; }
+
+  .note {
+    font-size: 11pt;
+    color: var(--muted);
+    margin-top: auto;
+    padding-top: 4mm;
+    font-style: italic;
+  }
+
+  /* 列印優化 */
+  @page {
+    size: A4 landscape;
+    margin: 0;
+  }
+
+  @media print {
+    html, body {
+      background: #fff;
+    }
+    .slide {
+      margin: 0;
+      box-shadow: none;
+      width: 297mm;
+      height: 210mm;
+      page-break-after: always;
+      break-after: page;
+    }
+    .slide:last-child {
+      page-break-after: auto;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- 1. 封面 -->
+<section class="slide cover">
+  <div class="day-tag">DAY 1</div>
+  <h1>認識網頁世界<br>&amp; 用 AI 快速出作品</h1>
+  <div class="subtitle">
+    從零開始理解 Web，搭配 AI 工具<br>
+    10 分鐘做出第一個屬於你的網頁
+  </div>
+  <div class="footer-line">
+    <span>Web Course · Day 1</span>
+    <span>2026</span>
+  </div>
+</section>
+
+<!-- 2. 自我介紹 -->
+<section class="slide">
+  <div class="eyebrow">01 · 開場</div>
+  <h1>自我介紹 &amp; 經歷</h1>
+  <div class="title-rule"></div>
+  <ul>
+    <li>簡短介紹自己：CS 學生，做過 PDF reader、YOLO、VS Code 插件</li>
+    <li>為什麼教這門課：<strong>不是要教「用 AI」，是要教「看懂 AI 生出來的東西」</strong></li>
+    <li>先破題：今天你們會做出一個網頁，下週你們會知道它為什麼長這樣</li>
+  </ul>
+  <div class="page-section">01 · 開場</div>
+  <div class="page-num">02</div>
+</section>
+
+<!-- 3. ezBorrow -->
+<section class="slide">
+  <div class="eyebrow">作品介紹</div>
+  <h1>ezBorrow</h1>
+  <div class="title-rule"></div>
+  <div class="placeholder">圖片預留位置</div>
+  <div class="page-section">01 · 開場</div>
+  <div class="page-num">03</div>
+</section>
+
+<!-- 4. vscode 插件 -->
+<section class="slide">
+  <div class="eyebrow">作品介紹</div>
+  <h1>VS Code 插件</h1>
+  <div class="title-rule"></div>
+  <div class="placeholder">圖片預留位置</div>
+  <div class="page-section">01 · 開場</div>
+  <div class="page-num">04</div>
+</section>
+
+<!-- 5. expo app -->
+<section class="slide">
+  <div class="eyebrow">作品介紹</div>
+  <h1>Expo App — 阿瓦隆之王</h1>
+  <div class="title-rule"></div>
+  <div class="placeholder">圖片預留位置</div>
+  <div class="page-section">01 · 開場</div>
+  <div class="page-num">05</div>
+</section>
+
+<!-- 6. 各種小作品 -->
+<section class="slide">
+  <div class="eyebrow">作品介紹</div>
+  <h1>各種小作品</h1>
+  <div class="title-rule"></div>
+  <div class="placeholder">圖片預留位置</div>
+  <div class="page-section">01 · 開場</div>
+  <div class="page-num">06</div>
+</section>
+
+<!-- 7. 網頁歷史 -->
+<section class="slide">
+  <div class="eyebrow">02 · 網頁歷史</div>
+  <h1>網頁的歷史</h1>
+  <div class="title-rule"></div>
+  <div class="history-grid">
+    <div class="history-text">
+      <p class="lead">5 分鐘，輕鬆帶過</p>
+      <ul>
+        <li><strong>1991</strong>　Tim Berners-Lee 在 CERN 發明 HTML</li>
+        <li>純文字、無樣式，但開啟了整個 Web 時代</li>
+        <li>第一個瀏覽器叫做 <code>WorldWideWeb</code>，跑在 NeXT 電腦上</li>
+      </ul>
+    </div>
+    <figure class="history-figure">
+      <img src="../imgs/1960.webp" alt="Tim Berners-Lee 與 NeXT 上的 WorldWideWeb 原始碼">
+      <figcaption>Tim Berners-Lee 與當年 NeXTStep 上的 WorldWideWeb 原始碼</figcaption>
+    </figure>
+  </div>
+  <div class="page-section">02 · 網頁歷史</div>
+  <div class="page-num">07</div>
+</section>
+
+<!-- 8. 世界第一個網頁 -->
+<section class="slide">
+  <div class="eyebrow">02 · 網頁歷史</div>
+  <h1>世界第一個網頁</h1>
+  <div class="title-rule"></div>
+  <p class="lead">
+    1991 年上線，至今仍可訪問：
+    <code>info.cern.ch/hypertext/WWW/TheProject.html</code>
+  </p>
+
+  <div class="first-page">
+    <h1 class="fp-h1">World Wide Web</h1>
+    <p>
+      The WorldWideWeb (W3) is a wide-area
+      <a>hypermedia</a> information retrieval initiative
+      aiming to give universal access to a large universe of documents.
+    </p>
+    <p>
+      Everything there is online about W3 is linked directly or indirectly
+      to this document, including an <a>executive summary</a> of the project,
+      <a>Mailing lists</a>, <a>Policy</a>, November's <a>W3 news</a>,
+      <a>Frequently Asked Questions</a>.
+    </p>
+    <dl>
+      <dt><a>What's out there?</a></dt>
+      <dd>Pointers to the world's online information, <a>subjects</a>, <a>W3 servers</a>, etc.</dd>
+      <dt><a>Help</a></dt>
+      <dd>on the browser you are using</dd>
+      <dt><a>Software Products</a></dt>
+      <dd>A list of W3 project components and their current state.
+        (e.g. <a>Line Mode</a>, X11 <a>Viola</a>, <a>NeXTStep</a>,
+        <a>Servers</a>, <a>Tools</a>, <a>Mail robot</a>, <a>Library</a>)</dd>
+      <dt><a>Technical</a></dt>
+      <dd>Details of protocols, formats, program internals etc.</dd>
+      <dt><a>Bibliography</a></dt>
+      <dd>Paper documentation on W3 and references.</dd>
+      <dt><a>People</a></dt>
+      <dd>A list of some people involved in the project.</dd>
+      <dt><a>History</a></dt>
+      <dd>A summary of the history of the project.</dd>
+      <dt><a>How can I help?</a></dt>
+      <dd>If you would like to support the web..</dd>
+      <dt><a>Getting code</a></dt>
+      <dd>Getting the code by <a>anonymous FTP</a>, etc.</dd>
+    </dl>
+  </div>
+  <div class="page-section">02 · 網頁歷史</div>
+  <div class="page-num">08</div>
+</section>
+
+<!-- 9. CSS -->
+<section class="slide">
+  <div class="eyebrow">02 · 網頁歷史</div>
+  <h1>1994 — CSS 出現</h1>
+  <div class="title-rule"></div>
+  <p class="lead">才有顏色和排版</p>
+  <ul>
+    <li>網頁從「純文字資訊」進化為「視覺設計」</li>
+    <li>內容與樣式分離的概念誕生</li>
+  </ul>
+  <div class="page-section">02 · 網頁歷史</div>
+  <div class="page-num">09</div>
+</section>
+
+<!-- 10. AJAX -->
+<section class="slide">
+  <div class="eyebrow">02 · 網頁歷史</div>
+  <h1>2005 — AJAX</h1>
+  <div class="title-rule"></div>
+  <p class="lead">網頁開始「不重新整理就更新內容」</p>
+  <ul>
+    <li>Google Maps 震驚世界，網頁從「文件」變成「應用」</li>
+    <li>Web App 時代正式啟動</li>
+  </ul>
+  <div class="page-section">02 · 網頁歷史</div>
+  <div class="page-num">10</div>
+</section>
+
+<!-- 10. 網頁應用 -->
+<section class="slide">
+  <div class="eyebrow">03 · 網頁全貌</div>
+  <h1>網頁應用長什麼樣？</h1>
+  <div class="title-rule"></div>
+  <table>
+    <thead>
+      <tr><th>類型</th><th>例子</th><th>技術關鍵字</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>一般網站</td><td>個人作品集、部落格</td><td><code>HTML / CSS / JS</code></td></tr>
+      <tr><td>Web App</td><td>Google Docs、Figma</td><td><code>React / Vue</code></td></tr>
+      <tr><td>行動 App</td><td>Instagram（底層也是 JS）</td><td><code>React Native / Expo</code></td></tr>
+      <tr><td>文件工具</td><td>Notion、Anki 卡片</td><td><code>Electron / Web</code></td></tr>
+      <tr><td>VS Code 插件</td><td>你用的任何插件</td><td><code>TypeScript + Web API</code></td></tr>
+    </tbody>
+  </table>
+  <blockquote>講解重點：這些東西的底層語言都一樣 — HTML、CSS、JavaScript</blockquote>
+  <div class="page-section">03 · 網頁全貌</div>
+  <div class="page-num">11</div>
+</section>
+
+<!-- 11. AI 製作網頁 -->
+<section class="slide">
+  <div class="eyebrow">04 · 第一個作品</div>
+  <h1>用 AI 製作網頁</h1>
+  <div class="title-rule"></div>
+  <p class="lead"><strong>實作目標：</strong>用 Claude / ChatGPT 在 10 分鐘內生出一個個人介紹頁面</p>
+  <h2>步驟</h2>
+  <ol>
+    <li>打開 claude.ai 或 ChatGPT</li>
+    <li>貼上 Prompt（講師提供）</li>
+    <li>把生出的 HTML 存成 <code>index.html</code>，用瀏覽器打開</li>
+    <li>看到自己的名字出現在網頁上 ✓</li>
+  </ol>
+  <div class="page-section">04 · 第一個作品</div>
+  <div class="page-num">12</div>
+</section>
+
+<!-- 12. Prompt 工程 -->
+<section class="slide">
+  <div class="eyebrow">05 · Prompt</div>
+  <h1>Prompt 工程</h1>
+  <div class="title-rule"></div>
+  <p class="lead">為什麼同樣問題，輸出差很多？</p>
+  <h2>概念</h2>
+  <p>Prompt 是你跟 AI 說話的方式。</p>
+
+  <h2>差異對照</h2>
+  <div class="compare-row">
+    <span class="icon bad">✕</span>
+    <div class="content"><strong>爛 Prompt：</strong>「幫我做一個網頁」</div>
+  </div>
+  <div class="compare-row">
+    <span class="icon good">✓</span>
+    <div class="content"><strong>好 Prompt：</strong>「幫我做一個個人介紹網頁，使用 Tailwind CSS，深色背景，包含姓名、技能標籤、聯絡方式，風格參考 Linear.app」</div>
+  </div>
+
+  <h2>差異來源</h2>
+  <ul>
+    <li>沒有指定技術棧 → AI 亂猜</li>
+    <li>沒有視覺參考 → 輸出很醜</li>
+    <li>沒有說元件需求 → 東西不全</li>
+  </ul>
+  <div class="page-section">05 · Prompt</div>
+  <div class="page-num">13</div>
+</section>
+
+<!-- 13. Prompt 關鍵字 -->
+<section class="slide">
+  <div class="eyebrow">06 · 關鍵字</div>
+  <h1>Prompt 關鍵字 — 設計語言</h1>
+  <div class="title-rule"></div>
+  <p class="lead">讓學生複製這些關鍵字加進 Prompt，立刻看到差異。</p>
+  <ul>
+    <li><strong>UI / UX 規範</strong>　Material Design、Apple HIG、8px grid</li>
+    <li><strong>顏色規範</strong>　60-30-10、WCAG AA、neutral + accent</li>
+    <li><strong>Modern Design</strong>　glassmorphism、flat、brutalist</li>
+  </ul>
+  <p class="note">接下來三張投影片，分別展開三大類關鍵字。</p>
+  <div class="page-section">06 · 關鍵字</div>
+  <div class="page-num">14</div>
+</section>
+
+<!-- 14. UI/UX 關鍵字 -->
+<section class="slide">
+  <div class="eyebrow">06 · 關鍵字</div>
+  <h1>UI / UX 規範關鍵字</h1>
+  <div class="title-rule"></div>
+  <ul class="keyword-list">
+    <li><span class="kw">Material Design 3</span>Google 的設計系統，按鈕、間距、陰影都有規範</li>
+    <li><span class="kw">Apple Human Interface Guidelines</span>iOS 風格</li>
+    <li><span class="kw">8px grid system</span>所有間距是 8 的倍數，視覺才整齊</li>
+  </ul>
+  <div class="page-section">06 · 關鍵字</div>
+  <div class="page-num">15</div>
+</section>
+
+<!-- 15. 顏色關鍵字 -->
+<section class="slide">
+  <div class="eyebrow">06 · 關鍵字</div>
+  <h1>顏色規範關鍵字</h1>
+  <div class="title-rule"></div>
+  <ul class="keyword-list">
+    <li><span class="kw">60-30-10 color rule</span>主色 60%、輔色 30%、強調色 10%</li>
+    <li><span class="kw">WCAG AA contrast</span>無障礙對比度標準（文字要看得清楚）</li>
+    <li><span class="kw">neutral palette with accent</span>灰階底色 + 一個亮色點綴</li>
+  </ul>
+  <div class="page-section">06 · 關鍵字</div>
+  <div class="page-num">16</div>
+</section>
+
+<!-- 16. Modern Design 關鍵字 -->
+<section class="slide">
+  <div class="eyebrow">06 · 關鍵字</div>
+  <h1>Modern Design 風格關鍵字</h1>
+  <div class="title-rule"></div>
+  <ul class="keyword-list">
+    <li><span class="kw">glassmorphism</span>毛玻璃效果</li>
+    <li><span class="kw">neumorphism</span>軟浮雕（比較小眾）</li>
+    <li><span class="kw">flat design</span>無陰影、純色塊</li>
+    <li><span class="kw">brutalist web design</span>刻意粗糙、高對比（近年流行）</li>
+  </ul>
+  <div class="page-section">06 · 關鍵字</div>
+  <div class="page-num">17</div>
+</section>
+
+<!-- 17. Prompt 元件介紹 -->
+<section class="slide">
+  <div class="eyebrow">07 · 元件</div>
+  <h1>Prompt 元件介紹</h1>
+  <div class="title-rule"></div>
+  <p class="lead">學生常不知道 UI 元件的名字，所以 AI 生出來的不是他們要的。</p>
+  <table>
+    <thead><tr><th>元件名稱</th><th>說明</th><th>常見用途</th></tr></thead>
+    <tbody>
+      <tr><td><code>Header / Navbar</code></td><td>頁面頂部導覽列</td><td>每個網站都有</td></tr>
+      <tr><td><code>Hero Section</code></td><td>首屏大標題區塊</td><td>Landing page 必備</td></tr>
+      <tr><td><code>Card</code></td><td>資訊卡片容器</td><td>商品列表、文章列表</td></tr>
+      <tr><td><code>Chip / Badge / Tag</code></td><td>小標籤</td><td>技能標籤、分類標記</td></tr>
+      <tr><td><code>Sidebar</code></td><td>側邊欄</td><td>管理後台、文件網站</td></tr>
+      <tr><td><code>Modal / Dialog</code></td><td>彈出視窗</td><td>確認操作、表單</td></tr>
+      <tr><td><code>Toast / Snackbar</code></td><td>底部短暫通知</td><td>「儲存成功」提示</td></tr>
+      <tr><td><code>Breadcrumb</code></td><td>麵包屑導覽</td><td>顯示你在哪一層</td></tr>
+      <tr><td><code>Skeleton Loader</code></td><td>骨架載入動畫</td><td>資料還沒來時的佔位</td></tr>
+    </tbody>
+  </table>
+  <div class="page-section">07 · 元件</div>
+  <div class="page-num">18</div>
+</section>
+
+<!-- 19. 元件範例 1 — Layout -->
+<section class="slide">
+  <div class="eyebrow">07 · 元件</div>
+  <h1>元件範例 — Layout</h1>
+  <div class="title-rule"></div>
+  <div class="demo-grid">
+    <div class="demo-cell full">
+      <div class="demo-label">Header / Navbar</div>
+      <div class="demo-body">
+        <div class="ui-navbar">
+          <div class="logo">◆ Brand</div>
+          <nav>
+            <span>Home</span><span>Products</span><span>Pricing</span><span>About</span>
+          </nav>
+          <span class="cta">Sign up</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="demo-cell">
+      <div class="demo-label">Hero Section</div>
+      <div class="demo-body">
+        <div class="ui-hero">
+          <h4>Build faster with AI</h4>
+          <p>The simplest way to ship a website in 10 minutes.</p>
+          <span class="btn">Get started →</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="demo-cell">
+      <div class="demo-label">Card</div>
+      <div class="demo-body">
+        <div class="ui-card">
+          <div class="img"></div>
+          <div class="body">
+            <div class="t">Modern Web Design</div>
+            <div class="d">Learn the principles of clean, minimal UI used by top brands.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-section">07 · 元件</div>
+  <div class="page-num">19</div>
+</section>
+
+<!-- 20. 元件範例 2 — Interactive -->
+<section class="slide">
+  <div class="eyebrow">07 · 元件</div>
+  <h1>元件範例 — Interactive</h1>
+  <div class="title-rule"></div>
+  <div class="demo-grid">
+    <div class="demo-cell full">
+      <div class="demo-label">Chip / Badge / Tag</div>
+      <div class="demo-body" style="justify-content: flex-start;">
+        <div class="ui-chips">
+          <span class="chip">JavaScript</span>
+          <span class="chip">React</span>
+          <span class="chip dark">TypeScript</span>
+          <span class="chip">CSS</span>
+          <span class="chip">HTML</span>
+          <span class="chip badge">NEW</span>
+          <span class="chip badge" style="background:#059669">99+</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="demo-cell">
+      <div class="demo-label">Sidebar</div>
+      <div class="demo-body">
+        <div class="ui-sidebar">
+          <div class="side">
+            <div class="item">Dashboard</div>
+            <div class="item active">Projects</div>
+            <div class="item">Team</div>
+            <div class="item">Settings</div>
+          </div>
+          <div class="main">Main content area</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="demo-cell">
+      <div class="demo-label">Modal / Dialog</div>
+      <div class="demo-body">
+        <div class="ui-modal-wrap">
+          <div class="ui-modal">
+            <div class="t">Delete project?</div>
+            <div class="d">This action cannot be undone.</div>
+            <div class="actions">
+              <span class="btn">Cancel</span>
+              <span class="btn primary">Delete</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-section">07 · 元件</div>
+  <div class="page-num">20</div>
+</section>
+
+<!-- 21. 元件範例 3 — Feedback -->
+<section class="slide">
+  <div class="eyebrow">07 · 元件</div>
+  <h1>元件範例 — Feedback &amp; Navigation</h1>
+  <div class="title-rule"></div>
+  <div class="demo-grid">
+    <div class="demo-cell full">
+      <div class="demo-label">Breadcrumb</div>
+      <div class="demo-body" style="justify-content: flex-start;">
+        <div class="ui-breadcrumb">
+          <a>Home</a>
+          <span class="sep">/</span>
+          <a>Products</a>
+          <span class="sep">/</span>
+          <a>Laptops</a>
+          <span class="sep">/</span>
+          <span class="current">MacBook Pro 14"</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="demo-cell">
+      <div class="demo-label">Toast / Snackbar</div>
+      <div class="demo-body">
+        <div class="ui-toast-wrap">
+          <div class="ui-toast">
+            <span class="dot"></span>
+            <span>儲存成功</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="demo-cell">
+      <div class="demo-label">Skeleton Loader</div>
+      <div class="demo-body">
+        <div class="ui-skeleton">
+          <div class="row">
+            <div class="circle"></div>
+            <div class="col">
+              <div class="line m"></div>
+              <div class="line s"></div>
+            </div>
+          </div>
+          <div class="line"></div>
+          <div class="line m"></div>
+          <div class="line s"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-section">07 · 元件</div>
+  <div class="page-num">21</div>
+</section>
+
+<!-- 21. 排版基礎 -->
+<section class="slide">
+  <div class="eyebrow">08 · 排版</div>
+  <h1>排版基礎 — UI / UX 觀念</h1>
+  <div class="title-rule"></div>
+  <h2>視覺重心</h2>
+  <ul>
+    <li><strong>F 型閱讀模式：</strong>眼睛先看左上 → 向右 → 向下左側</li>
+    <li>重要資訊放左上、次要放右下</li>
+    <li>標題 &gt; 副標 &gt; 內文，字體大小要有明顯層次（不是 16px vs 18px）</li>
+  </ul>
+  <div class="page-section">08 · 排版</div>
+  <div class="page-num">22</div>
+</section>
+
+<!-- 22. 留白 -->
+<section class="slide">
+  <div class="eyebrow">08 · 排版</div>
+  <h1>留白（White Space）</h1>
+  <div class="title-rule"></div>
+  <ul>
+    <li>留白不是浪費，是「讓視覺呼吸」</li>
+    <li>Apple 網站的高級感，<strong>80% 來自留白</strong></li>
+    <li>Padding / Margin 至少 16px 起跳</li>
+  </ul>
+  <div class="page-section">08 · 排版</div>
+  <div class="page-num">23</div>
+</section>
+
+<!-- 23. 顏色心理學 -->
+<section class="slide">
+  <div class="eyebrow">08 · 排版</div>
+  <h1>顏色心理學</h1>
+  <div class="title-rule"></div>
+  <p class="lead">30 秒版本</p>
+  <ul>
+    <li><strong>藍色</strong>　=　信任（銀行、科技公司）</li>
+    <li><strong>紅色</strong>　=　緊急 / 優惠（促銷按鈕）</li>
+    <li><strong>綠色</strong>　=　成功 / 確認</li>
+    <li><strong>深色背景 + 淺色文字</strong>　=　科技感</li>
+  </ul>
+  <div class="page-section">08 · 排版</div>
+  <div class="page-num">24</div>
+</section>
+
+<!-- 24. 層級 -->
+<section class="slide">
+  <div class="eyebrow">08 · 排版</div>
+  <h1>層級</h1>
+  <div class="title-rule"></div>
+  <p class="lead">講解 Markdown 標題層級</p>
+  <ul>
+    <li><code>#</code> H1　頁面主標題（一頁一個）</li>
+    <li><code>##</code> H2　主要章節</li>
+    <li><code>###</code> H3　子章節</li>
+    <li><code>####</code> H4　次要分段</li>
+  </ul>
+  <blockquote>層級不是用大小決定，是用「重要性」決定。</blockquote>
+  <div class="page-section">08 · 排版</div>
+  <div class="page-num">25</div>
+</section>
+
+<!-- 25. GitHub Pages -->
+<section class="slide">
+  <div class="eyebrow">09 · 部署</div>
+  <h1>GitHub Pages 部署</h1>
+  <div class="title-rule"></div>
+  <p class="lead">目標：讓學生的網頁有公開網址可以傳給朋友（10 分鐘實作）</p>
+  <h2>步驟</h2>
+  <ol>
+    <li>建立 GitHub 帳號</li>
+    <li>建立新 Repository（命名：<code>username.github.io</code>）</li>
+    <li>上傳 <code>index.html</code></li>
+    <li>Settings → Pages → Deploy from branch → main</li>
+    <li>等 2 分鐘 → 你的網頁上線了 ✓</li>
+  </ol>
+  <blockquote>這是第二個成就感鉤子，而且可以發給父母看。</blockquote>
+  <div class="page-section">09 · 部署</div>
+  <div class="page-num">26</div>
+</section>
+
+<script src="script.js"></script>
+</body>
+</html>
