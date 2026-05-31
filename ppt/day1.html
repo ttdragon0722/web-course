@@ -358,6 +358,88 @@
     font-style: italic;
   }
 
+  /* 風格切片頁的滿版圖片 */
+  .shot-figure {
+    flex: 1;
+    margin: 4mm 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 0;
+    text-align: center;
+  }
+  .shot-figure img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    background: #fff;
+  }
+  .shot-figure figcaption {
+    font-size: 9.5pt;
+    color: var(--muted);
+    margin-top: 3mm;
+    font-style: italic;
+  }
+  .shot-figure figcaption a {
+    color: #2563eb;
+    text-decoration: none;
+    font-style: normal;
+    font-family: "JetBrains Mono", Consolas, monospace;
+    font-size: 9pt;
+  }
+  .shot-figure figcaption a:hover { text-decoration: underline; }
+
+  /* Flat / Duotone 圖片放大 1.5 倍 */
+  .shot-figure.zoom img {
+    transform: scale(1.5);
+    transform-origin: center;
+  }
+
+  /* 自我介紹文字區 */
+  .intro-text blockquote { margin-top: 0; margin-bottom: 4mm; }
+  .intro-text p {
+    font-size: 12pt;
+    line-height: 1.65;
+    margin-bottom: 3mm;
+  }
+  .intro-figure img {
+    width: 100%;
+    height: auto;
+    max-height: 120mm;
+    object-fit: cover;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+  }
+  .intro-figure figcaption {
+    font-size: 10pt;
+    color: var(--muted);
+    margin-top: 3mm;
+    font-style: italic;
+    text-align: center;
+  }
+
+  /* 純大字標語頁 */
+  .statement {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  .statement .big-text {
+    font-size: 60pt;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.18;
+  }
+  .statement .big-sub {
+    font-size: 15pt;
+    color: var(--muted);
+    margin-top: 8mm;
+    letter-spacing: 0.04em;
+  }
+
   /* 還原 1991 風格的第一個網頁 */
   .first-page {
     flex: 1;
@@ -654,6 +736,213 @@
   }
   .ui-skeleton .col { flex: 1; display: flex; flex-direction: column; gap: 1.5mm; }
 
+  /* 原理對比：沒做好 / 做好 */
+  .demo-compare {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8mm;
+    margin-top: 4mm;
+    min-height: 0;
+  }
+  .demo-panel {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    overflow: hidden;
+    min-height: 0;
+  }
+  .demo-panel .dp-head {
+    font-size: 10.5pt;
+    font-weight: 600;
+    padding: 3mm 4mm;
+    border-bottom: 1px solid var(--line);
+  }
+  .demo-panel.bad .dp-head { color: var(--bad); background: #fef2f2; }
+  .demo-panel.good .dp-head { color: var(--good); background: #f0fdf4; }
+  .demo-panel .dp-body {
+    flex: 1;
+    padding: 5mm;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  /* UX 實作示範元件 */
+  .qty {
+    display: inline-flex; align-items: center;
+    border: 1px solid var(--line); border-radius: 6px; overflow: hidden;
+  }
+  .qty button {
+    width: 9mm; height: 9mm; border: none; background: #f3f4f6;
+    font-size: 13pt; color: #111; cursor: pointer; line-height: 1;
+  }
+  .qty .num { width: 13mm; text-align: center; font-size: 13pt; font-weight: 600; }
+
+  .popup {
+    position: relative; width: 100%;
+    border: 1px solid var(--line); border-radius: 6px;
+    background: #fff; padding: 6mm; min-height: 40mm;
+  }
+  .popup .x-bad {
+    position: absolute; top: 1mm; right: 1mm;
+    width: 3mm; height: 3mm; font-size: 6pt; color: #d1d5db;
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+  }
+  .popup .x-good {
+    position: absolute; top: 2.5mm; right: 2.5mm;
+    width: 7mm; height: 7mm; border-radius: 50%;
+    background: #f3f4f6; color: #111; font-size: 11pt;
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+    transition: background .15s ease, color .15s ease;
+  }
+  .popup .x-good:hover { background: #111; color: #fff; }
+
+  .flow-steps { display: flex; flex-wrap: wrap; align-items: center; gap: 2mm; justify-content: center; }
+  .flow-steps .stp {
+    border: 1px solid var(--line); border-radius: 4px;
+    padding: 1.5mm 3mm; font-size: 9pt; background: #fff; color: #2d2d2d;
+  }
+  .flow-steps .stp.done { background: #111; color: #fff; border-color: #111; }
+  .flow-steps .ar { color: #d1d5db; font-size: 9pt; }
+
+  /* 顏色心理學 四宮格 */
+  .color-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 6mm;
+    margin-top: 4mm;
+    min-height: 0;
+  }
+  .color-cell {
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  .color-cell .cc-demo {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5mm;
+    min-height: 0;
+  }
+  .color-cell .cc-label {
+    border-top: 1px solid var(--line);
+    padding: 2.5mm 4mm;
+    font-size: 10pt;
+  }
+  .color-cell .cc-label b { font-weight: 600; }
+  .color-cell .cc-label span { color: var(--muted); }
+
+  /* Markdown 語法 / 結果對照 */
+  .md-code pre { height: 100%; margin: 0; }
+  .md-preview {
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 5mm 6mm;
+    background: #fff;
+    height: 100%;
+    overflow: hidden;
+  }
+  .md-preview .h1 { font-size: 16pt; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 2mm; }
+  .md-preview .h2 { font-size: 12.5pt; font-weight: 700; color: #374151; margin-bottom: 2.5mm; }
+  .md-preview p { font-size: 10pt; line-height: 1.5; margin-bottom: 2.5mm; }
+  .md-preview ul, .md-preview ol { margin: 0 0 2.5mm; }
+  .md-preview li { font-size: 10pt; line-height: 1.4; margin-bottom: 1mm; }
+  .md-preview blockquote { font-size: 10pt; margin: 0 0 2.5mm; padding: 2mm 4mm; }
+  .md-preview a { color: #2563eb; }
+  .md-preview code { font-size: 9pt; }
+  .md-preview hr { border: none; border-top: 1px solid var(--line); margin: 1mm 0; }
+
+  /* 卡片層級 好 / 壞 示範 */
+  .sample-card {
+    width: 80mm;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    overflow: hidden;
+    background: #fff;
+    margin: 0 auto;
+  }
+  .sample-card .s-img {
+    height: 40mm;
+    background: linear-gradient(135deg, #e5e7eb, #f3f4f6);
+  }
+  .sample-card .s-body { padding: 5mm 5mm 6mm; }
+
+  .sample-card.bad .s-body > div {
+    font-size: 10pt;
+    font-weight: 400;
+    color: #2d2d2d;
+    margin-bottom: 1.5mm;
+  }
+
+  .sample-card.good .s-body .g-badge {
+    display: inline-block;
+    background: var(--bad); color: #fff;
+    font-size: 8pt; font-weight: 600;
+    padding: 1mm 2.5mm; border-radius: 3px; margin-bottom: 3mm;
+  }
+  .sample-card.good .s-body .g-title {
+    font-size: 15pt; font-weight: 700;
+    letter-spacing: -0.01em; margin-bottom: 1.5mm;
+  }
+  .sample-card.good .s-body .g-desc {
+    font-size: 9.5pt; color: var(--muted);
+    margin-bottom: 4mm; line-height: 1.5;
+  }
+  .sample-card.good .s-body .g-price {
+    font-size: 17pt; font-weight: 700; margin-bottom: 4mm;
+  }
+  .sample-card.good .s-body .g-btn {
+    display: block; text-align: center;
+    background: #111; color: #fff;
+    padding: 2.5mm; border-radius: 4px;
+    font-size: 10.5pt; font-weight: 500;
+  }
+
+  /* 全部不遵守的醜網頁 */
+  .ugly-page {
+    flex: 1;
+    margin-top: 4mm;
+    border: 3px ridge #ff00ff;
+    background: #00e0e0;
+    padding: 3mm 4mm;
+    font-family: "Times New Roman", Times, serif;
+    overflow: hidden;
+    min-height: 0;
+  }
+  .ugly-page .u-title {
+    text-align: center;
+    font-size: 20pt; font-weight: 700;
+    color: #ff0000; background: #ffff00;
+    text-shadow: 2px 2px #0000ff;
+    padding: 1mm; margin-bottom: 2mm;
+  }
+  .ugly-page .u-nav {
+    display: flex; flex-wrap: wrap; gap: 1.5mm;
+    justify-content: center; margin-bottom: 3mm;
+  }
+  .ugly-page .u-nav span {
+    font-size: 11pt; text-decoration: underline; padding: 0.5mm 2mm;
+  }
+  .ugly-page .u-body p {
+    font-size: 12pt; line-height: 1.25; margin-bottom: 1.5mm;
+  }
+  .ugly-page .u-btn {
+    display: inline-block; margin: 1mm 0;
+    background: #ff0000; color: #00ff00;
+    font-size: 14pt; font-weight: 700;
+    padding: 2mm 5mm; border: 2px dashed #0000ff;
+  }
+
   .note {
     font-size: 11pt;
     color: var(--muted);
@@ -704,16 +993,22 @@
 
 <!-- 2. 自我介紹 -->
 <section class="slide">
-  <div class="eyebrow">01 · 開場</div>
-  <h1>自我介紹 &amp; 經歷</h1>
+  <div class="eyebrow">01 · 開場 · 關於</div>
+  <h1>自我介紹</h1>
   <div class="title-rule"></div>
-  <ul>
-    <li>簡短介紹自己：CS 學生，做過 PDF reader、YOLO、VS Code 插件</li>
-    <li>為什麼教這門課：<strong>不是要教「用 AI」，是要教「看懂 AI 生出來的東西」</strong></li>
-    <li>先破題：今天你們會做出一個網頁，下週你們會知道它為什麼長這樣</li>
-  </ul>
+  <div class="history-grid" style="grid-template-columns: 1.3fr 1fr;">
+    <div class="intro-text">
+      <blockquote>從「想解決問題」這個天生特質出發 —— 相信科技始終來自於人性。</blockquote>
+      <p>我是<strong>賴家煜</strong>，大家叫我 <strong>Rex / 雷克斯</strong>，16 歲，就讀於國立臺中科技大學五專部資訊工程科。</p>
+      <p>回顧進入資訊領域的起點，與其說是清晰的志向，不如說是一種「想解決問題」的天生特質。從接觸第一行程式碼開始，我便在思考 —— 是否可以運用所學去解決生活中的問題？</p>
+      <p>於是有了第一篇研討會論文、DFI 年會評比第三名的 PCB 自動化工具、iThome 鐵人賽 30 天連載 —— 每一段歷程，都是在「課堂知識能否轉化為工具」的提問中，慢慢被堆積起來的。</p>
+    </div>
+    <figure class="intro-figure">
+      <img src="../imgs/大頭貼.jpg" alt="賴家煜 Rex 大頭貼">
+      <figcaption>Rex / 雷克斯</figcaption>
+    </figure>
+  </div>
   <div class="page-section">01 · 開場</div>
-  <div class="page-num">02</div>
 </section>
 
 <!-- 3. ezBorrow -->
@@ -721,39 +1016,41 @@
   <div class="eyebrow">作品介紹</div>
   <h1>ezBorrow</h1>
   <div class="title-rule"></div>
-  <div class="placeholder">圖片預留位置</div>
+  <figure class="shot-figure">
+    <img src="../imgs/ezborrow.png" alt="ezBorrow 借用系統">
+    <figcaption><a href="http://23.146.248.32/" target="_blank" rel="noopener">http://23.146.248.32/</a></figcaption>
+  </figure>
   <div class="page-section">01 · 開場</div>
-  <div class="page-num">03</div>
 </section>
 
 <!-- 4. vscode 插件 -->
 <section class="slide">
   <div class="eyebrow">作品介紹</div>
-  <h1>VS Code 插件</h1>
+  <h1>VS Code 插件 — Better File Directory</h1>
   <div class="title-rule"></div>
-  <div class="placeholder">圖片預留位置</div>
+  <figure class="shot-figure">
+    <img src="../imgs/vscode-extension.gif" alt="VS Code 插件 Better File Directory 操作示範">
+    <figcaption><a href="https://marketplace.visualstudio.com/items?itemName=ttdragon0722.better-file-directory" target="_blank" rel="noopener">marketplace.visualstudio.com · ttdragon0722.better-file-directory</a></figcaption>
+  </figure>
   <div class="page-section">01 · 開場</div>
-  <div class="page-num">04</div>
 </section>
 
-<!-- 5. expo app -->
+<!-- 5. iThome 鐵人賽 -->
 <section class="slide">
   <div class="eyebrow">作品介紹</div>
-  <h1>Expo App — 阿瓦隆之王</h1>
+  <h1>iThome 鐵人賽</h1>
   <div class="title-rule"></div>
-  <div class="placeholder">圖片預留位置</div>
+  <figure class="shot-figure">
+    <img src="../imgs/ithelp.png" alt="iThome 鐵人賽參賽紀錄">
+    <figcaption><a href="https://ithelp.ithome.com.tw/users/20160488/ironman/6570" target="_blank" rel="noopener">ithelp.ithome.com.tw · 鐵人賽系列文</a></figcaption>
+  </figure>
   <div class="page-section">01 · 開場</div>
-  <div class="page-num">05</div>
 </section>
 
-<!-- 6. 各種小作品 -->
-<section class="slide">
-  <div class="eyebrow">作品介紹</div>
-  <h1>各種小作品</h1>
-  <div class="title-rule"></div>
-  <div class="placeholder">圖片預留位置</div>
-  <div class="page-section">01 · 開場</div>
-  <div class="page-num">06</div>
+<!-- 6. 各種小作品（大標題） -->
+<section class="slide statement">
+  <div class="big-text">各種小作品</div>
+  <div class="big-sub">還有一堆動手做過的東西 —— 重點從來不是 AI，而是「自己做得出來」</div>
 </section>
 
 <!-- 7. 網頁歷史 -->
@@ -839,8 +1136,11 @@
     <li>網頁從「純文字資訊」進化為「視覺設計」</li>
     <li>內容與樣式分離的概念誕生</li>
   </ul>
+  <figure class="shot-figure">
+    <img src="../imgs/logos.jpg" alt="HTML、CSS、JS 與各種程式語言的 logo">
+    <figcaption>從 HTML / CSS / JS 到各種程式語言 —— 共同構成今天的網頁世界</figcaption>
+  </figure>
   <div class="page-section">02 · 網頁歷史</div>
-  <div class="page-num">09</div>
 </section>
 
 <!-- 10. AJAX -->
@@ -848,13 +1148,142 @@
   <div class="eyebrow">02 · 網頁歷史</div>
   <h1>2005 — AJAX</h1>
   <div class="title-rule"></div>
-  <p class="lead">網頁開始「不重新整理就更新內容」</p>
-  <ul>
-    <li>Google Maps 震驚世界，網頁從「文件」變成「應用」</li>
-    <li>Web App 時代正式啟動</li>
-  </ul>
+  <div class="history-grid">
+    <div>
+      <p class="lead">網頁開始「不重新整理就更新內容」</p>
+      <ul>
+        <li>Google Maps 震驚世界，網頁從「文件」變成「應用」</li>
+        <li>Web App 時代正式啟動</li>
+      </ul>
+      <p class="note" style="margin-top: 6mm;">AJAX 是一種「技術」而非產品，沒有官方 logo —— 右圖以示意呈現它的非同步運作。</p>
+    </div>
+    <div style="display:flex; flex-direction:column; justify-content:center; align-items:center;">
+      <div style="width:100%;">
+        <svg viewBox="0 0 420 200" role="img" aria-label="AJAX 非同步資料交換示意圖" style="width:100%; height:auto; display:block;">
+          <defs>
+            <marker id="aj-ar" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+              <path d="M0,0 L7,3 L0,6 Z" fill="#6b7280"/>
+            </marker>
+          </defs>
+          <!-- 瀏覽器 -->
+          <rect x="16" y="64" width="130" height="72" rx="10" fill="#111"/>
+          <text x="81" y="96" text-anchor="middle" font-family="Inter, sans-serif" font-size="15" font-weight="700" fill="#fff">瀏覽器</text>
+          <text x="81" y="116" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#cbd5e1">畫面不重整</text>
+          <!-- 伺服器 -->
+          <rect x="274" y="64" width="130" height="72" rx="10" fill="#fff" stroke="#111" stroke-width="2"/>
+          <text x="339" y="104" text-anchor="middle" font-family="Inter, sans-serif" font-size="15" font-weight="700" fill="#111">伺服器</text>
+          <!-- request 上行 -->
+          <path d="M150,86 C200,66 220,66 270,86" fill="none" stroke="#6b7280" stroke-width="2" marker-end="url(#aj-ar)"/>
+          <text x="210" y="60" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#6b7280">request（背景送出）</text>
+          <!-- response 下行 -->
+          <path d="M270,114 C220,134 200,134 150,114" fill="none" stroke="#6b7280" stroke-width="2" marker-end="url(#aj-ar)"/>
+          <text x="210" y="150" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#6b7280">JSON / XML 回傳</text>
+        </svg>
+      </div>
+      <div class="ui-chips" style="justify-content:center; margin-top:4mm;">
+        <span class="chip dark">JavaScript</span>
+        <span class="chip">XMLHttpRequest</span>
+        <span class="chip">fetch()</span>
+        <span class="chip">JSON</span>
+      </div>
+    </div>
+  </div>
   <div class="page-section">02 · 網頁歷史</div>
-  <div class="page-num">10</div>
+</section>
+
+<!-- 10b. 2010-2020 設計風格演進（挑重點） -->
+<section class="slide">
+  <div class="eyebrow">02 · 網頁歷史</div>
+  <h1>2010–2020 — 設計風格的十年</h1>
+  <div class="title-rule"></div>
+  <p class="lead">技術成熟後，網頁進入「風格輪替」階段 —— 挑幾個影響最深的轉折來看。</p>
+  <table>
+    <thead>
+      <tr><th>年份</th><th>關鍵轉折</th><th>一句話重點</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>2010</td><td>平面轉網頁</td><td>把印刷的平面設計手法搬上數位網頁</td></tr>
+      <tr><td>2013</td><td>Flat Design</td><td>拿掉陰影漸層，乾淨、扁平、資訊優先</td></tr>
+      <tr><td>2014</td><td>Material Design</td><td>Google 用「材質與光影」重新定義介面</td></tr>
+      <tr><td>2017</td><td>Duotone 雙色調</td><td>照片只剩兩色，強化品牌識別</td></tr>
+      <tr><td>2019</td><td>插畫與 3D</td><td>客製插畫、3D 建模，做出差異化</td></tr>
+      <tr><td>2020+</td><td>創意 × 技術</td><td>設計與開發互相推進，持續循環進化</td></tr>
+    </tbody>
+  </table>
+  <blockquote>風格一直在換，但「內容清楚、層次分明」始終是不變的核心。</blockquote>
+  <p class="note">內容整理自 Riven《10 年網頁設計流行風格回顧與趨勢分析（2010–2020）》，AAPD。</p>
+  <div class="page-section">02 · 網頁歷史</div>
+</section>
+
+<!-- 10c. 風格切片 1 — Flat Design -->
+<section class="slide">
+  <div class="eyebrow">02 · 網頁歷史</div>
+  <h1>2013 · Flat Design 扁平化</h1>
+  <div class="title-rule"></div>
+  <p class="lead">去除陰影與漸層，回到單純配色與乾淨的資訊呈現。</p>
+  <ul>
+    <li>反璞歸真：拿掉擬物的立體質感</li>
+    <li>強調色塊、留白與清晰的層次</li>
+  </ul>
+  <figure class="shot-figure zoom">
+    <img src="../imgs/flat2.jpg" alt="Flat Design 扁平化網頁範例">
+    <figcaption>Flat Design 扁平化範例 — 去除陰影漸層、單純配色</figcaption>
+  </figure>
+  <div class="page-section">02 · 網頁歷史</div>
+</section>
+
+<!-- 10d. 風格切片 2 — Material Design -->
+<section class="slide">
+  <div class="eyebrow">02 · 網頁歷史</div>
+  <h1>2014 · Material Design</h1>
+  <div class="title-rule"></div>
+  <p class="lead">Google 提出的數位介面語言，用「材質與光影」重新定義畫面元素。</p>
+  <ul>
+    <li>把元件想像成有厚度的「紙」，靠陰影表達層級</li>
+    <li>統一的動效、間距與互動規範，跨平台一致</li>
+  </ul>
+  <figure class="shot-figure">
+    <div style="display:flex; gap:6mm; align-items:center; justify-content:center; flex:1; min-height:0; width:100%;">
+      <img src="../imgs/material.png" alt="Material Design 材質與光影範例" style="max-height:100%; max-width:58%;">
+      <img src="../imgs/material_icon].png" alt="Material Design 圖示設計" style="max-height:100%; max-width:40%;">
+    </div>
+    <figcaption>Material Design — 材質、光影與圖示系統（material.io）</figcaption>
+  </figure>
+  <div class="page-section">02 · 網頁歷史</div>
+</section>
+
+<!-- 10e. 風格切片 3 — Duotone -->
+<section class="slide">
+  <div class="eyebrow">02 · 網頁歷史</div>
+  <h1>2017 · Duotone 雙色調</h1>
+  <div class="title-rule"></div>
+  <p class="lead">把照片轉換成兩種顏色，搭配品牌標準色，強化視覺識別。</p>
+  <ul>
+    <li>高對比、強烈，一眼就記得住</li>
+    <li>常用於音樂、活動、品牌主視覺</li>
+  </ul>
+  <figure class="shot-figure zoom" style="align-items: flex-end;">
+    <img src="../imgs/duotone.webp" alt="Duotone 雙色調網頁範例" style="transform-origin: right center;">
+    <figcaption>Duotone 雙色調 — 照片只剩兩色、強化品牌識別</figcaption>
+  </figure>
+  <div class="page-section">02 · 網頁歷史</div>
+</section>
+
+<!-- 10f. 風格切片 4 — 插畫與 3D -->
+<section class="slide">
+  <div class="eyebrow">02 · 網頁歷史</div>
+  <h1>2019 · 插畫與 3D</h1>
+  <div class="title-rule"></div>
+  <p class="lead">用量身訂製的插畫與 3D 建模感畫面，做出別人複製不來的差異化。</p>
+  <ul>
+    <li>客製插畫：強化品牌個性與溫度</li>
+    <li>3D 質感：增加深度與記憶點</li>
+  </ul>
+  <figure class="shot-figure">
+    <img src="../imgs/3d.png" alt="插畫與 3D 風格網頁範例">
+    <figcaption>插畫與 3D — 客製插畫、3D 建模做出差異化</figcaption>
+  </figure>
+  <div class="page-section">02 · 網頁歷史</div>
 </section>
 
 <!-- 10. 網頁應用 -->
@@ -894,6 +1323,64 @@
   </ol>
   <div class="page-section">04 · 第一個作品</div>
   <div class="page-num">12</div>
+</section>
+
+<!-- 11b. 你真的懂如何使用 AI 嗎？ -->
+<section class="slide">
+  <div class="eyebrow">05 · Prompt</div>
+  <h1>你真的懂如何使用 AI 嗎？</h1>
+  <div class="title-rule"></div>
+  <p class="lead">同一個 AI，會不會用差很多 —— 關鍵在「你怎麼開口」。</p>
+  <h2>寫 prompt 的四個基本功</h2>
+  <ul>
+    <li><strong>結構化：</strong>先講目標 → 再給細節 → 最後加上限制</li>
+    <li><strong>用 Markdown：</strong><code>#</code> 標題、<code>-</code> 條列、<code>**重點**</code>，AI 更容易讀懂結構</li>
+    <li><strong>角色扮演：</strong>開頭先設定身份 —「你是一位資深前端工程師…」</li>
+    <li><strong>明確 Do / Don't：</strong>「要什麼」和「<strong>不要什麼</strong>」都講清楚</li>
+  </ul>
+  <blockquote>真的不知道怎麼寫？先請 AI 幫你「<strong>潤稿</strong>」，潤完再拿去生成 —— 永遠比你直接亂寫的結果好。</blockquote>
+  <div class="page-section">05 · Prompt</div>
+</section>
+
+<!-- Markdown 有哪些元件 -->
+<section class="slide">
+  <div class="eyebrow">05 · Prompt</div>
+  <h1>Markdown 有哪些元件？</h1>
+  <div class="title-rule"></div>
+  <p class="lead">寫 prompt、README、筆記都會用到 —— 左邊是「語法」，右邊是「顯示結果」。</p>
+  <div class="history-grid" style="align-items: stretch;">
+    <div class="md-code">
+      <pre><code># 主標題
+## 次標題
+
+**粗體**、*斜體*
+
+- 無序項目
+- 無序項目
+
+1. 有序項目
+2. 有序項目
+
+> 引言區塊
+
+`行內程式碼`
+
+[連結文字](https://...)
+
+---</code></pre>
+    </div>
+    <div class="md-preview">
+      <div class="h1">主標題</div>
+      <div class="h2">次標題</div>
+      <p><strong>粗體</strong>、<em>斜體</em></p>
+      <ul><li>無序項目</li><li>無序項目</li></ul>
+      <ol><li>有序項目</li><li>有序項目</li></ol>
+      <blockquote>引言區塊</blockquote>
+      <p><code>行內程式碼</code>　<a>連結文字</a></p>
+      <hr>
+    </div>
+  </div>
+  <div class="page-section">05 · Prompt</div>
 </section>
 
 <!-- 12. Prompt 工程 -->
@@ -982,6 +1469,30 @@
   </ul>
   <div class="page-section">06 · 關鍵字</div>
   <div class="page-num">17</div>
+</section>
+
+<!-- 16b. 動畫關鍵字 — 指定函式庫 -->
+<section class="slide">
+  <div class="eyebrow">06 · 關鍵字</div>
+  <h1>動畫關鍵字 — 點名函式庫</h1>
+  <div class="title-rule"></div>
+  <p class="lead">想要網頁「動起來」？在 prompt 裡<strong>直接點名主流動畫函式庫</strong>，AI 生出來的精準度立刻提升。</p>
+  <div class="history-grid" style="grid-template-columns: 1fr 1.15fr;">
+    <div>
+      <ul class="keyword-list">
+        <li><span class="kw">GSAP</span>高效能補間動畫，捲動觸發（ScrollTrigger）、複雜時間軸首選</li>
+        <li><span class="kw">Three.js</span>WebGL 3D 場景：相機、模型、光影與互動</li>
+        <li><span class="kw">Framer Motion</span>React 專用，宣告式進出場動畫</li>
+        <li><span class="kw">Lottie</span>設計師輸出的 JSON 向量動畫</li>
+      </ul>
+      <blockquote>在 prompt 寫「use <strong>GSAP</strong> ScrollTrigger」「use <strong>Three.js</strong>（WebGL）」，比只說「加點動畫」精準太多。</blockquote>
+    </div>
+    <figure class="shot-figure" style="margin-top: 0;">
+      <img src="../imgs/anime.png" alt="主流動畫函式庫示意">
+      <figcaption>主流動畫函式庫：GSAP · Three.js · Framer Motion · Lottie</figcaption>
+    </figure>
+  </div>
+  <div class="page-section">06 · 關鍵字</div>
 </section>
 
 <!-- 17. Prompt 元件介紹 -->
@@ -1181,18 +1692,102 @@
   <div class="page-num">22</div>
 </section>
 
+<!-- 視覺重心 對比 -->
+<section class="slide">
+  <div class="eyebrow">08 · 排版</div>
+  <h1>視覺重心 — 沒做好 vs 做好</h1>
+  <div class="title-rule"></div>
+  <p class="lead">同樣的內容，差別只在「眼睛第一眼落在哪裡」。</p>
+  <div class="demo-compare">
+    <div class="demo-panel bad">
+      <div class="dp-head">✕ 全部置中，眼睛沒有落點</div>
+      <div class="dp-body" style="align-items:center; justify-content:center; text-align:center; gap:2mm;">
+        <div style="font-size:11pt;">歡迎來到我的網站</div>
+        <div style="font-size:11pt; color:#6b7280;">我們提供很多服務與內容介紹</div>
+        <div style="font-size:11pt; color:#6b7280;">這裡還有更多文字說明文字</div>
+        <div style="font-size:10pt; color:#2563eb; text-decoration:underline;">了解更多</div>
+      </div>
+    </div>
+    <div class="demo-panel good">
+      <div class="dp-head">✓ 左上開始、焦點清楚（F 型）</div>
+      <div class="dp-body" style="justify-content:center; gap:3mm;">
+        <div style="font-size:18pt; font-weight:700; line-height:1.15;">10 分鐘<br>做出你的網站</div>
+        <div style="font-size:9.5pt; color:#6b7280;">搭配 AI，零基礎也能上線作品。</div>
+        <div style="align-self:flex-start; background:#111; color:#fff; font-size:10pt; padding:2.5mm 6mm; border-radius:4px;">立即開始 →</div>
+      </div>
+    </div>
+  </div>
+  <div class="page-section">08 · 排版</div>
+</section>
+
 <!-- 22. 留白 -->
 <section class="slide">
   <div class="eyebrow">08 · 排版</div>
   <h1>留白（White Space）</h1>
   <div class="title-rule"></div>
-  <ul>
-    <li>留白不是浪費，是「讓視覺呼吸」</li>
-    <li>Apple 網站的高級感，<strong>80% 來自留白</strong></li>
-    <li>Padding / Margin 至少 16px 起跳</li>
-  </ul>
+  <div class="history-grid">
+    <div>
+      <ul>
+        <li>留白不是浪費，是「讓視覺呼吸」</li>
+        <li>Apple 網站的高級感，<strong>80% 來自留白</strong></li>
+        <li>Padding / Margin 至少 16px 起跳</li>
+      </ul>
+      <h3>留白從哪來？盒模型 Box Model</h3>
+      <ul>
+        <li><code>margin</code>　元素與元素「之間」的外距</li>
+        <li><code>padding</code>　內容與邊框「之間」的內距</li>
+        <li><code>width × height</code>　內容本身的大小</li>
+      </ul>
+    </div>
+    <div style="display:flex; align-items:center; justify-content:center;">
+      <svg viewBox="0 0 420 300" role="img" aria-label="CSS 盒模型：margin、padding、width 與 height 的關係" style="width:100%; height:auto; display:block;">
+        <!-- margin -->
+        <rect x="8" y="10" width="404" height="282" rx="6" fill="#fafafa" stroke="#d1d5db" stroke-width="1.5" stroke-dasharray="6 4"/>
+        <text x="18" y="28" font-size="12" fill="#9ca3af" font-family="'JetBrains Mono', Consolas, monospace">margin</text>
+        <!-- border -->
+        <rect x="58" y="56" width="304" height="190" rx="4" fill="#fff" stroke="#111" stroke-width="2.5"/>
+        <text x="68" y="50" font-size="12" fill="#111" font-family="'JetBrains Mono', Consolas, monospace">border</text>
+        <!-- padding -->
+        <rect x="88" y="82" width="244" height="138" rx="4" fill="#eef2f7" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="6 4"/>
+        <text x="98" y="100" font-size="12" fill="#6b7280" font-family="'JetBrains Mono', Consolas, monospace">padding</text>
+        <!-- content -->
+        <rect x="138" y="120" width="144" height="62" rx="4" fill="#111"/>
+        <text x="210" y="148" text-anchor="middle" font-size="13" fill="#fff" font-family="'JetBrains Mono', Consolas, monospace">content</text>
+        <text x="210" y="167" text-anchor="middle" font-size="10.5" fill="#cbd5e1" font-family="'JetBrains Mono', Consolas, monospace">width × height</text>
+      </svg>
+    </div>
+  </div>
   <div class="page-section">08 · 排版</div>
-  <div class="page-num">23</div>
+</section>
+
+<!-- 留白 對比 -->
+<section class="slide">
+  <div class="eyebrow">08 · 排版</div>
+  <h1>留白 — 沒做好 vs 做好</h1>
+  <div class="title-rule"></div>
+  <p class="lead">內容一模一樣，差別只在「有沒有讓它呼吸」。</p>
+  <div class="demo-compare">
+    <div class="demo-panel bad">
+      <div class="dp-head">✕ 擠成一團，沒有呼吸</div>
+      <div class="dp-body">
+        <div style="font-size:13pt; font-weight:700; margin:0;">產品介紹</div>
+        <div style="font-size:9.5pt; color:#2d2d2d; margin:0; line-height:1.2;">這是一段產品說明文字，塞得很滿、沒有任何間距，看起來非常擁擠</div>
+        <div style="font-size:9.5pt; color:#2d2d2d; margin:0; line-height:1.2;">第二段也緊貼著上一段，完全沒有呼吸的空間</div>
+        <div style="font-size:9.5pt; color:#2d2d2d; margin:0; line-height:1.2;">第三段繼續擠在一起，閱讀起來很有壓力</div>
+        <div style="background:#111; color:#fff; font-size:9.5pt; padding:1mm 3mm; display:inline-block; margin:0; align-self:flex-start;">購買</div>
+      </div>
+    </div>
+    <div class="demo-panel good">
+      <div class="dp-head">✓ 留白充足、好讀</div>
+      <div class="dp-body" style="gap:4mm;">
+        <div style="font-size:13pt; font-weight:700;">產品介紹</div>
+        <div style="font-size:9.5pt; color:#4b5563; line-height:1.75;">一段適度留白的說明文字，行距與段距都拉開，內容立刻變好讀。</div>
+        <div style="font-size:9.5pt; color:#4b5563; line-height:1.75;">每個區塊之間留下空間，視覺才有層次。</div>
+        <div style="background:#111; color:#fff; font-size:9.5pt; padding:2.5mm 6mm; border-radius:4px; align-self:flex-start;">購買</div>
+      </div>
+    </div>
+  </div>
+  <div class="page-section">08 · 排版</div>
 </section>
 
 <!-- 23. 顏色心理學 -->
@@ -1200,15 +1795,91 @@
   <div class="eyebrow">08 · 排版</div>
   <h1>顏色心理學</h1>
   <div class="title-rule"></div>
-  <p class="lead">30 秒版本</p>
-  <ul>
-    <li><strong>藍色</strong>　=　信任（銀行、科技公司）</li>
-    <li><strong>紅色</strong>　=　緊急 / 優惠（促銷按鈕）</li>
-    <li><strong>綠色</strong>　=　成功 / 確認</li>
-    <li><strong>深色背景 + 淺色文字</strong>　=　科技感</li>
-  </ul>
+  <div class="color-grid">
+    <!-- 藍色 = 信任 -->
+    <div class="color-cell">
+      <div class="cc-demo" style="background:#f0f6ff;">
+        <div style="background:#fff; border:1px solid #dbeafe; border-radius:6px; padding:4mm 5mm; width:62mm; box-shadow:0 2px 8px rgba(37,99,235,0.12);">
+          <div style="font-size:11pt; font-weight:700; color:#1d4ed8; margin-bottom:1mm;">🏦 TrustBank</div>
+          <div style="font-size:8.5pt; color:#6b7280; margin-bottom:3mm;">安全 · 穩定 · 值得信賴</div>
+          <div style="background:#2563eb; color:#fff; text-align:center; font-size:9.5pt; padding:2mm; border-radius:4px;">安全登入</div>
+        </div>
+      </div>
+      <div class="cc-label"><b>藍色</b>　=　信任 <span>（銀行、科技公司）</span></div>
+    </div>
+
+    <!-- 紅色 = 緊急 / 優惠 -->
+    <div class="color-cell">
+      <div class="cc-demo" style="background:#fff5f5;">
+        <div style="text-align:center;">
+          <div style="display:inline-block; background:#dc2626; color:#fff; font-size:9pt; font-weight:700; padding:1mm 3mm; border-radius:999px; margin-bottom:2mm;">限時 5 折</div>
+          <div style="font-size:14pt; font-weight:700; color:#111; margin-bottom:3mm;">NT$ 1,490</div>
+          <div style="background:#dc2626; color:#fff; font-size:10pt; font-weight:600; padding:2.5mm 8mm; border-radius:4px;">立即搶購</div>
+        </div>
+      </div>
+      <div class="cc-label"><b>紅色</b>　=　緊急 / 優惠 <span>（促銷按鈕）</span></div>
+    </div>
+
+    <!-- 綠色 = 成功 / 確認 -->
+    <div class="color-cell">
+      <div class="cc-demo" style="background:#f0fdf4;">
+        <div style="text-align:center;">
+          <div style="width:14mm; height:14mm; border-radius:50%; background:#059669; color:#fff; font-size:18pt; display:flex; align-items:center; justify-content:center; margin:0 auto 3mm;">✓</div>
+          <div style="font-size:11pt; font-weight:600; color:#047857;">付款成功</div>
+          <div style="font-size:8.5pt; color:#6b7280;">訂單已成立</div>
+        </div>
+      </div>
+      <div class="cc-label"><b>綠色</b>　=　成功 / 確認</div>
+    </div>
+
+    <!-- 深色背景 + 淺色文字 = 科技感 -->
+    <div class="color-cell">
+      <div class="cc-demo" style="background:#0f172a;">
+        <div style="text-align:center;">
+          <div style="font-size:13pt; font-weight:700; color:#fff; letter-spacing:-0.01em; margin-bottom:1.5mm;">Ship faster with AI</div>
+          <div style="font-size:8.5pt; color:#94a3b8; margin-bottom:3mm;">The modern dev platform</div>
+          <div style="display:inline-block; background:#fff; color:#0f172a; font-size:9pt; font-weight:600; padding:2mm 6mm; border-radius:4px;">Get started</div>
+        </div>
+      </div>
+      <div class="cc-label" style="background:#0f172a; border-top-color:#1e293b;"><b style="color:#fff;">深色背景 + 淺色文字</b>　<span style="color:#94a3b8;">= 科技感</span></div>
+    </div>
+  </div>
   <div class="page-section">08 · 排版</div>
-  <div class="page-num">24</div>
+</section>
+
+<!-- 顏色心理學 對比 -->
+<section class="slide">
+  <div class="eyebrow">08 · 排版</div>
+  <h1>顏色心理學 — 沒做好 vs 做好</h1>
+  <div class="title-rule"></div>
+  <p class="lead">顏色會「說話」—— 用錯顏色，使用者會誤會你的意思。</p>
+  <div class="demo-compare">
+    <div class="demo-panel bad">
+      <div class="dp-head">✕ 配色刺眼、語意相反</div>
+      <div class="dp-body" style="justify-content:center; gap:4mm;">
+        <div style="background:#ff00ff; color:#00ff00; padding:2mm; font-size:10pt; text-align:center;">限時優惠中！！！</div>
+        <div style="font-size:9.5pt; color:#6b7280;">確定要刪除這個帳號嗎？</div>
+        <div style="display:flex; gap:2mm;">
+          <span style="background:#059669; color:#fff; padding:2mm 5mm; font-size:9.5pt; border-radius:3px;">刪除</span>
+          <span style="background:#dc2626; color:#fff; padding:2mm 5mm; font-size:9.5pt; border-radius:3px;">取消</span>
+        </div>
+        <div style="font-size:8.5pt; color:var(--bad);">綠色＝安全、紅色＝危險，這裡卻反過來用</div>
+      </div>
+    </div>
+    <div class="demo-panel good">
+      <div class="dp-head">✓ 中性底 + 語意正確</div>
+      <div class="dp-body" style="justify-content:center; gap:4mm;">
+        <div style="background:#f3f4f6; color:#111; padding:2mm; font-size:10pt; text-align:center; border-radius:3px;">限時優惠中</div>
+        <div style="font-size:9.5pt; color:#4b5563;">確定要刪除這個帳號嗎？</div>
+        <div style="display:flex; gap:2mm;">
+          <span style="background:#fff; border:1px solid #e5e7eb; color:#111; padding:2mm 5mm; font-size:9.5pt; border-radius:3px;">取消</span>
+          <span style="background:#dc2626; color:#fff; padding:2mm 5mm; font-size:9.5pt; border-radius:3px;">刪除</span>
+        </div>
+        <div style="font-size:8.5pt; color:var(--good);">危險操作用紅色，取消保持中性 —— 一眼就懂</div>
+      </div>
+    </div>
+  </div>
+  <div class="page-section">08 · 排版</div>
 </section>
 
 <!-- 24. 層級 -->
@@ -1226,6 +1897,194 @@
   <blockquote>層級不是用大小決定，是用「重要性」決定。</blockquote>
   <div class="page-section">08 · 排版</div>
   <div class="page-num">25</div>
+</section>
+
+<!-- 卡片設計 — 壞示範 -->
+<section class="slide">
+  <div class="eyebrow">08 · 排版</div>
+  <h1>卡片設計 — 壞示範</h1>
+  <div class="title-rule"></div>
+  <p class="lead">如果「層級」沒設計好，所有資訊都長一樣，使用者根本不知道先看哪裡。</p>
+  <div class="history-grid">
+    <div class="sample-card bad">
+      <div class="s-img"></div>
+      <div class="s-body">
+        <div>MacBook Pro 14 吋 M3 太空灰筆記型電腦</div>
+        <div>效能強大適合工作與創作的一台筆電</div>
+        <div>限時優惠數量有限要買要快</div>
+        <div>NT$ 59900</div>
+        <div>加入購物車</div>
+      </div>
+    </div>
+    <div>
+      <h3>問題在哪？</h3>
+      <ul>
+        <li>標題、說明、價格<strong>字級一模一樣</strong>，沒有重點</li>
+        <li>「加入購物車」看起來像一行字，<strong>不像可以點的按鈕</strong></li>
+        <li>沒有留白，資訊全擠成一團</li>
+        <li>價格藏在中間，最重要的決策資訊不明顯</li>
+      </ul>
+    </div>
+  </div>
+  <div class="page-section">08 · 排版</div>
+</section>
+
+<!-- 卡片設計 — 好示範 -->
+<section class="slide">
+  <div class="eyebrow">08 · 排版</div>
+  <h1>卡片設計 — 好示範</h1>
+  <div class="title-rule"></div>
+  <p class="lead">同樣的內容，靠字級、粗細、留白與按鈕樣式，立刻建立清楚的視覺層級。</p>
+  <div class="history-grid">
+    <div class="sample-card good">
+      <div class="s-img"></div>
+      <div class="s-body">
+        <div class="g-badge">限時優惠</div>
+        <div class="g-title">MacBook Pro 14"</div>
+        <div class="g-desc">M3 晶片 · 太空灰 · 效能強大</div>
+        <div class="g-price">NT$ 59,900</div>
+        <div class="g-btn">加入購物車</div>
+      </div>
+    </div>
+    <div>
+      <h3>好在哪？</h3>
+      <ul>
+        <li>標題最大最粗 → <strong>一眼看到重點</strong></li>
+        <li>價格放大加粗 → 決策資訊最明顯</li>
+        <li>按鈕黑底白字 → <strong>看就知道能點</strong></li>
+        <li>留白讓每個區塊「呼吸」</li>
+      </ul>
+      <blockquote>內容沒變，變的只是「層級」。</blockquote>
+    </div>
+  </div>
+  <div class="page-section">08 · 排版</div>
+</section>
+
+<!-- UX 實作 ① 合理的預設值 -->
+<section class="slide">
+  <div class="eyebrow">08 · 排版</div>
+  <h1>UX 實作 ① 合理的預設值</h1>
+  <div class="title-rule"></div>
+  <p class="lead">點「加入購物車」時，數量就該<strong>預設為 1</strong> —— 而不是還要使用者先按一次「＋」。</p>
+  <div class="demo-compare">
+    <div class="demo-panel bad">
+      <div class="dp-head">✕ 預設 0，還要自己加</div>
+      <div class="dp-body" style="justify-content:center; align-items:center; gap:4mm;">
+        <div style="font-size:11pt; font-weight:600;">AirPods Pro</div>
+        <div class="qty">
+          <button>−</button><span class="num" style="color:#dc2626;">0</span><button>＋</button>
+        </div>
+        <div style="background:#111; color:#fff; font-size:9.5pt; padding:2mm 5mm; border-radius:4px;">加入購物車</div>
+        <div style="font-size:8.5pt; color:var(--bad);">加入後數量還是 0，使用者一臉問號</div>
+      </div>
+    </div>
+    <div class="demo-panel good">
+      <div class="dp-head">✓ 預設 1，馬上能買</div>
+      <div class="dp-body" style="justify-content:center; align-items:center; gap:4mm;">
+        <div style="font-size:11pt; font-weight:600;">AirPods Pro</div>
+        <div class="qty">
+          <button>−</button><span class="num">1</span><button>＋</button>
+        </div>
+        <div style="background:#111; color:#fff; font-size:9.5pt; padding:2mm 5mm; border-radius:4px;">加入購物車</div>
+        <div style="font-size:8.5pt; color:var(--good);">想多買再按 ＋，省下一步多餘操作</div>
+      </div>
+    </div>
+  </div>
+  <div class="page-section">08 · 排版</div>
+</section>
+
+<!-- UX 實作 ② 人性化的可點性 -->
+<section class="slide">
+  <div class="eyebrow">08 · 排版</div>
+  <h1>UX 實作 ② 人性化的可點性</h1>
+  <div class="title-rule"></div>
+  <p class="lead">關閉的「✕」要讓人<strong>一眼找到、好按</strong>。故意把叉叉做得超小、超難按的，都不合格。</p>
+  <div class="demo-compare">
+    <div class="demo-panel bad">
+      <div class="dp-head">✕ 叉叉超小、藏在角落</div>
+      <div class="dp-body" style="justify-content:center;">
+        <div class="popup">
+          <div class="x-bad">✕</div>
+          <div style="font-size:11pt; font-weight:600; margin-bottom:2mm;">🎁 限時優惠彈窗</div>
+          <div style="font-size:9pt; color:#6b7280; line-height:1.6;">想關掉？右上角那個 3px 的小叉叉，祝你好運 —— 還很容易誤點到廣告。</div>
+        </div>
+      </div>
+    </div>
+    <div class="demo-panel good">
+      <div class="dp-head">✓ 叉叉明顯、好點</div>
+      <div class="dp-body" style="justify-content:center;">
+        <div class="popup">
+          <div class="x-good">✕</div>
+          <div style="font-size:11pt; font-weight:600; margin-bottom:2mm;">🎁 限時優惠彈窗</div>
+          <div style="font-size:9pt; color:#6b7280; line-height:1.6;">右上角圓形關閉鈕，夠大、好按、滑過還會變色（可把游標移上去試試）。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-section">08 · 排版</div>
+</section>
+
+<!-- UX 實作 ③ 最少的點擊次數 -->
+<section class="slide">
+  <div class="eyebrow">08 · 排版</div>
+  <h1>UX 實作 ③ 最少的點擊次數</h1>
+  <div class="title-rule"></div>
+  <p class="lead">用<strong>最少步驟</strong>達成目的 —— 流程簡單、不繞路、不互相卡死。</p>
+  <div class="demo-compare">
+    <div class="demo-panel bad">
+      <div class="dp-head">✕ 結帳要走 7 步</div>
+      <div class="dp-body" style="justify-content:center; gap:4mm;">
+        <div class="flow-steps">
+          <span class="stp">商品頁</span><span class="ar">→</span>
+          <span class="stp">登入</span><span class="ar">→</span>
+          <span class="stp">註冊</span><span class="ar">→</span>
+          <span class="stp">驗證信箱</span><span class="ar">→</span>
+          <span class="stp">填地址</span><span class="ar">→</span>
+          <span class="stp">選付款</span><span class="ar">→</span>
+          <span class="stp">確認</span>
+        </div>
+        <div style="font-size:8.5pt; color:var(--bad);">步驟太多，一半的人中途就放棄了</div>
+      </div>
+    </div>
+    <div class="demo-panel good">
+      <div class="dp-head">✓ 結帳只要 3 步</div>
+      <div class="dp-body" style="justify-content:center; gap:4mm;">
+        <div class="flow-steps">
+          <span class="stp done">商品頁</span><span class="ar">→</span>
+          <span class="stp done">一鍵結帳</span><span class="ar">→</span>
+          <span class="stp done">完成 ✓</span>
+        </div>
+        <div style="font-size:8.5pt; color:var(--good);">訪客結帳 + 記住資料，流程一路到底</div>
+      </div>
+    </div>
+  </div>
+  <div class="page-section">08 · 排版</div>
+</section>
+
+<!-- 全部不遵守會長怎樣 -->
+<section class="slide">
+  <div class="eyebrow">08 · 排版</div>
+  <h1>全部都不遵守，會長這樣</h1>
+  <div class="title-rule"></div>
+  <p class="lead">沒層級、沒留白、配色刺眼、字體亂、按鈕看不出來 —— 就是經典的網頁惡夢。</p>
+  <div class="ugly-page">
+    <div class="u-title">🔥 超級大特賣 歡迎光臨本站 🔥</div>
+    <div class="u-nav">
+      <span style="color:#ff0000;">首頁</span>
+      <span style="color:#0000ff;background:#ffff00;">最新消息</span>
+      <span style="color:#00ff00;background:#ff00ff;">關於我們</span>
+      <span style="color:#ffffff;background:#ff0000;">聯絡我們</span>
+      <span style="color:#ff00ff;background:#000;">會員專區</span>
+    </div>
+    <div class="u-body">
+      <p style="color:#ff0000;">本店商品超優惠！！！買到賺到不買可惜！！！</p>
+      <p style="color:#0000ff;">MacBook Pro 14吋 只要 59900 數量有限要買要快快快</p>
+      <p style="color:#aa00aa;">點擊下方按鈕立即搶購，錯過再等一年</p>
+      <span class="u-btn">★ 立即搶購 ★</span>
+      <p style="color:#008000;">→ 更多商品 → 更多優惠 → 更多驚喜 →</p>
+    </div>
+  </div>
+  <div class="page-section">08 · 排版</div>
 </section>
 
 <!-- 25. GitHub Pages -->
