@@ -114,9 +114,14 @@ H1 下方固定一條短黑線，是全簡報的標誌性元素：
 左下角章節、右下角頁碼：
 ```html
 <div class="page-section">02 · 網頁歷史</div>
-<div class="page-num">08</div>
+<!-- .page-num 不必手寫，由 script.js 自動生成 -->
 ```
 皆為 `position: absolute; bottom: 10mm;`，`9pt`，`--muted`。
+
+> **頁碼自動化**：`.page-num` 由 `script.js` 的 `numberSlides()` 於載入時自動建立並填入，**不需手寫**。
+> 規則：封面 `.cover` 算第 1 張但不顯示頁碼；過場大字頁 `.statement` 不顯示也不佔號；其餘內容頁從 `02` 起連續編號、補零兩位。
+> 若 HTML 內殘留手寫 `.page-num`，腳本會覆寫（內容頁）或移除（封面 / 過場頁）。
+> `.page-section`（左下章節）仍維持**手動填寫**。
 
 ### 清單（List）
 - **無序清單**：自訂圓點 `::before`（5px 黑色圓點），`list-style: none`。
@@ -198,7 +203,7 @@ color: #9ca3af; font-size: 11pt;
   <p class="lead">導言（選用）</p>
   <ul>…</ul>
   <div class="page-section">01 · 開場</div>
-  <div class="page-num">02</div>
+  <!-- .page-num 由 script.js 自動生成，不必手寫 -->
 </section>
 ```
 
@@ -256,10 +261,11 @@ color: #9ca3af; font-size: 11pt;
 
 **運作方式**
 - 自動抓取所有 `<section class="slide">`，無需額外標記。
+- **自動頁碼**（`numberSlides()`）：載入時自動建立並填入 `.page-num`，封面 `.cover` 不顯示頁碼、過場頁 `.statement` 不顯示也不佔號，內容頁從 `02` 起補零兩位；新增投影片不必手寫頁碼。
 - 放映用 CSS 由腳本自行注入（`#ppt-script-styles`），HTML 保持乾淨。
 - 投影片為固定 `mm` 尺寸，放映時等比縮放並置中（`scaleActive`）。
 - 列印（`beforeprint`）時自動退出放映，維持每頁一張的 PDF 輸出。
-- 進度／頁碼同步至網址 `#slide-N`，重整可保留位置。
+- 進度／放映位置同步至網址 `#slide-N`，重整可保留位置。
 
 **操作快捷鍵**
 
@@ -281,7 +287,7 @@ color: #9ca3af; font-size: 11pt;
 
 - [ ] 每張投影片用 `<section class="slide">`，封面加 `.cover`。
 - [ ] 內容頁四件套：`eyebrow` → `h1` → `title-rule` → 內容。
-- [ ] 每頁右下 `page-num`、左下 `page-section`（封面除外）。
+- [ ] 左下 `page-section`（封面除外）手動填寫；右下 `page-num` 交由 `script.js` 自動生成，**不必手寫**。
 - [ ] 顏色只用 token；強調色克制（10% 原則），彩色僅限 good/bad 狀態。
 - [ ] 字級走既定層級，避免相近字級（如 16 vs 18），層次要明顯。
 - [ ] 單位以 `mm` 為主，確保 A4 橫向列印正確。
