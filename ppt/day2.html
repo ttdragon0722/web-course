@@ -626,30 +626,33 @@
   <div class="page-num">02</div>
 </section>
 
-<!-- 3. 語意化 vs 非語意化 -->
+<!-- 3. <head> 是什麼 -->
 <section class="slide">
   <div class="eyebrow">01 · HTML 結構</div>
-  <h1>語意化標籤 vs 非語意化標籤</h1>
+  <h1><code>&lt;head&gt;</code> 是什麼？</h1>
   <div class="title-rule"></div>
-  <p class="lead">同樣是容器，差別在「有沒有告訴機器這塊是什麼」。</p>
-  <div class="two-card">
-    <div class="info-card good-card">
-      <div class="ic-title">語意化標籤 — 有意義</div>
-      <div class="ic-tags">
-        <span>&lt;header&gt;</span><span>&lt;nav&gt;</span>
-        <span>&lt;main&gt;</span><span>&lt;article&gt;</span><span>&lt;footer&gt;</span>
-      </div>
-      <div class="ic-desc">標籤本身就說明了用途，對 SEO 友好、無障礙閱讀器也讀得懂。</div>
+  <p class="lead"><code>&lt;head&gt;</code> 是「給瀏覽器看的設定」—— 使用者看不到，卻決定頁面怎麼載入、怎麼被搜尋。</p>
+  <div class="split wide-left">
+    <div class="col-text">
+      <ul>
+        <li><code>&lt;script&gt;</code>　載入 JavaScript，賦予頁面互動行為（常加 <code>defer</code> 或放結尾）</li>
+        <li><code>&lt;link&gt;</code>（CSS）　引入外部樣式表，決定頁面長相</li>
+        <li><strong>CDN（函式庫）</strong>　用網址直接載入第三方函式庫（jQuery、Bootstrap…），免下載</li>
+        <li><strong>預載圖片</strong>　<code>preload</code> 先抓重要資源，畫面顯示更快</li>
+        <li><strong>SEO（meta）</strong>　<code>&lt;title&gt;</code>、<code>&lt;meta&gt;</code> 設定標題與描述，給搜尋引擎與分享預覽看</li>
+      </ul>
     </div>
-    <div class="info-card muted-card">
-      <div class="ic-title">非語意化標籤 — 純排版</div>
-      <div class="ic-tags">
-        <span>&lt;div&gt;</span><span>&lt;span&gt;</span>
-      </div>
-      <div class="ic-desc">沒有任何語意，只是個盒子。機器不知道裡面裝的是導覽列還是廣告。</div>
+    <div class="col-visual">
+      <pre><code><span class="tag">&lt;head&gt;</span>
+  <span class="tag">&lt;meta</span> <span class="key">charset</span>=<span class="tag">"UTF-8"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;title&gt;</span>網站標題<span class="tag">&lt;/title&gt;</span>   <span class="cmt"># SEO 標題</span>
+  <span class="tag">&lt;meta</span> <span class="key">name</span>=<span class="tag">"description"</span><span class="tag">&gt;</span>  <span class="cmt"># SEO 描述</span>
+  <span class="tag">&lt;link</span> <span class="key">rel</span>=<span class="tag">"stylesheet"</span><span class="tag">&gt;</span>  <span class="cmt"># 載入 CSS</span>
+  <span class="tag">&lt;link</span> <span class="key">rel</span>=<span class="tag">"preload"</span><span class="tag">&gt;</span>     <span class="cmt"># 預載圖片</span>
+  <span class="tag">&lt;script</span> <span class="key">src</span>=<span class="tag">"cdn..."</span><span class="tag">&gt;</span>     <span class="cmt"># CDN 函式庫</span>
+<span class="tag">&lt;/head&gt;</span></code></pre>
     </div>
   </div>
-  <blockquote>為什麼重要：Google 爬蟲靠語意標籤理解網頁內容 — 用對標籤，等於主動告訴搜尋引擎你的網頁在講什麼。</blockquote>
   <div class="page-section">01 · HTML 結構</div>
   <div class="page-num">03</div>
 </section>
@@ -680,9 +683,68 @@
       <div class="d">好的標題與描述（meta），讓人在結果頁就想點進來。</div>
     </div>
   </div>
-  <p class="note">不用花錢買廣告，靠「把網頁寫對」就能帶來長期流量。</p>
+  <p class="note">不用花錢買廣告，靠「把網頁寫對」就能帶來長期流量。　範例參考：ttdragon0722.github.io/ClassSchedule</p>
   <div class="page-section">01 · HTML 結構</div>
   <div class="page-num">04</div>
+</section>
+
+<!-- 5. <body> 是什麼 -->
+<section class="slide">
+  <div class="eyebrow">01 · HTML 結構</div>
+  <h1><code>&lt;body&gt;</code> 是什麼？</h1>
+  <div class="title-rule"></div>
+  <p class="lead"><code>&lt;body&gt;</code> 是「使用者真正看到的一切」—— 文字、圖片、按鈕、版面，全部都在這裡。</p>
+  <div class="split wide-left">
+    <div class="col-text">
+      <ul>
+        <li><strong>語意骨架</strong>　<code>&lt;header&gt;</code> <code>&lt;nav&gt;</code> <code>&lt;main&gt;</code> <code>&lt;footer&gt;</code> 撐起頁面結構</li>
+        <li><strong>內容</strong>　標題 <code>&lt;h1&gt;</code>、段落 <code>&lt;p&gt;</code>、圖片 <code>&lt;img&gt;</code>、連結 <code>&lt;a&gt;</code></li>
+        <li><strong>互動</strong>　<code>&lt;button&gt;</code> 按鈕、<code>&lt;form&gt;</code> <code>&lt;input&gt;</code> 表單</li>
+        <li><code>&lt;script&gt;</code> 也常放在 body 結尾，等內容載入完再執行</li>
+      </ul>
+    </div>
+    <div class="col-visual">
+      <pre><code><span class="tag">&lt;body&gt;</span>
+  <span class="tag">&lt;header&gt;</span>...<span class="tag">&lt;/header&gt;</span>   <span class="cmt"># 頁首 / 導覽</span>
+  <span class="tag">&lt;main&gt;</span>
+    <span class="tag">&lt;section&gt;</span>...<span class="tag">&lt;/section&gt;</span>  <span class="cmt"># 主要內容</span>
+    <span class="tag">&lt;article&gt;</span>...<span class="tag">&lt;/article&gt;</span>  <span class="cmt"># 獨立區塊</span>
+  <span class="tag">&lt;/main&gt;</span>
+  <span class="tag">&lt;footer&gt;</span>...<span class="tag">&lt;/footer&gt;</span>   <span class="cmt"># 頁尾</span>
+  <span class="tag">&lt;script</span> <span class="key">src</span>=<span class="tag">"app.js"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/body&gt;</span></code></pre>
+    </div>
+  </div>
+  <div class="page-section">01 · HTML 結構</div>
+  <div class="page-num">05</div>
+</section>
+
+<!-- 6. 語意化 vs 非語意化 -->
+<section class="slide">
+  <div class="eyebrow">01 · HTML 結構</div>
+  <h1>語意化標籤 vs 非語意化標籤</h1>
+  <div class="title-rule"></div>
+  <p class="lead">同樣是容器，差別在「有沒有告訴機器這塊是什麼」。</p>
+  <div class="two-card">
+    <div class="info-card good-card">
+      <div class="ic-title">語意化標籤 — 有意義</div>
+      <div class="ic-tags">
+        <span>&lt;header&gt;</span><span>&lt;nav&gt;</span>
+        <span>&lt;main&gt;</span><span>&lt;article&gt;</span><span>&lt;footer&gt;</span>
+      </div>
+      <div class="ic-desc">標籤本身就說明了用途，對 SEO 友好、無障礙閱讀器也讀得懂。</div>
+    </div>
+    <div class="info-card muted-card">
+      <div class="ic-title">非語意化標籤 — 純排版</div>
+      <div class="ic-tags">
+        <span>&lt;div&gt;</span><span>&lt;span&gt;</span>
+      </div>
+      <div class="ic-desc">沒有任何語意，只是個盒子。機器不知道裡面裝的是導覽列還是廣告。</div>
+    </div>
+  </div>
+  <blockquote>為什麼重要：Google 爬蟲靠語意標籤理解網頁內容 — 用對標籤，等於主動告訴搜尋引擎你的網頁在講什麼。</blockquote>
+  <div class="page-section">01 · HTML 結構</div>
+  <div class="page-num">06</div>
 </section>
 
 <!-- 5. 核心標籤介紹 -->
@@ -712,7 +774,7 @@
     </div>
   </div>
   <div class="page-section">02 · 核心標籤</div>
-  <div class="page-num">05</div>
+  <div class="page-num">07</div>
 </section>
 
 <!-- 6. 常用標籤 -->
@@ -746,13 +808,13 @@
     </div>
   </div>
   <div class="page-section">02 · 核心標籤</div>
-  <div class="page-num">06</div>
+  <div class="page-num">08</div>
 </section>
 
 <!-- 7. Class vs ID（表格） -->
 <section class="slide">
   <div class="eyebrow">03 · Class &amp; ID</div>
-  <h1>Class vs ID</h1>
+  <h1>Query: Class vs ID</h1>
   <div class="title-rule"></div>
   <p class="lead">兩者都是用來「標記元素」，但定位完全不同。</p>
   <table>
@@ -767,7 +829,7 @@
     </tbody>
   </table>
   <div class="page-section">03 · Class &amp; ID</div>
-  <div class="page-num">07</div>
+  <div class="page-num">09</div>
 </section>
 
 <!-- 8. Class vs ID（程式碼） -->
@@ -785,7 +847,7 @@
     <li>整頁只有一個、要給 JS 抓取操作 → 用 <code>id</code></li>
   </ul>
   <div class="page-section">03 · Class &amp; ID</div>
-  <div class="page-num">08</div>
+  <div class="page-num">10</div>
 </section>
 
 <!-- 9. data-* 屬性 -->
@@ -815,50 +877,7 @@ btn.dataset.action;     <span class="cmt">// "add-to-cart"</span></code></pre>
   </div>
   <blockquote>使用場景：不想為了傳資料而多一個隱藏 <code>input</code> — 直接把資料寫在元素上最乾淨。</blockquote>
   <div class="page-section">04 · data 屬性</div>
-  <div class="page-num">09</div>
-</section>
-
-<!-- 10. CSS 排版核心 — Flexbox & Grid -->
-<section class="slide">
-  <div class="eyebrow">05 · CSS 排版</div>
-  <h1>CSS 排版核心 — Flexbox &amp; Grid</h1>
-  <div class="title-rule"></div>
-  <div class="split">
-    <div class="col-text">
-      <h3>Flexbox — 一維排列（一行或一列）</h3>
-      <pre><code><span class="key">.container</span> {
-  <span class="key">display</span>: flex;
-  <span class="key">justify-content</span>: space-between;
-  <span class="key">align-items</span>: center;
-  <span class="key">gap</span>: 16px;
-}</code></pre>
-      <div class="layout-demo" style="margin-top:3mm;">
-        <div class="cap">Flex — 一排分佈</div>
-        <div class="flex-box">
-          <div class="item">1</div><div class="item">2</div><div class="item">3</div>
-        </div>
-      </div>
-    </div>
-    <div class="col-text">
-      <h3>Grid — 二維排列（同時控制行和列）</h3>
-      <pre><code><span class="key">.grid</span> {
-  <span class="key">display</span>: grid;
-  <span class="key">grid-template-columns</span>:
-    repeat(3, 1fr);
-  <span class="key">gap</span>: 24px;
-}</code></pre>
-      <div class="layout-demo" style="margin-top:3mm;">
-        <div class="cap">Grid — 行列網格</div>
-        <div class="grid-box">
-          <div class="item">1</div><div class="item">2</div><div class="item">3</div>
-          <div class="item">4</div><div class="item">5</div><div class="item">6</div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <blockquote>記憶口訣：<strong>一維用 Flex，二維用 Grid。</strong></blockquote>
-  <div class="page-section">05 · CSS 排版</div>
-  <div class="page-num">10</div>
+  <div class="page-num">11</div>
 </section>
 
 <!-- 11. 匠人精神（純大字） -->
@@ -922,7 +941,7 @@ btn.dataset.action;     <span class="cmt">// "add-to-cart"</span></code></pre>
     </div>
   </div>
   <div class="page-section">06 · 手刻實作</div>
-  <div class="page-num">11</div>
+  <div class="page-num">12</div>
 </section>
 
 <!-- 13. 手刻實作 — YouTube Card -->
@@ -957,7 +976,7 @@ btn.dataset.action;     <span class="cmt">// "add-to-cart"</span></code></pre>
     </ul>
   </div>
   <div class="page-section">06 · 手刻實作</div>
-  <div class="page-num">12</div>
+  <div class="page-num">13</div>
 </section>
 
 <script src="script.js"></script>

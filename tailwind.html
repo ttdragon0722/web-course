@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>前端框架 Tailwind 以及其應用 &amp; 網頁動起來 JavaScript</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --text: #1a1a1a;
+    --muted: #6b7280;
+    --line: #e5e7eb;
+    --bg: #fafafa;
+    --accent: #111;
+    --code-bg: #f3f4f6;
+    --good: #059669;
+    --bad: #dc2626;
+  }
+
+  html, body {
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+                 "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  .slide {
+    width: 297mm;
+    height: 210mm;
+    margin: 16px auto;
+    background: #fff;
+    padding: 22mm 26mm;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    page-break-after: always;
+    break-after: page;
+  }
+
+  .slide:last-child {
+    page-break-after: auto;
+    break-after: auto;
+  }
+
+  /* 頂部 eyebrow */
+  .eyebrow {
+    font-size: 11pt;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8mm;
+    font-weight: 500;
+  }
+
+  /* 標題層級 */
+  h1 {
+    font-size: 32pt;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    margin-bottom: 6mm;
+  }
+
+  h2 {
+    font-size: 18pt;
+    font-weight: 600;
+    margin: 4mm 0 3mm;
+    color: var(--text);
+  }
+
+  h3 {
+    font-size: 14pt;
+    font-weight: 600;
+    margin: 3mm 0 2mm;
+    color: #374151;
+  }
+
+  /* 標題下方裝飾線 */
+  .title-rule {
+    width: 56px;
+    height: 3px;
+    background: var(--accent);
+    margin-bottom: 8mm;
+    border-radius: 2px;
+  }
+
+  p, li {
+    font-size: 13pt;
+    line-height: 1.7;
+    color: #2d2d2d;
+  }
+
+  ul {
+    padding-left: 6mm;
+    margin: 2mm 0;
+  }
+
+  ul li {
+    margin-bottom: 2mm;
+    list-style: none;
+    position: relative;
+    padding-left: 5mm;
+  }
+
+  ul li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 11pt;
+    width: 5px;
+    height: 5px;
+    background: var(--text);
+    border-radius: 50%;
+  }
+
+  ol {
+    padding-left: 6mm;
+    margin: 2mm 0;
+    counter-reset: item;
+    list-style: none;
+  }
+
+  ol li {
+    counter-increment: item;
+    margin-bottom: 2mm;
+    padding-left: 8mm;
+    position: relative;
+  }
+
+  ol li::before {
+    content: counter(item);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 6mm;
+    font-weight: 600;
+    color: var(--muted);
+  }
+
+  code {
+    background: var(--code-bg);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: "JetBrains Mono", "Fira Code", Consolas, monospace;
+    font-size: 11pt;
+    color: #111;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 3mm 0;
+    font-size: 11.5pt;
+  }
+
+  th, td {
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+
+  th {
+    background: #f9fafb;
+    font-weight: 600;
+    border-bottom: 2px solid #d1d5db;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  blockquote {
+    border-left: 3px solid var(--text);
+    padding: 3mm 6mm;
+    margin: 4mm 0;
+    color: #4b5563;
+    background: #fafafa;
+    font-size: 12pt;
+  }
+
+  .lead {
+    font-size: 14pt;
+    color: #374151;
+    margin-bottom: 4mm;
+    line-height: 1.7;
+  }
+
+  .note {
+    font-size: 11pt;
+    color: var(--muted);
+    margin-top: auto;
+    padding-top: 4mm;
+    font-style: italic;
+  }
+
+  /* 封面投影片 */
+  .cover {
+    justify-content: center;
+    align-items: flex-start;
+    padding: 30mm 26mm;
+  }
+
+  .cover .day-tag {
+    font-size: 14pt;
+    color: var(--muted);
+    letter-spacing: 0.3em;
+    margin-bottom: 8mm;
+    font-weight: 500;
+  }
+
+  .cover h1 {
+    font-size: 44pt;
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    margin-bottom: 10mm;
+  }
+
+  .cover .subtitle {
+    font-size: 14pt;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 200mm;
+  }
+
+  .cover .footer-line {
+    position: absolute;
+    bottom: 22mm;
+    left: 26mm;
+    right: 26mm;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 5mm;
+    border-top: 1px solid var(--line);
+    font-size: 10pt;
+    color: var(--muted);
+  }
+
+  /* 頁碼 / 頁腳 */
+  .page-num {
+    position: absolute;
+    bottom: 10mm;
+    right: 14mm;
+    font-size: 9pt;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  .page-section {
+    position: absolute;
+    bottom: 10mm;
+    left: 14mm;
+    font-size: 9pt;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  /* 純大字標語頁 */
+  .statement {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  .statement .big-text {
+    font-size: 60pt;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.18;
+  }
+  .statement .big-sub {
+    font-size: 15pt;
+    color: var(--muted);
+    margin-top: 8mm;
+    letter-spacing: 0.04em;
+  }
+
+  /* 對比範例 */
+  .compare-row {
+    display: flex;
+    gap: 6mm;
+    margin: 2mm 0;
+    align-items: flex-start;
+  }
+  .compare-row .icon {
+    flex-shrink: 0;
+    width: 6mm;
+    font-size: 13pt;
+    font-weight: 700;
+    margin-top: 1pt;
+  }
+  .compare-row .icon.bad { color: var(--bad); }
+  .compare-row .icon.good { color: var(--good); }
+  .compare-row .content {
+    flex: 1;
+    font-size: 12pt;
+    line-height: 1.7;
+  }
+  .compare-row .content strong { font-weight: 600; }
+
+  /* keyword list */
+  .keyword-list {
+    list-style: none;
+    padding: 0;
+    margin: 3mm 0;
+  }
+  .keyword-list li {
+    padding: 3mm 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 12pt;
+    padding-left: 0;
+    line-height: 1.6;
+  }
+  .keyword-list li::before { display: none; }
+  .keyword-list .kw {
+    display: inline-block;
+    background: var(--code-bg);
+    color: #111;
+    padding: 2px 10px;
+    border-radius: 4px;
+    font-family: "JetBrains Mono", Consolas, monospace;
+    font-size: 11pt;
+    margin-right: 8px;
+    font-weight: 500;
+  }
+  .keyword-list a { color: #2563eb; text-decoration: none; }
+  .keyword-list a:hover { text-decoration: underline; }
+
+  /* 兩欄圖文 grid（沿用 history-grid 慣例） */
+  .split-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10mm;
+    align-items: center;
+    flex: 1;
+    min-height: 0;
+  }
+
+  /* === 本簡報新增的輔助樣式（沿用設計語彙） === */
+
+  /* 多行程式碼區塊 */
+  pre.code-block {
+    background: #f8fafc;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 4mm 5mm;
+    font-family: "JetBrains Mono", "Fira Code", Consolas, monospace;
+    font-size: 10.5pt;
+    line-height: 1.65;
+    color: #1a1a1a;
+    overflow: hidden;
+    margin: 3mm 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  pre.code-block.lg { font-size: 11.5pt; }
+  pre.code-block .cm { color: #94a3b8; }   /* 註解 */
+  pre.code-block .kw { color: #7c3aed; }   /* 關鍵字 */
+  pre.code-block .st { color: #059669; }   /* 字串 */
+  pre.code-block .fn { color: #2563eb; }   /* 函式 */
+
+  /* 鍵盤鍵帽 */
+  kbd {
+    display: inline-block;
+    background: #fff;
+    border: 1px solid #d1d5db;
+    border-bottom-width: 2px;
+    border-radius: 4px;
+    padding: 0.5mm 2mm;
+    font-family: "JetBrains Mono", Consolas, monospace;
+    font-size: 9.5pt;
+    color: #111;
+    line-height: 1.5;
+  }
+
+  /* 三欄卡片 */
+  .tri-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6mm;
+    margin-top: 4mm;
+    min-height: 0;
+  }
+  .tri-card {
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 7mm 6mm;
+    display: flex;
+    flex-direction: column;
+  }
+  .tri-card .n {
+    font-size: 24pt;
+    font-weight: 700;
+    color: #d1d5db;
+    line-height: 1;
+    margin-bottom: 4mm;
+  }
+  .tri-card h3 { margin: 0 0 2mm; font-size: 15pt; color: var(--text); }
+  .tri-card p { font-size: 11pt; color: var(--muted); line-height: 1.6; }
+
+  /* 框起來的瀏覽器示意 */
+  .browser {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  }
+  .browser .bar {
+    display: flex;
+    align-items: center;
+    gap: 2mm;
+    padding: 2.5mm 4mm;
+    background: #f3f4f6;
+    border-bottom: 1px solid var(--line);
+  }
+  .browser .bar .dot { width: 3mm; height: 3mm; border-radius: 50%; background: #d1d5db; }
+  .browser .bar .url {
+    margin-left: 3mm; flex: 1;
+    background: #fff; border: 1px solid var(--line); border-radius: 999px;
+    font-size: 8.5pt; color: var(--muted); padding: 1mm 4mm;
+    font-family: "JetBrains Mono", Consolas, monospace;
+  }
+
+  /* UI 元件（封裝自設計規範） */
+  .ui-navbar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 3mm 5mm;
+    background: #fff;
+  }
+  .ui-navbar .logo { font-weight: 700; font-size: 12pt; }
+  .ui-navbar nav { display: flex; gap: 6mm; font-size: 10pt; color: #4b5563; }
+  .ui-navbar .cta {
+    background: #111; color: #fff;
+    padding: 2mm 4mm; border-radius: 4px; font-size: 9.5pt;
+  }
+  .ui-navbar .burger {
+    display: none; flex-direction: column; gap: 1.2mm; cursor: pointer;
+  }
+  .ui-navbar .burger span { width: 6mm; height: 0.8mm; background: #111; border-radius: 2px; }
+
+  .ui-hero {
+    text-align: center;
+    padding: 12mm 6mm;
+    background: linear-gradient(135deg, #fafafa 0%, #f3f4f6 100%);
+  }
+  .ui-hero h4 { font-size: 22pt; font-weight: 700; margin-bottom: 3mm; letter-spacing: -0.01em; }
+  .ui-hero p { font-size: 11pt; color: var(--muted); margin-bottom: 5mm; }
+  .ui-hero .btn {
+    display: inline-block; background: #111; color: #fff;
+    padding: 2.5mm 7mm; border-radius: 6px; font-size: 10.5pt;
+    transition: transform .2s ease;
+  }
+  .ui-cards { display: flex; gap: 4mm; padding: 5mm; }
+  .ui-card {
+    flex: 1; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; background: #fff;
+  }
+  .ui-card .img { height: 14mm; background: linear-gradient(135deg, #e5e7eb 0%, #f3f4f6 100%); }
+  .ui-card .b { padding: 3mm; }
+  .ui-card .b .t { font-weight: 600; font-size: 9.5pt; margin-bottom: 1mm; }
+  .ui-card .b .d { font-size: 8.5pt; color: var(--muted); line-height: 1.5; }
+
+  /* 下拉選單示意 */
+  .menu-pop {
+    border: 1px solid var(--line); border-radius: 6px; background: #fff;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1); overflow: hidden; width: 48mm;
+  }
+  .menu-pop .mi { padding: 2.5mm 5mm; font-size: 10pt; color: #2d2d2d; border-bottom: 1px solid var(--line); }
+  .menu-pop .mi:last-child { border-bottom: none; }
+  .menu-pop .mi.active { background: #111; color: #fff; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 2mm; margin: 3mm 0; }
+  .chips .chip {
+    padding: 1.5mm 4mm; background: var(--code-bg); border-radius: 999px;
+    font-size: 9.5pt; color: #111;
+  }
+  .chips .chip.dark { background: #111; color: #fff; }
+
+  /* 列印優化 */
+  @page {
+    size: A4 landscape;
+    margin: 0;
+  }
+
+  @media print {
+    html, body { background: #fff; }
+    .slide {
+      margin: 0;
+      box-shadow: none;
+      width: 297mm;
+      height: 210mm;
+      page-break-after: always;
+      break-after: page;
+    }
+    .slide:last-child { page-break-after: auto; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 1. 封面（### 前端框架 Tailwind以及其應用） -->
+<section class="slide cover">
+  <div class="day-tag">前端框架 · TAILWIND</div>
+  <h1>Tailwind 前端框架<br>以及其應用</h1>
+  <div class="subtitle">
+    用「工具 × 框架 × AI」一次解決昨天手刻 HTML / CSS 的痛點<br>
+    再讓網頁動起來 —— 初探 JavaScript
+  </div>
+  <div class="footer-line">
+    <span>Web Course · Tailwind &amp; JavaScript</span>
+    <span>2026</span>
+  </div>
+</section>
+
+<!-- 2. 前言（### 前言） -->
+<section class="slide">
+  <div class="eyebrow">01 · 開場痛點</div>
+  <h1>前言：昨天是不是也卡住了？</h1>
+  <div class="title-rule"></div>
+  <p class="lead">經過昨天手寫 HTML + CSS，是否有遇到以下痛點呢？</p>
+  <div class="compare-row">
+    <span class="icon bad">✕</span>
+    <div class="content"><strong>CSS 好難</strong> —— 屬性一大堆，根本看不懂</div>
+  </div>
+  <div class="compare-row">
+    <span class="icon bad">✕</span>
+    <div class="content"><strong>命名好難</strong> —— class 切來切去，不知道怎麼取名</div>
+  </div>
+  <div class="compare-row">
+    <span class="icon bad">✕</span>
+    <div class="content"><strong>做出來好醜</strong> —— 為什麼不直接叫 AI 做就好？</div>
+  </div>
+  <div class="compare-row">
+    <span class="icon bad">✕</span>
+    <div class="content"><strong>講師到底在公三小</strong> —— 跟不上節奏 😅</div>
+  </div>
+  <blockquote>這些痛點通通有解 —— 而且解法不只一種。</blockquote>
+  <div class="page-section">01 · 開場痛點</div>
+</section>
+
+<!-- 3. 解決問題（### 解決問題） -->
+<section class="slide">
+  <div class="eyebrow">01 · 開場痛點</div>
+  <h1>三個解決方向</h1>
+  <div class="title-rule"></div>
+  <p class="lead">與其硬記 CSS，不如把對的工具用起來。</p>
+  <div class="tri-grid">
+    <div class="tri-card">
+      <div class="n">01</div>
+      <h3>IDE</h3>
+      <p>善用編輯器與快捷鍵，讓你「寫得更快、改得更省力」。</p>
+    </div>
+    <div class="tri-card">
+      <div class="n">02</div>
+      <h3>框架</h3>
+      <p>用社群維護好的 CSS 框架（Tailwind），不用自己刻樣式。</p>
+    </div>
+    <div class="tri-card">
+      <div class="n">03</div>
+      <h3>AI</h3>
+      <p>不會寫？讓 AI 幫你生、幫你改 —— 你負責判斷好壞。</p>
+    </div>
+  </div>
+  <div class="page-section">01 · 開場痛點</div>
+</section>
+
+<!-- 4. IDE 優化以及快捷鍵（### ide 優化以及快捷鍵） -->
+<section class="slide">
+  <div class="eyebrow">02 · IDE 優化</div>
+  <h1>IDE 優化 — 我的常用快捷鍵</h1>
+  <div class="title-rule"></div>
+  <table>
+    <thead>
+      <tr><th>快捷鍵</th><th>功能</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><kbd>Ctrl</kbd> + <kbd>P</kbd></td><td>快速開啟檔案（輸入檔名直接跳）</td></tr>
+      <tr><td><kbd>Ctrl</kbd> + <kbd>`</kbd></td><td>開啟 / 切換終端機</td></tr>
+      <tr><td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>`</kbd></td><td>新增一個終端機</td></tr>
+      <tr><td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd></td><td>命令面板（所有指令的入口）</td></tr>
+      <tr><td><kbd>Ctrl</kbd> + <kbd>D</kbd></td><td>選取下一個相同的字（多游標編輯）</td></tr>
+      <tr><td><kbd>Alt</kbd> + <kbd>↑</kbd> / <kbd>↓</kbd></td><td>將整行往上 / 往下移動</td></tr>
+      <tr><td><kbd>Ctrl</kbd> + <kbd>K</kbd>, <kbd>O</kbd></td><td>在新視窗開啟目前檔案 / 資料夾</td></tr>
+      <tr><td><kbd>Ctrl</kbd> + <kbd>K</kbd>, <kbd>0</kbd> / <kbd>J</kbd></td><td>摺疊全部 / 展開全部程式碼</td></tr>
+    </tbody>
+  </table>
+  <p class="note">快捷鍵不用一次背完 —— 先挑 2～3 個天天用，肌肉記憶自然就上手了。</p>
+  <div class="page-section">02 · IDE 優化</div>
+</section>
+
+<!-- 5. 插件（### 2. 插件 (大字)） -->
+<section class="slide statement">
+  <div class="big-text">插件 Extensions</div>
+  <div class="big-sub">善用編輯器外掛，讓 IDE 幫你做完一半的事</div>
+</section>
+
+<!-- 6. 前端框架（### 前端框架） -->
+<section class="slide">
+  <div class="eyebrow">03 · 前端框架</div>
+  <h1>不用自己寫 code</h1>
+  <div class="title-rule"></div>
+  <p class="lead">
+    其實很多時候 <strong>不用自己寫 code</strong> —— 請 AI 寫，
+    或用別人寫好、社群維護的套件即可。
+  </p>
+  <h2>現在很流行的 CSS 套件</h2>
+  <ul>
+    <li><strong>Tailwind CSS</strong> —— Utility-First，直接用「功能類別」組合樣式</li>
+    <li><strong>Bootstrap</strong> —— 老牌元件庫，現成的按鈕 / 表單 / 排版</li>
+  </ul>
+  <div class="chips">
+    <span class="chip dark">Tailwind</span>
+    <span class="chip">Bootstrap</span>
+    <span class="chip">Flowbite</span>
+    <span class="chip">DaisyUI</span>
+  </div>
+  <blockquote>站在巨人的肩膀上 —— 把時間花在「做產品」，而不是「重造輪子」。</blockquote>
+  <div class="page-section">03 · 前端框架</div>
+</section>
+
+<!-- 7. 介紹 Tailwind（### 介紹tailwind） -->
+<section class="slide">
+  <div class="eyebrow">03 · 前端框架</div>
+  <h1>認識 Tailwind CSS</h1>
+  <div class="title-rule"></div>
+  <p class="lead">Utility-First 的 CSS 框架 —— 不取 class 名稱，直接在 HTML 上組合樣式。</p>
+  <div class="split-grid" style="align-items: stretch;">
+    <div>
+      <h3>傳統 CSS（要切換檔案）</h3>
+      <pre class="code-block"><span class="cm">/* style.css */</span>
+.card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 24px;
+  background: #fff;
+  border-radius: 8px;
+}
+
+<span class="cm">&lt;!-- index.html --&gt;</span>
+&lt;div class=<span class="st">"card"</span>&gt;...&lt;/div&gt;</pre>
+    </div>
+    <div>
+      <h3>Tailwind（直接寫在 HTML）</h3>
+      <pre class="code-block">&lt;div class=<span class="st">"flex items-center
+  gap-4 p-6 bg-white
+  rounded-lg"</span>&gt;
+  ...
+&lt;/div&gt;</pre>
+      <ul>
+        <li>改樣式不用切到 CSS 檔，直接在元素上調</li>
+        <li>class 名稱「望文生義」，看了就懂</li>
+        <li>不用再煩惱命名</li>
+      </ul>
+    </div>
+  </div>
+  <div class="page-section">03 · 前端框架</div>
+</section>
+
+<!-- 8. Tailwind 資源連結（### tailwind） -->
+<section class="slide">
+  <div class="eyebrow">03 · 前端框架</div>
+  <h1>必收藏資源</h1>
+  <div class="title-rule"></div>
+  <p class="lead">真的要上手 Tailwind，這三個網站存起來就夠用了。</p>
+  <ul class="keyword-list">
+    <li>
+      <span class="kw">flowbite.com</span>
+      基於 Tailwind 的現成元件庫 —— 複製貼上就有按鈕、Modal、表格
+      <br><a href="https://flowbite.com/" target="_blank" rel="noopener">https://flowbite.com/</a>
+    </li>
+    <li>
+      <span class="kw">tailwindcss.com</span>
+      官方文件 —— 忘記 class 怎麼寫，來這裡查最快
+      <br><a href="https://tailwindcss.com/" target="_blank" rel="noopener">https://tailwindcss.com/</a>
+    </li>
+    <li>
+      <span class="kw">ui-blocks</span>
+      官方 UI 區塊範例 —— 整段版型直接抄
+      <br><a href="https://tailwindcss.com/plus/ui-blocks" target="_blank" rel="noopener">https://tailwindcss.com/plus/ui-blocks</a>
+    </li>
+  </ul>
+  <div class="page-section">03 · 前端框架</div>
+</section>
+
+<!-- 9. 實作（### 實作） -->
+<section class="slide">
+  <div class="eyebrow">03 · 前端框架</div>
+  <h1>實作：用 Tailwind 做一個主頁面</h1>
+  <div class="title-rule"></div>
+  <div class="split-grid">
+    <div>
+      <p class="lead">先發想「要哪些區塊」，再用 Tailwind 一塊一塊拼起來。</p>
+      <ul>
+        <li><strong>Navbar</strong> —— Logo + 導覽 + CTA 按鈕</li>
+        <li><strong>Hero</strong> —— 大標題 + 一句說明 + 主按鈕</li>
+        <li><strong>特色卡片</strong> —— 三張並排，介紹賣點</li>
+        <li><strong>Footer</strong> —— 版權與連結（示意略）</li>
+      </ul>
+      <p class="note">目標：不寫任何 CSS 檔，只靠 Tailwind class 組出右邊這個畫面。</p>
+    </div>
+    <div class="browser">
+      <div class="bar">
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        <span class="url">my-tailwind-site.dev</span>
+      </div>
+      <div class="ui-navbar">
+        <span class="logo">Brand</span>
+        <nav><span>首頁</span><span>功能</span><span>價格</span></nav>
+        <span class="cta">開始使用</span>
+      </div>
+      <div class="ui-hero">
+        <h4>用 Tailwind 快速出作品</h4>
+        <p>不用寫 CSS，也能做出乾淨好看的網頁</p>
+        <span class="btn">立即體驗</span>
+      </div>
+      <div class="ui-cards">
+        <div class="ui-card"><div class="img"></div><div class="b"><div class="t">快速</div><div class="d">class 即樣式</div></div></div>
+        <div class="ui-card"><div class="img"></div><div class="b"><div class="t">一致</div><div class="d">設計系統內建</div></div></div>
+        <div class="ui-card"><div class="img"></div><div class="b"><div class="t">好維護</div><div class="d">所見即所得</div></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="page-section">03 · 前端框架</div>
+</section>
+
+<!-- 10. Tailwind 方法（### tailwind方法） -->
+<section class="slide">
+  <div class="eyebrow">03 · 前端框架</div>
+  <h1>Tailwind 的五大類 class</h1>
+  <div class="title-rule"></div>
+  <p class="lead">記住這五類，八成的版面都搞得定。</p>
+  <table>
+    <thead>
+      <tr><th>類別</th><th>作用</th><th>常見 class</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>排版</strong> Layout</td><td>flex / grid 與對齊</td><td><code>flex</code> <code>grid</code> <code>items-center</code> <code>justify-between</code></td></tr>
+      <tr><td><strong>長寬</strong> Sizing</td><td>寬度、高度、上限</td><td><code>w-full</code> <code>h-screen</code> <code>max-w-md</code></td></tr>
+      <tr><td><strong>顏色</strong> Color</td><td>文字 / 背景顏色</td><td><code>text-gray-800</code> <code>bg-white</code></td></tr>
+      <tr><td><strong>文字</strong> Typography</td><td>字級、字重</td><td><code>text-xl</code> <code>font-bold</code> <code>text-center</code></td></tr>
+      <tr><td><strong>動畫</strong> Animation</td><td>hover 與過場效果</td><td><code>hover:bg-black</code> <code>transition</code> <code>duration-300</code></td></tr>
+    </tbody>
+  </table>
+  <blockquote><strong>hover: 是關鍵</strong> —— 搭配 <code>transition</code>，滑鼠移上去就有平滑的變化動畫。</blockquote>
+  <div class="page-section">03 · 前端框架</div>
+</section>
+
+<!-- 11. 過場：網頁動起來（### 網頁動起來javascript） -->
+<section class="slide statement">
+  <div class="big-text">讓網頁動起來</div>
+  <div class="big-sub">JavaScript —— 從靜態畫面，到可以互動的網頁</div>
+</section>
+
+<!-- 12. 基礎 JavaScript（### 基礎javascript） -->
+<section class="slide">
+  <div class="eyebrow">04 · JavaScript</div>
+  <h1>最基礎的兩個指令</h1>
+  <div class="title-rule"></div>
+  <p class="lead">先學會「印東西出來」和「跳提示」，就能開始玩 JS。</p>
+  <div class="split-grid" style="align-items: stretch;">
+    <div>
+      <h3>console.log()</h3>
+      <pre class="code-block lg"><span class="fn">console</span>.log(<span class="st">"Hello World"</span>);
+<span class="fn">console</span>.log(1 + 2);</pre>
+      <p>在開發者工具（F12）的 Console 印出訊息 —— <strong>debug 神器</strong>。</p>
+    </div>
+    <div>
+      <h3>alert()</h3>
+      <pre class="code-block lg"><span class="fn">alert</span>(<span class="st">"歡迎來到我的網頁"</span>);</pre>
+      <p>直接跳出一個提示視窗給使用者看 —— 簡單但很有感。</p>
+    </div>
+  </div>
+  <div class="page-section">04 · JavaScript</div>
+</section>
+
+<!-- 13. 變數（### 變數） -->
+<section class="slide">
+  <div class="eyebrow">04 · JavaScript</div>
+  <h1>變數 — const 與 let</h1>
+  <div class="title-rule"></div>
+  <p class="lead">變數就是「幫資料取一個名字」，方便之後重複使用。</p>
+  <table>
+    <thead>
+      <tr><th>關鍵字</th><th>特性</th><th>什麼時候用</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>const</code></td><td>常數，宣告後<strong>不可</strong>重新指派</td><td>預設都用它 —— 值不會變的資料</td></tr>
+      <tr><td><code>let</code></td><td>變數，之後<strong>可以</strong>改值</td><td>計數器、會被更新的狀態</td></tr>
+    </tbody>
+  </table>
+  <pre class="code-block lg"><span class="kw">const</span> name = <span class="st">"Rex"</span>;   <span class="cm">// 之後不能再改</span>
+<span class="kw">let</span> count = 0;        <span class="cm">// 之後可以 count = count + 1</span>
+count = count + 1;</pre>
+  <p class="note">早期還有 <code>var</code>，但現在幾乎不用 —— 記得 const 與 let 就好。</p>
+  <div class="page-section">04 · JavaScript</div>
+</section>
+
+<!-- 14. 資料型態（### 資料型態） -->
+<section class="slide">
+  <div class="eyebrow">04 · JavaScript</div>
+  <h1>常見資料型態</h1>
+  <div class="title-rule"></div>
+  <table>
+    <thead>
+      <tr><th>型態</th><th>意義</th><th>範例</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>string</code></td><td>文字</td><td><code>"Hello"</code>　<code>'網頁'</code></td></tr>
+      <tr><td><code>number</code></td><td>數字（整數與小數）</td><td><code>42</code>　<code>3.14</code></td></tr>
+      <tr><td><code>boolean</code></td><td>真 / 假</td><td><code>true</code>　<code>false</code></td></tr>
+      <tr><td><code>array</code>（list）</td><td>一串清單</td><td><code>[1, 2, 3]</code>　<code>["a", "b"]</code></td></tr>
+      <tr><td><code>element</code></td><td>網頁上的元素</td><td><code>document.querySelector("#app")</code></td></tr>
+    </tbody>
+  </table>
+  <blockquote><code>element</code> 是前端最特別的型態 —— 它就是你抓到的那塊 HTML，之後要靠它來改畫面。</blockquote>
+  <div class="page-section">04 · JavaScript</div>
+</section>
+
+<!-- 15. 事件（### 事件） -->
+<section class="slide">
+  <div class="eyebrow">04 · JavaScript</div>
+  <h1>事件 Event</h1>
+  <div class="title-rule"></div>
+  <p class="lead">使用者的操作（滑鼠、鍵盤…）→ 觸發我們寫的程式碼。</p>
+  <h2>兩個最常見的事件</h2>
+  <ul>
+    <li><strong>hover</strong> —— 滑鼠移入元素（常用 CSS 的 <code>hover:</code> 處理）</li>
+    <li><strong>click</strong> —— 點擊事件，按鈕、連結都靠它</li>
+  </ul>
+  <pre class="code-block lg"><span class="kw">const</span> btn = document.<span class="fn">querySelector</span>(<span class="st">"#btn"</span>);
+
+btn.<span class="fn">addEventListener</span>(<span class="st">"click"</span>, () =&gt; {
+  <span class="fn">alert</span>(<span class="st">"你點了我！"</span>);
+});</pre>
+  <blockquote>互動的本質：<strong>監聽事件</strong>（addEventListener）→ <strong>做出反應</strong>（執行函式）。</blockquote>
+  <div class="page-section">04 · JavaScript</div>
+</section>
+
+<!-- 16. 簡單實作 header/menu（### 簡單實作 header/menu） -->
+<section class="slide">
+  <div class="eyebrow">05 · 實作</div>
+  <h1>實作：Header / Menu 切換</h1>
+  <div class="title-rule"></div>
+  <p class="lead">最經典的互動 —— 點漢堡按鈕，選單展開 / 收合。</p>
+  <div class="split-grid">
+    <div>
+      <h3>關閉狀態</h3>
+      <div class="browser" style="margin-bottom: 6mm;">
+        <div class="ui-navbar">
+          <span class="logo">Brand</span>
+          <span class="burger" style="display:flex;"><span></span><span></span><span></span></span>
+        </div>
+      </div>
+      <h3>展開狀態</h3>
+      <div class="browser">
+        <div class="ui-navbar">
+          <span class="logo">Brand</span>
+          <span class="burger" style="display:flex;"><span></span><span></span><span></span></span>
+        </div>
+        <div class="menu-pop" style="width:100%; box-shadow:none; border-radius:0; border-left:none; border-right:none;">
+          <div class="mi active">首頁</div>
+          <div class="mi">功能</div>
+          <div class="mi">價格</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <h3>需要的三個東西</h3>
+      <ul>
+        <li>一個<strong>按鈕</strong>（漢堡 icon）</li>
+        <li>一個<strong>選單</strong>（預設隱藏 <code>hidden</code>）</li>
+        <li>一段<strong>切換邏輯</strong>：點按鈕 → 顯示 / 隱藏選單</li>
+      </ul>
+      <p class="note">下一頁先看「切換狀態」的流程，最後再一起把 function 寫出來。</p>
+    </div>
+  </div>
+  <div class="page-section">05 · 實作</div>
+</section>
+
+<!-- 17. 切換狀態的方法（### 切換狀態的方法 — svg 流程圖） -->
+<section class="slide">
+  <div class="eyebrow">05 · 實作</div>
+  <h1>切換狀態的方法</h1>
+  <div class="title-rule"></div>
+  <p class="lead">「切換」的核心：判斷現在是開還是關，再做相反的事。</p>
+  <div style="flex:1; display:flex; align-items:center; justify-content:center; min-height:0;">
+    <svg viewBox="0 0 880 230" role="img" aria-label="選單切換狀態流程圖" style="width:100%; height:auto; max-height:100%;">
+      <defs>
+        <marker id="fl-ar" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto">
+          <path d="M0,0 L7,3 L0,6 Z" fill="#6b7280"/>
+        </marker>
+      </defs>
+      <!-- 點擊按鈕 -->
+      <rect x="10" y="86" width="140" height="58" rx="10" fill="#111"/>
+      <text x="80" y="112" text-anchor="middle" font-family="Inter, sans-serif" font-size="15" font-weight="700" fill="#fff">點擊按鈕</text>
+      <text x="80" y="130" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#cbd5e1">click 事件</text>
+      <!-- 箭頭 -->
+      <path d="M150,115 L196,115" fill="none" stroke="#6b7280" stroke-width="2" marker-end="url(#fl-ar)"/>
+      <!-- 判斷目前狀態（菱形） -->
+      <polygon points="320,60 410,115 320,170 230,115" fill="#fff" stroke="#111" stroke-width="2"/>
+      <text x="320" y="110" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#111">目前是</text>
+      <text x="320" y="128" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#111">開啟嗎？</text>
+      <!-- 上分支：是 → 關閉 -->
+      <path d="M320,60 C320,28 540,28 540,60" fill="none" stroke="#6b7280" stroke-width="2" marker-end="url(#fl-ar)"/>
+      <text x="430" y="34" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#6b7280">是</text>
+      <rect x="470" y="58" width="150" height="52" rx="10" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5"/>
+      <text x="545" y="82" text-anchor="middle" font-family="Inter, sans-serif" font-size="12.5" font-weight="600" fill="#dc2626">移除 class</text>
+      <text x="545" y="99" text-anchor="middle" font-family="Inter, sans-serif" font-size="9.5" fill="#b91c1c">→ 收合選單</text>
+      <!-- 下分支：否 → 開啟 -->
+      <path d="M320,170 C320,202 540,202 540,170" fill="none" stroke="#6b7280" stroke-width="2" marker-end="url(#fl-ar)"/>
+      <text x="430" y="200" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#6b7280">否</text>
+      <rect x="470" y="120" width="150" height="52" rx="10" fill="#f0fdf4" stroke="#059669" stroke-width="1.5"/>
+      <text x="545" y="144" text-anchor="middle" font-family="Inter, sans-serif" font-size="12.5" font-weight="600" fill="#059669">加上 class</text>
+      <text x="545" y="161" text-anchor="middle" font-family="Inter, sans-serif" font-size="9.5" fill="#047857">→ 展開選單</text>
+      <!-- 匯流到 toggle -->
+      <path d="M620,84 C660,84 660,115 700,115" fill="none" stroke="#6b7280" stroke-width="2"/>
+      <path d="M620,146 C660,146 660,115 700,115" fill="none" stroke="#6b7280" stroke-width="2" marker-end="url(#fl-ar)"/>
+      <rect x="700" y="86" width="170" height="58" rx="10" fill="#111"/>
+      <text x="785" y="110" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#fff">classList</text>
+      <text x="785" y="128" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#fff">.toggle()</text>
+    </svg>
+  </div>
+  <blockquote>上面這串「判斷 → 加 / 移除」，JavaScript 用一行 <code>classList.toggle()</code> 就能完成。</blockquote>
+  <div class="page-section">05 · 實作</div>
+</section>
+
+<!-- 18. function（### function — 手寫 menu header） -->
+<section class="slide">
+  <div class="eyebrow">05 · 實作</div>
+  <h1>動手寫：Menu 切換 function</h1>
+  <div class="title-rule"></div>
+  <p class="lead">把「加 / 移除 class」的操作，全部寫進這段程式碼裡。</p>
+  <pre class="code-block lg"><span class="cm">// 1. 抓到按鈕和選單兩個元素</span>
+<span class="kw">const</span> btn  = document.<span class="fn">querySelector</span>(<span class="st">"#menu-btn"</span>);
+<span class="kw">const</span> menu = document.<span class="fn">querySelector</span>(<span class="st">"#menu"</span>);
+
+<span class="cm">// 2. 監聽按鈕的點擊事件</span>
+btn.<span class="fn">addEventListener</span>(<span class="st">"click"</span>, () =&gt; {
+  menu.classList.<span class="fn">toggle</span>(<span class="st">"hidden"</span>);     <span class="cm">// 有就移除、沒有就加上 → 切換顯示</span>
+  btn.classList.<span class="fn">toggle</span>(<span class="st">"is-active"</span>);  <span class="cm">// 順便讓按鈕也變化</span>
+});</pre>
+  <blockquote><code>classList.toggle()</code> —— 有就移除、沒有就加上，<strong>一行搞定切換</strong>，不用自己寫 if / else。</blockquote>
+  <div class="page-section">05 · 實作</div>
+</section>
+
+<script src="ppt/script.js"></script>
+</body>
+</html>
