@@ -505,6 +505,72 @@
   .json-num   { color: #fbbf24; }  /* 數字 — 琥珀 */
   .json-punct { color: #64748b; }  /* 標點 — 灰 */
 
+  /* ── 重點總結 ── */
+  .sum-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5mm;
+    margin-top: 2mm;
+    min-height: 0;
+  }
+  .sum-card {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 4.5mm 6mm;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  .sum-card .s-head {
+    display: flex;
+    align-items: center;
+    gap: 3mm;
+    margin-bottom: 2.5mm;
+  }
+  .sum-card .s-num {
+    flex-shrink: 0;
+    width: 7mm; height: 7mm;
+    border-radius: 50%;
+    background: #111; color: #fff;
+    font-size: 11pt; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .sum-card .s-title { font-size: 13pt; font-weight: 700; letter-spacing: -0.01em; }
+  .sum-card ul { margin: 0; padding: 0; }
+  .sum-card li {
+    font-size: 10.5pt; line-height: 1.5;
+    list-style: none; position: relative;
+    padding-left: 4mm; margin-bottom: 1.5mm;
+    color: #2d2d2d;
+  }
+  .sum-card li::before {
+    content: ""; position: absolute; left: 0; top: 8pt;
+    width: 4px; height: 4px; border-radius: 50%; background: var(--text);
+  }
+  .sum-card .tag {
+    display: inline-block; background: var(--code-bg); color: #111;
+    font-family: "JetBrains Mono", Consolas, monospace;
+    font-size: 9pt; padding: 1px 6px; border-radius: 4px; margin: 0 1px;
+  }
+  .sum-banner {
+    margin-top: 5mm;
+    background: #111; color: #fff;
+    border-radius: 8px;
+    padding: 5mm 7mm;
+    display: flex; align-items: center; gap: 6mm;
+  }
+  .sum-banner .s-num {
+    flex-shrink: 0;
+    width: 9mm; height: 9mm; border-radius: 50%;
+    background: #fff; color: #111;
+    font-size: 13pt; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .sum-banner .b-title { font-size: 14pt; font-weight: 700; margin-bottom: 1mm; }
+  .sum-banner .b-desc { font-size: 11pt; color: #cbd5e1; line-height: 1.6; }
+  .sum-banner .b-desc strong { color: #fff; }
+
   /* 列印優化 */
   @page { size: A4 landscape; margin: 0; }
 
@@ -897,6 +963,76 @@
     </div>
   </div>
   <div class="page-section">03 · 後端科普</div>
+</section>
+
+<!-- 12. 重點總結（過場大字） -->
+<section class="slide statement">
+  <div class="big-text">重點總結</div>
+  <div class="big-sub">把今天的東西，濃縮成 5 個帶得走的重點</div>
+</section>
+
+<!-- 13. 重點總結 -->
+<section class="slide">
+  <div class="eyebrow">04 · 重點總結</div>
+  <h1>5 個帶得走的重點</h1>
+  <div class="title-rule"></div>
+  <div class="sum-grid">
+    <div class="sum-card">
+      <div class="s-head">
+        <div class="s-num">1</div>
+        <div class="s-title">IDE — 把工具練熟</div>
+      </div>
+      <ul>
+        <li>VS Code 能開發各式各樣的程式，不只寫網頁</li>
+        <li>工具用得熟，就能事半功倍</li>
+        <li>善用<strong>快捷鍵</strong>與<strong>延伸模組</strong>，甚至能自己開發模組</li>
+      </ul>
+    </div>
+
+    <div class="sum-card">
+      <div class="s-head">
+        <div class="s-num">2</div>
+        <div class="s-title">HTML / CSS — 設計靠細節累積</div>
+      </div>
+      <ul>
+        <li>前端框架 <span class="tag">Tailwind</span> 上限高，很多設計都是從它開發出來的</li>
+        <li>設計的眉角，是一點一滴的細節累積上去的</li>
+        <li>多看日本／國外網頁找靈感，記住常見元件名：<span class="tag">Hero Section</span><span class="tag">Carousel 旋轉木馬</span></li>
+      </ul>
+    </div>
+
+    <div class="sum-card">
+      <div class="s-head">
+        <div class="s-num">3</div>
+        <div class="s-title">JavaScript — 什麼都能做</div>
+      </div>
+      <ul>
+        <li>它就跟一般程式語言一樣，能做到很多事</li>
+        <li>App 開發、爬蟲、後端程式碼……都行</li>
+      </ul>
+    </div>
+
+    <div class="sum-card">
+      <div class="s-head">
+        <div class="s-num">4</div>
+        <div class="s-title">動畫 — 值得再深入</div>
+      </div>
+      <ul>
+        <li>這部分今天沒講透，動畫庫很值得專研</li>
+        <li>關鍵字：<span class="tag">three.js</span><span class="tag">GSAP</span><span class="tag">ScrollTrigger</span></li>
+        <li>跟 AI 溝通時，直接丟這些關鍵字效果更好</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="sum-banner">
+    <div class="s-num">5</div>
+    <div>
+      <div class="b-title">保持持續學習的態度</div>
+      <div class="b-desc">AI 的開發速度越來越快 —— 持續學習更多 AI 知識、<strong>提示詞工程（Prompt Engineering）</strong>與各種 AI 工具，才是真正的競爭力。</div>
+    </div>
+  </div>
+  <div class="page-section">04 · 重點總結</div>
 </section>
 
 <script src="ppt/script.js"></script>
