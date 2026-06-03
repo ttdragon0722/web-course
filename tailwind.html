@@ -380,6 +380,19 @@
     line-height: 1.5;
   }
 
+  /* 分類快捷鍵表格 */
+  .shortcut-table { font-size: 11pt; }
+  .shortcut-table th, .shortcut-table td { padding: 5.5px 12px; }
+  .shortcut-table td.cat {
+    font-weight: 600;
+    color: var(--text);
+    background: #f9fafb;
+    border-right: 2px solid #d1d5db;
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+  .shortcut-table tbody tr:hover { background: #fcfcfd; }
+
   /* 三欄卡片 */
   .tri-grid {
     flex: 1;
@@ -405,6 +418,25 @@
   }
   .tri-card h3 { margin: 0 0 2mm; font-size: 15pt; color: var(--text); }
   .tri-card p { font-size: 11pt; color: var(--muted); line-height: 1.6; }
+
+  /* 2×2 四格卡片（F12 工具） */
+  .quad-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 5mm;
+    margin-top: 4mm;
+    min-height: 0;
+  }
+  .quad-grid .tri-card { padding: 6mm 6mm; }
+  .quad-grid .tri-card .n { font-size: 20pt; margin-bottom: 2mm; }
+  .quad-grid .tri-card h3 { font-size: 14pt; }
+  .quad-grid .tri-card .en {
+    font-family: "JetBrains Mono", Consolas, monospace;
+    font-size: 9pt; color: var(--muted); letter-spacing: 0.05em;
+    margin-bottom: 2mm; text-transform: uppercase;
+  }
 
   /* 框起來的瀏覽器示意 */
   .browser {
@@ -549,6 +581,12 @@
   <div class="page-section">01 · 開場痛點</div>
 </section>
 
+<!-- 2.5 大標語：好的工程師不用滑鼠 -->
+<section class="slide statement">
+  <div class="big-text">好的工程師<br>不用滑鼠</div>
+  <div class="big-sub">手不離鍵盤 —— 用快捷鍵取代每一次「移到滑鼠、找、點」</div>
+</section>
+
 <!-- 3. 解決問題（### 解決問題） -->
 <section class="slide">
   <div class="eyebrow">01 · 開場痛點</div>
@@ -578,20 +616,37 @@
 <!-- 4. IDE 優化以及快捷鍵（### ide 優化以及快捷鍵） -->
 <section class="slide">
   <div class="eyebrow">02 · IDE 優化</div>
-  <h1>IDE 優化 — 我的常用快捷鍵</h1>
+  <h1>IDE 優化 — 依用途分類的常用快捷鍵</h1>
   <div class="title-rule"></div>
-  <table>
+  <table class="shortcut-table">
     <thead>
-      <tr><th>快捷鍵</th><th>功能</th></tr>
+      <tr><th>類別</th><th>快捷鍵</th><th>功能</th></tr>
     </thead>
     <tbody>
-      <tr><td><kbd>Ctrl</kbd> + <kbd>P</kbd></td><td>快速開啟檔案（輸入檔名直接跳）</td></tr>
-      <tr><td><kbd>Ctrl</kbd> + <kbd>`</kbd></td><td>開啟 / 切換終端機</td></tr>
-      <tr><td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>`</kbd></td><td>新增一個終端機</td></tr>
-      <tr><td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd></td><td>命令面板（所有指令的入口）</td></tr>
-      <tr><td><kbd>Ctrl</kbd> + <kbd>D</kbd></td><td>選取下一個相同的字（多游標編輯）</td></tr>
-      <tr><td><kbd>Alt</kbd> + <kbd>↑</kbd> / <kbd>↓</kbd></td><td>將整行往上 / 往下移動</td></tr>
+      <tr>
+        <td rowspan="4" class="cat">檔案 &amp; 視窗</td>
+        <td><kbd>Ctrl</kbd> + <kbd>P</kbd></td><td>快速開啟檔案（輸入檔名直接跳）</td>
+      </tr>
       <tr><td><kbd>Ctrl</kbd> + <kbd>K</kbd>, <kbd>O</kbd></td><td>在新視窗開啟目前檔案 / 資料夾</td></tr>
+      <tr><td><kbd>Ctrl</kbd> + <kbd>W</kbd></td><td>關閉目前分頁 / 檔案</td></tr>
+      <tr><td><kbd>Alt</kbd> + <kbd>F4</kbd></td><td>關閉整個視窗 / 程式</td></tr>
+
+      <tr>
+        <td rowspan="2" class="cat">終端機</td>
+        <td><kbd>Ctrl</kbd> + <kbd>`</kbd></td><td>開啟 / 切換終端機</td>
+      </tr>
+      <tr><td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>`</kbd></td><td>新增一個終端機</td></tr>
+
+      <tr>
+        <td rowspan="2" class="cat">編輯</td>
+        <td><kbd>Ctrl</kbd> + <kbd>D</kbd></td><td>選取下一個相同的字（多游標編輯）</td>
+      </tr>
+      <tr><td><kbd>Alt</kbd> + <kbd>↑</kbd> / <kbd>↓</kbd></td><td>將整行往上 / 往下移動</td></tr>
+
+      <tr>
+        <td rowspan="2" class="cat">命令 &amp; 檢視</td>
+        <td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd></td><td>命令面板（所有指令的入口）</td>
+      </tr>
       <tr><td><kbd>Ctrl</kbd> + <kbd>K</kbd>, <kbd>0</kbd> / <kbd>J</kbd></td><td>摺疊全部 / 展開全部程式碼</td></tr>
     </tbody>
   </table>
@@ -761,6 +816,41 @@
 <section class="slide statement">
   <div class="big-text">讓網頁動起來</div>
   <div class="big-sub">JavaScript —— 從靜態畫面，到可以互動的網頁</div>
+</section>
+
+<!-- 11.5 F12 開發者工具 -->
+<section class="slide">
+  <div class="eyebrow">04 · JavaScript</div>
+  <h1>F12 開發者工具 — 四個必學分頁</h1>
+  <div class="title-rule"></div>
+  <p class="lead">按 <kbd>F12</kbd>（或 <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>I</kbd>）打開開發者工具 —— 前端工程師的儀表板。</p>
+  <div class="quad-grid">
+    <div class="tri-card">
+      <div class="n">01</div>
+      <div class="en">Console</div>
+      <h3>主控台</h3>
+      <p>印出訊息與錯誤、直接執行 JavaScript —— <code>console.log()</code> 的舞台，最常用的 debug 工具。</p>
+    </div>
+    <div class="tri-card">
+      <div class="n">02</div>
+      <div class="en">Elements · Styles</div>
+      <h3>元素與樣式</h3>
+      <p>檢視整頁 HTML 結構，<strong>即時修改 CSS</strong> 馬上看效果，不用存檔重整。</p>
+    </div>
+    <div class="tri-card">
+      <div class="n">03</div>
+      <div class="en">Network</div>
+      <h3>網路請求</h3>
+      <p>觀察所有請求（圖片、API），看載入時間與回應內容 —— 排查「載不出來 / 變慢」。</p>
+    </div>
+    <div class="tri-card">
+      <div class="n">04</div>
+      <div class="en">CSS Overview</div>
+      <h3>CSS 總覽</h3>
+      <p>一鍵分析整頁的顏色、字型與<strong>未使用的樣式</strong>，快速幫網站做設計健檢。</p>
+    </div>
+  </div>
+  <div class="page-section">04 · JavaScript</div>
 </section>
 
 <!-- 12. 基礎 JavaScript（### 基礎javascript） -->
