@@ -1039,6 +1039,77 @@
   <div class="page-section">03 · 後端科普</div>
 </section>
 
+<!-- 11b. 看懂別人的 API（上）：先讀網址 -->
+<section class="slide">
+  <div class="eyebrow">03 · 後端科普</div>
+  <h1>怎麼看懂別人的 API？<span style="font-size:16pt; color:var(--muted); font-weight:500;">　上 · 先讀網址</span></h1>
+  <div class="title-rule"></div>
+  <p class="lead">很多服務都開放公開 API —— 學會「讀」它，你就能直接拿別人的資料來用。以 Chess.com（西洋棋）查某位玩家的對局為例：</p>
+  <div class="url-viz" style="font-size:16pt;"><span class="u-proto">https://</span><span class="u-host">api.chess.com</span><span class="u-path">/pub/player/ttdragon0722/games/2026/05</span></div>
+  <div class="history-grid" style="grid-template-columns: 1.1fr 1fr; align-items: start; gap: 9mm;">
+    <div>
+      <h3>① 網址一段一段拆開看</h3>
+      <table style="font-size: 11.5pt;">
+        <tbody>
+          <tr><td><code class="u-host">api.chess.com</code></td><td>專門放 API 的主機</td></tr>
+          <tr><td><code class="u-path">/pub</code></td><td>公開資料（public）</td></tr>
+          <tr><td><code class="u-path">/player/ttdragon0722</code></td><td>哪一位玩家</td></tr>
+          <tr><td><code class="u-path">/games/2026/05</code></td><td>2026 年 5 月的對局</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <h3>② 讀網址其實在問三件事</h3>
+      <ul>
+        <li><strong>去哪裡？</strong>　主機 <code class="u-host">api.chess.com</code></li>
+        <li><strong>要什麼？</strong>　路徑 <code class="u-path">/player/.../games</code></li>
+        <li><strong>哪一筆？</strong>　參數 <code class="u-path">/2026/05</code></li>
+      </ul>
+      <p class="note" style="margin-top:4mm;">公開 API 直接把網址貼進<strong>瀏覽器</strong>就看得到 —— 不用先寫程式。</p>
+    </div>
+  </div>
+  <blockquote>心法（上）：<strong>網址</strong>就是一句指令 —— 把路徑一段一段拆開，「它想給你什麼」大概就猜到一半了。</blockquote>
+  <div class="page-section">03 · 後端科普</div>
+</section>
+
+<!-- 11c. 看懂別人的 API（下）：看懂回傳的 JSON -->
+<section class="slide">
+  <div class="eyebrow">03 · 後端科普</div>
+  <h1>怎麼看懂別人的 API？<span style="font-size:16pt; color:var(--muted); font-weight:500;">　下 · 看懂回傳</span></h1>
+  <div class="title-rule"></div>
+  <p class="lead">把上一頁的網址打開後，後端會回給你一包 JSON。重點不是「全部看懂」，而是<strong>抓出你要的欄位</strong>。</p>
+  <div class="history-grid" style="grid-template-columns: 1.05fr 1fr; align-items: start; gap: 9mm;">
+    <div>
+      <h3>③ 它回傳的 JSON 長這樣</h3>
+      <pre class="json-pre" style="font-size: 10.5pt;"><code><span class="json-punct">{</span>
+  <span class="json-key">"games"</span><span class="json-punct">: [</span>
+    <span class="json-punct">{</span>
+      <span class="json-key">"url"</span><span class="json-punct">:</span> <span class="json-str">"chess.com/game/live/169.."</span><span class="json-punct">,</span>
+      <span class="json-key">"time_class"</span><span class="json-punct">:</span> <span class="json-str">"blitz"</span><span class="json-punct">,</span>
+      <span class="json-key">"rated"</span><span class="json-punct">:</span> <span class="json-num">true</span><span class="json-punct">,</span>
+      <span class="json-key">"white"</span><span class="json-punct">: {</span>
+        <span class="json-key">"username"</span><span class="json-punct">:</span> <span class="json-str">"ttdragon0722"</span><span class="json-punct">,</span>
+        <span class="json-key">"rating"</span><span class="json-punct">:</span> <span class="json-num">322</span><span class="json-punct">,</span>
+        <span class="json-key">"result"</span><span class="json-punct">:</span> <span class="json-str">"win"</span>
+      <span class="json-punct">},</span>
+      <span class="json-key">"black"</span><span class="json-punct">: {</span> <span class="json-punct">...</span> <span class="json-punct">}</span>
+    <span class="json-punct">}</span>
+  <span class="json-punct">]</span>
+<span class="json-punct">}</span></code></pre>
+    </div>
+    <div>
+      <h3>④ 怎麼讀懂這些欄位</h3>
+      <ul>
+        <li>看<strong>欄位名</strong>猜意義：<code>rating</code>(分數)、<code>result</code>(勝負) 一看就懂</li>
+        <li>看<strong>外層結構</strong>：最外面是 <code>games</code> 陣列 <code>[ ]</code> —— 一筆筆對局</li>
+        <li>注意<strong>巢狀</strong>：<code>white</code> / <code>black</code> 底下還各包一個物件</li>
+        <li>看不懂就查<strong>官方文件</strong>（Chess.com 有 Published-Data API）</li>
+      </ul>
+    </div>
+  </div>
+  <div class="page-section">03 · 後端科普</div>
+</section>
+
 <!-- 12. 重點總結（過場大字） -->
 <section class="slide statement">
   <div class="big-text">重點總結</div>

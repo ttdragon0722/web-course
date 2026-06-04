@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "name": "Rex",
+    "birthday": "1995-07-22",
+    "height": 180,
+    "weight": 60
+  },
+  {
+    "id": 2,
+    "name": "Lawrence",
+    "birthday": "1998-03-15",
+    "height": 172,
+    "weight": 68
+  },
+  {
+    "name": "小名",
+    "birthday": "2000-01-01",
+    "height": 180.0,
+    "weight": 50.0,
+    "id": 3
+  },
+  {
+    "name": "kkk",
+    "birthday": "2007-7-22",
+    "height": 169.0,
+    "weight": 87.0,
+    "id": 4
+  }
+]

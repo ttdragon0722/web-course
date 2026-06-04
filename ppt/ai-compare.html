@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>四大 AI 助手比較 — ChatGPT · Gemini · Claude · Codex</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --text: #1a1a1a;
+    --muted: #6b7280;
+    --line: #e5e7eb;
+    --bg: #fafafa;
+    --accent: #111;
+    --code-bg: #f3f4f6;
+    --good: #059669;
+    --bad: #dc2626;
+  }
+
+  html, body {
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+                 "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  .slide {
+    width: 297mm;
+    height: 210mm;
+    margin: 16px auto;
+    background: #fff;
+    padding: 22mm 26mm;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    page-break-after: always;
+    break-after: page;
+  }
+  .slide:last-child { page-break-after: auto; break-after: auto; }
+
+  .eyebrow {
+    font-size: 11pt;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8mm;
+    font-weight: 500;
+  }
+
+  h1 {
+    font-size: 32pt;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    margin-bottom: 6mm;
+  }
+  h2 { font-size: 18pt; font-weight: 600; margin: 4mm 0 3mm; }
+  h3 { font-size: 14pt; font-weight: 600; margin: 3mm 0 2mm; color: #374151; }
+
+  .title-rule {
+    width: 56px;
+    height: 3px;
+    background: var(--accent);
+    margin-bottom: 8mm;
+    border-radius: 2px;
+  }
+
+  p, li { font-size: 13pt; line-height: 1.7; color: #2d2d2d; }
+
+  ul { padding-left: 6mm; margin: 2mm 0; }
+  ul li {
+    margin-bottom: 2mm;
+    list-style: none;
+    position: relative;
+    padding-left: 5mm;
+  }
+  ul li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 11pt;
+    width: 5px;
+    height: 5px;
+    background: var(--text);
+    border-radius: 50%;
+  }
+
+  code {
+    background: var(--code-bg);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: "JetBrains Mono", "Fira Code", Consolas, monospace;
+    font-size: 11pt;
+    color: #111;
+  }
+
+  table { border-collapse: collapse; width: 100%; margin: 3mm 0; font-size: 11.5pt; }
+  th, td { padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { background: #f9fafb; font-weight: 600; border-bottom: 2px solid #d1d5db; }
+  tr:last-child td { border-bottom: none; }
+
+  blockquote {
+    border-left: 3px solid var(--text);
+    padding: 3mm 6mm;
+    margin: 4mm 0;
+    color: #4b5563;
+    background: #fafafa;
+    font-size: 12pt;
+  }
+
+  .lead { font-size: 14pt; color: #374151; margin-bottom: 4mm; line-height: 1.7; }
+
+  .note { font-size: 11pt; color: var(--muted); font-style: italic; margin-top: auto; }
+
+  /* 封面 */
+  .cover { justify-content: center; align-items: flex-start; padding: 30mm 26mm; }
+  .cover .day-tag {
+    font-size: 14pt; color: var(--muted); letter-spacing: 0.3em;
+    margin-bottom: 8mm; font-weight: 500;
+  }
+  .cover h1 {
+    font-size: 44pt; font-weight: 700; line-height: 1.25;
+    letter-spacing: -0.02em; margin-bottom: 10mm;
+  }
+  .cover .subtitle { font-size: 14pt; color: var(--muted); line-height: 1.7; max-width: 200mm; }
+  .cover .footer-line {
+    position: absolute; bottom: 22mm; left: 26mm; right: 26mm;
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 5mm; border-top: 1px solid var(--line);
+    font-size: 10pt; color: var(--muted);
+  }
+
+  /* 頁碼 / 頁腳 */
+  .page-num {
+    position: absolute; bottom: 10mm; right: 14mm;
+    font-size: 9pt; color: var(--muted); letter-spacing: 0.1em;
+  }
+  .page-section {
+    position: absolute; bottom: 10mm; left: 14mm;
+    font-size: 9pt; color: var(--muted); letter-spacing: 0.05em;
+  }
+
+  /* 大字過場 */
+  .statement { justify-content: center; align-items: center; text-align: center; }
+  .statement .big-text { font-size: 60pt; font-weight: 700; letter-spacing: -0.02em; line-height: 1.18; }
+  .statement .big-sub { font-size: 15pt; color: var(--muted); margin-top: 8mm; max-width: 200mm; }
+
+  /* keyword 膠囊 */
+  .kw {
+    display: inline-block; background: var(--code-bg); color: #111;
+    padding: 2px 10px; border-radius: 4px;
+    font-family: "JetBrains Mono", Consolas, monospace;
+    font-size: 11pt; font-weight: 500;
+  }
+  .kw.dark { background: #111; color: #fff; }
+
+  /* AI 介紹頁：左規格表 + 右重點 */
+  .ai-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.25fr;
+    gap: 12mm;
+    flex: 1;
+    min-height: 0;
+    align-items: start;
+  }
+  .spec-table td { font-size: 11.5pt; padding: 6px 0; border-bottom: 1px solid var(--line); }
+  .spec-table td:first-child { color: var(--muted); width: 30mm; white-space: nowrap; }
+  .spec-table tr:last-child td { border-bottom: none; }
+
+  /* 優缺點兩欄 */
+  .proscons { display: grid; grid-template-columns: 1fr 1fr; gap: 8mm; margin-top: 3mm; }
+  .pc-box { border: 1px solid var(--line); border-radius: 6px; padding: 4mm 5mm; }
+  .pc-box h3 { margin-top: 0; }
+  .pc-box.good h3 { color: var(--good); }
+  .pc-box.bad h3 { color: var(--bad); }
+  .pc-box ul li { font-size: 11.5pt; margin-bottom: 1.5mm; }
+
+  /* 廠商徽章 */
+  .vendor {
+    display: inline-block; font-size: 10pt; color: var(--muted);
+    letter-spacing: 0.08em; margin-bottom: 2mm;
+  }
+
+  /* Agent 流程圖（SVG） */
+  .flow { flex: 1; display: flex; align-items: center; justify-content: center; min-height: 0; margin-top: 2mm; }
+  .flow svg { width: 100%; height: auto; max-height: 150mm; }
+  .flow text {
+    font-family: "Inter", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+    text-anchor: middle; dominant-baseline: middle;
+  }
+  .fn-title { font-size: 16px; font-weight: 600; fill: #1a1a1a; }
+  .fn-sub { font-size: 11px; fill: #6b7280; }
+  .fn-title.on-dark { fill: #fff; }
+  .fn-sub.on-dark { fill: #d1d5db; }
+  .edge-label { font-size: 12.5px; font-weight: 600; fill: #4b5563; }
+  .loop-cap { font-size: 13.5px; font-weight: 600; fill: #111; }
+  .loop-sub { font-size: 11px; fill: #6b7280; }
+
+  .node-box { fill: #fff; stroke: #111; stroke-width: 1.5; }
+  .node-box.dark { fill: #111; }
+  .node-diamond { fill: #f9fafb; stroke: #111; stroke-width: 1.5; }
+
+  /* 節點淡入、連線描繪動畫（畫圖的動作） */
+  @keyframes nodeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes drawLine { to { stroke-dashoffset: 0; } }
+  @keyframes edgeFade { to { opacity: 1; } }
+  @keyframes dashFlow { to { stroke-dashoffset: -26; } }
+
+  .flow-node { opacity: 0; animation: nodeIn 0.5s ease forwards; }
+  .edge {
+    fill: none; stroke: #111; stroke-width: 1.6;
+    stroke-dasharray: 1000; stroke-dashoffset: 1000;
+    animation: drawLine 0.9s ease forwards;
+  }
+  .edge.loop {
+    stroke: #6b7280; stroke-width: 1.6; fill: none;
+    stroke-dasharray: 7 6; stroke-dashoffset: 0; opacity: 0;
+    animation: edgeFade 0.4s ease forwards, dashFlow 0.9s linear infinite;
+  }
+
+  @page { size: A4 landscape; margin: 0; }
+  @media print {
+    html, body { background: #fff; }
+    .slide { margin: 0; box-shadow: none; width: 297mm; height: 210mm; page-break-after: always; break-after: page; }
+    .slide:last-child { page-break-after: auto; }
+    .flow-node, .edge, .edge.loop { opacity: 1 !important; stroke-dashoffset: 0 !important; animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 1. 封面 -->
+<section class="slide cover">
+  <div class="day-tag">AI TOOLS · 2026</div>
+  <h1>四大 AI 助手<br>誰是你的最佳拍檔？</h1>
+  <div class="subtitle">
+    ChatGPT · Gemini · Claude · Codex<br>
+    從定位、強項到適用場景，一次看懂 2026 年最熱門的四個 AI
+  </div>
+  <div class="footer-line">
+    <span>AI 助手比較 · 2026 年中</span>
+    <span>2026</span>
+  </div>
+</section>
+
+<!-- 2. 過場大字 -->
+<section class="slide statement">
+  <div class="big-text">不是「哪個最強」</div>
+  <div class="big-sub">而是「哪個最適合你現在要做的事」—— 四個 AI 各有擅長的舞台</div>
+</section>
+
+<!-- 3. 總覽表 -->
+<section class="slide">
+  <div class="eyebrow">01 · 總覽</div>
+  <h1>四大 AI 一覽</h1>
+  <div class="title-rule"></div>
+  <p class="lead">同樣都是聊天式 AI，但背後的公司、定位與性格截然不同。</p>
+  <table>
+    <thead>
+      <tr>
+        <th>產品</th>
+        <th>開發者</th>
+        <th>定位</th>
+        <th>最擅長</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="kw dark">ChatGPT</span></td>
+        <td>OpenAI</td>
+        <td>全能型通用助手</td>
+        <td>生態最大、上手最快、樣樣都行</td>
+      </tr>
+      <tr>
+        <td><span class="kw dark">Gemini</span></td>
+        <td>Google DeepMind</td>
+        <td>多模態 × Google 生態</td>
+        <td>超長文件、搜尋整合、影音生成</td>
+      </tr>
+      <tr>
+        <td><span class="kw dark">Claude</span></td>
+        <td>Anthropic</td>
+        <td>寫作與程式的職人</td>
+        <td>長文寫作、程式碼、安全可靠</td>
+      </tr>
+      <tr>
+        <td><span class="kw dark">Codex</span></td>
+        <td>OpenAI</td>
+        <td>自主編碼代理（Agent）</td>
+        <td>幫你「動手寫程式、開 PR」</td>
+      </tr>
+    </tbody>
+  </table>
+  <blockquote>前三個是「跟你對話的助手」，Codex 比較像「替你工作的工程師」—— 定位層級不同。</blockquote>
+  <div class="page-section">01 · 總覽</div>
+</section>
+
+<!-- 4. ChatGPT -->
+<section class="slide">
+  <div class="eyebrow">02 · ChatGPT</div>
+  <h1>ChatGPT</h1>
+  <div class="title-rule"></div>
+  <div class="ai-grid">
+    <div>
+      <div class="vendor">OpenAI · 2022 年底問世</div>
+      <table class="spec-table">
+        <tr><td>代表模型</td><td>GPT-5 系列（含 mini / nano）</td></tr>
+        <tr><td>強項</td><td>通用問答、多模態、語音對話</td></tr>
+        <tr><td>特色功能</td><td>記憶、Canvas、GPTs、深度研究</td></tr>
+        <tr><td>定價</td><td>免費版＋Plus / Pro / Team 訂閱</td></tr>
+        <tr><td>一句話</td><td>最大眾、最安全的第一選擇</td></tr>
+      </table>
+    </div>
+    <div>
+      <h3>為什麼大家先想到它</h3>
+      <ul>
+        <li>使用者與外掛生態最龐大，遇到問題最好查</li>
+        <li>文字、圖像、語音、檔案一站式整合</li>
+        <li><span class="kw">深度研究</span>能自動上網查證、產出長篇報告</li>
+        <li>可建立自訂 <span class="kw">GPTs</span> 打造專屬小助手</li>
+      </ul>
+      <div class="proscons">
+        <div class="pc-box good">
+          <h3>優勢</h3>
+          <ul><li>通用能力均衡</li><li>新手最易上手</li><li>生態與資源最多</li></ul>
+        </div>
+        <div class="pc-box bad">
+          <h3>取捨</h3>
+          <ul><li>進階功能要付費</li><li>長文不如對手穩</li></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-section">02 · ChatGPT</div>
+</section>
+
+<!-- 5. Gemini -->
+<section class="slide">
+  <div class="eyebrow">03 · Gemini</div>
+  <h1>Gemini</h1>
+  <div class="title-rule"></div>
+  <div class="ai-grid">
+    <div>
+      <div class="vendor">Google DeepMind</div>
+      <table class="spec-table">
+        <tr><td>代表模型</td><td>Gemini 2.5 / 3 系列（Pro · Flash）</td></tr>
+        <tr><td>強項</td><td>超長 context、原生多模態</td></tr>
+        <tr><td>特色功能</td><td>整合搜尋、Workspace、Veo 影片</td></tr>
+        <tr><td>定價</td><td>免費版＋AI Pro / Ultra 訂閱</td></tr>
+        <tr><td>一句話</td><td>Google 生態裡的萬能放大鏡</td></tr>
+      </table>
+    </div>
+    <div>
+      <h3>它的獨門武器</h3>
+      <ul>
+        <li>可一次吞下整本書／數小時影片（百萬 token 級）</li>
+        <li>原生看懂文字、圖片、音訊、影片</li>
+        <li>直接接 <span class="kw">Gmail / Docs / 搜尋</span>，查最新資料</li>
+        <li>生圖（Imagen）、生影片（Veo）一條龍</li>
+      </ul>
+      <div class="proscons">
+        <div class="pc-box good">
+          <h3>優勢</h3>
+          <ul><li>長文件分析無敵</li><li>連動 Google 服務</li><li>多模態最完整</li></ul>
+        </div>
+        <div class="pc-box bad">
+          <h3>取捨</h3>
+          <ul><li>回答風格較不穩</li><li>最強功能綁 Google 帳號</li></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-section">03 · Gemini</div>
+</section>
+
+<!-- 6. Claude -->
+<section class="slide">
+  <div class="eyebrow">04 · Claude</div>
+  <h1>Claude</h1>
+  <div class="title-rule"></div>
+  <div class="ai-grid">
+    <div>
+      <div class="vendor">Anthropic</div>
+      <table class="spec-table">
+        <tr><td>代表模型</td><td>Claude Opus 4.8 · Sonnet 4.6 · Haiku 4.5</td></tr>
+        <tr><td>強項</td><td>長文寫作、程式碼、推理</td></tr>
+        <tr><td>特色功能</td><td>Artifacts、MCP、Claude Code</td></tr>
+        <tr><td>定價</td><td>免費版＋Pro / Max 訂閱、API</td></tr>
+        <tr><td>一句話</td><td>寫作與工程師最愛的職人型 AI</td></tr>
+      </table>
+    </div>
+    <div>
+      <h3>它為什麼受專業使用者偏好</h3>
+      <ul>
+        <li>文風自然、長文邏輯連貫，最像「會寫字的人」</li>
+        <li>程式能力頂尖，<span class="kw">Claude Code</span> 可在終端機自主開發</li>
+        <li><span class="kw">Artifacts</span> 即時產生可預覽的網頁／元件</li>
+        <li>以安全與誠實為設計核心，較少胡亂編造</li>
+      </ul>
+      <div class="proscons">
+        <div class="pc-box good">
+          <h3>優勢</h3>
+          <ul><li>寫作品質最佳</li><li>編碼能力頂尖</li><li>回答穩定可靠</li></ul>
+        </div>
+        <div class="pc-box bad">
+          <h3>取捨</h3>
+          <ul><li>無原生生圖／影片</li><li>台灣知名度較低</li></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-section">04 · Claude</div>
+</section>
+
+<!-- 7. Codex -->
+<section class="slide">
+  <div class="eyebrow">05 · Codex</div>
+  <h1>Codex</h1>
+  <div class="title-rule"></div>
+  <div class="ai-grid">
+    <div>
+      <div class="vendor">OpenAI · 編碼代理</div>
+      <table class="spec-table">
+        <tr><td>類型</td><td>自主編碼 Agent（非聊天助手）</td></tr>
+        <tr><td>底層模型</td><td>GPT-5 系列之程式特化版</td></tr>
+        <tr><td>運作方式</td><td>雲端沙箱 / CLI，自動跑任務</td></tr>
+        <tr><td>產出</td><td>直接改檔、跑測試、開 Pull Request</td></tr>
+        <tr><td>一句話</td><td>不是陪你聊，是替你寫程式</td></tr>
+      </table>
+    </div>
+    <div>
+      <h3>它和前三者哪裡不同</h3>
+      <ul>
+        <li>給它一個任務，它能<strong>自己讀程式碼、改、測試</strong></li>
+        <li>在隔離沙箱中執行，平行處理多個任務</li>
+        <li>整合 GitHub，完成後直接送出 <span class="kw">PR</span></li>
+        <li>對標 Claude Code，是「AI 工程師」之爭</li>
+      </ul>
+      <div class="proscons">
+        <div class="pc-box good">
+          <h3>優勢</h3>
+          <ul><li>自動化開發流程</li><li>可平行多任務</li><li>省下重複工</li></ul>
+        </div>
+        <div class="pc-box bad">
+          <h3>取捨</h3>
+          <ul><li>僅適合寫程式</li><li>需要技術背景</li></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-section">05 · Codex</div>
+</section>
+
+<!-- 8. Agent 流程圖 -->
+<section class="slide">
+  <div class="eyebrow">06 · Agent 運作</div>
+  <h1>Agent 是怎麼運作的？</h1>
+  <div class="title-rule"></div>
+  <p class="lead">像 Codex、Claude Code 這類 Agent，核心是一個「思考 → 行動 → 觀察」不斷重複的迴圈。</p>
+  <div class="flow">
+    <svg viewBox="0 0 960 440" role="img" aria-label="Agent ReAct 迴圈流程圖">
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#111"></path>
+        </marker>
+        <marker id="arrowGray" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"></path>
+        </marker>
+      </defs>
+
+      <!-- 連線（描繪動畫） -->
+      <path class="edge" style="animation-delay:0.30s" d="M200,91 L262,91" marker-end="url(#arrow)"></path>
+      <path class="edge" style="animation-delay:0.75s" d="M450,91 L552,91" marker-end="url(#arrow)"></path>
+      <path class="edge" style="animation-delay:1.20s" d="M720,91 L784,91" marker-end="url(#arrow)"></path>
+      <path class="edge" style="animation-delay:1.20s" d="M640,149 L640,292" marker-end="url(#arrow)"></path>
+      <path class="edge" style="animation-delay:1.70s" d="M548,343 L460,343" marker-end="url(#arrow)"></path>
+      <!-- 回流迴圈（虛線流動） -->
+      <path class="edge loop" style="animation-delay:2.10s" d="M360,300 L360,142" marker-end="url(#arrowGray)"></path>
+
+      <!-- 連線標籤 -->
+      <text class="edge-label flow-node" style="animation-delay:1.20s" x="752" y="78">是</text>
+      <text class="edge-label flow-node" style="animation-delay:1.30s" x="660" y="224">否</text>
+      <text class="edge-label flow-node" style="animation-delay:1.85s" x="504" y="330">取得結果</text>
+      <text class="edge-label flow-node" style="animation-delay:2.30s" x="326" y="212">再思考</text>
+
+      <!-- 節點 A：使用者任務 -->
+      <g class="flow-node" style="animation-delay:0s">
+        <rect class="node-box" x="30" y="55" width="170" height="72" rx="8"></rect>
+        <text class="fn-title" x="115" y="84">使用者任務</text>
+        <text class="fn-sub" x="115" y="105">輸入目標 / 問題</text>
+      </g>
+
+      <!-- 節點 B：推理（核心，深色強調） -->
+      <g class="flow-node" style="animation-delay:0.45s">
+        <rect class="node-box dark" x="270" y="48" width="180" height="86" rx="8"></rect>
+        <text class="fn-title on-dark" x="360" y="84">推理 · 規劃</text>
+        <text class="fn-sub on-dark" x="360" y="105">LLM 大腦：拆解、決策</text>
+      </g>
+
+      <!-- 節點 C：判斷（菱形） -->
+      <g class="flow-node" style="animation-delay:0.90s">
+        <polygon class="node-diamond" points="640,33 720,91 640,149 560,91"></polygon>
+        <text class="fn-title" x="640" y="91">任務完成？</text>
+      </g>
+
+      <!-- 節點 F：最終答案 -->
+      <g class="flow-node" style="animation-delay:1.35s">
+        <rect class="node-box" x="792" y="55" width="150" height="72" rx="8"></rect>
+        <text class="fn-title" x="867" y="84">產出最終答案</text>
+        <text class="fn-sub" x="867" y="105">回傳結果</text>
+      </g>
+
+      <!-- 節點 D：行動 / 工具 -->
+      <g class="flow-node" style="animation-delay:1.50s">
+        <rect class="node-box" x="548" y="300" width="184" height="86" rx="8"></rect>
+        <text class="fn-title" x="640" y="332">行動：呼叫工具</text>
+        <text class="fn-sub" x="640" y="355">搜尋 · 程式 · API · 檔案</text>
+      </g>
+
+      <!-- 節點 E：觀察 -->
+      <g class="flow-node" style="animation-delay:1.90s">
+        <rect class="node-box" x="268" y="300" width="184" height="86" rx="8"></rect>
+        <text class="fn-title" x="360" y="332">觀察結果</text>
+        <text class="fn-sub" x="360" y="355">讀取工具回傳</text>
+      </g>
+
+      <!-- 中央迴圈說明 -->
+      <g class="flow-node" style="animation-delay:2.40s">
+        <text class="loop-cap" x="500" y="205">ReAct 迴圈</text>
+        <text class="loop-sub" x="500" y="228">思考 → 行動 → 觀察，重複到完成</text>
+      </g>
+    </svg>
+  </div>
+  <div class="page-section">06 · Agent 運作</div>
+</section>
+
+<!-- 9. 選用建議 -->
+<section class="slide">
+  <div class="eyebrow">07 · 結論</div>
+  <h1>那我該用哪一個？</h1>
+  <div class="title-rule"></div>
+  <p class="lead">與其糾結，不如照「你要做什麼」來挑。</p>
+  <table>
+    <thead>
+      <tr><th>如果你想……</th><th>首選</th><th>原因</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>什麼都問，要一個全能助手</td><td><span class="kw dark">ChatGPT</span></td><td>均衡好用、生態最大</td></tr>
+      <tr><td>分析超長文件、影片或查最新資料</td><td><span class="kw dark">Gemini</span></td><td>超長 context＋Google 整合</td></tr>
+      <tr><td>認真寫文章、寫程式、要穩定</td><td><span class="kw dark">Claude</span></td><td>寫作與編碼品質最佳</td></tr>
+      <tr><td>讓 AI 自己動手開發、交付程式碼</td><td><span class="kw dark">Codex</span></td><td>自主編碼代理</td></tr>
+    </tbody>
+  </table>
+  <blockquote>最務實的做法：免費版都試一輪，把不同任務交給各自最擅長的 AI —— 它們不是敵人，是你的一套工具箱。</blockquote>
+  <div class="note">＊ 模型版本與功能以 2026 年中為準，各家更新頻繁，實際以官方為準。</div>
+  <div class="page-section">07 · 結論</div>
+</section>
+
+<script src="script.js"></script>
+</body>
+</html>

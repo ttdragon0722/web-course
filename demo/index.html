@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>用戶 CRUD — 前端模擬</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Segoe UI", "Microsoft JhengHei", system-ui, sans-serif;
+    background: #f4f5f7; color: #1a1a1a; line-height: 1.6;
+    padding: 32px 16px; max-width: 760px; margin: 0 auto;
+  }
+  h1 { font-size: 24px; margin-bottom: 4px; }
+  .sub { color: #6b7280; font-size: 14px; margin-bottom: 24px; }
+
+  /* 連線狀態 */
+  .api-bar {
+    font-size: 12px; color: #6b7280; background: #fff;
+    border: 1px solid #e5e7eb; border-radius: 8px;
+    padding: 8px 12px; margin-bottom: 20px;
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: #9ca3af; }
+  .dot.ok { background: #059669; }
+  .dot.err { background: #dc2626; }
+  .api-bar code { background: #f3f4f6; padding: 1px 6px; border-radius: 4px; }
+
+  /* 新增表單 */
+  form {
+    background: #fff; border: 1px solid #e5e7eb; border-radius: 10px;
+    padding: 16px; margin-bottom: 24px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  form h2 { grid-column: 1 / -1; font-size: 15px; color: #374151; }
+  form label { font-size: 12px; color: #6b7280; display: block; margin-bottom: 3px; }
+  form input {
+    width: 100%; padding: 8px 10px; font-size: 14px;
+    border: 1px solid #d1d5db; border-radius: 6px;
+  }
+  form input:focus { outline: 2px solid #93c5fd; border-color: #93c5fd; }
+  form button {
+    grid-column: 1 / -1; padding: 10px; font-size: 14px; font-weight: 600;
+    color: #fff; background: #111; border: none; border-radius: 6px; cursor: pointer;
+  }
+  form button:hover { background: #333; }
+
+  /* 訊息 */
+  #msg { font-size: 13px; margin-bottom: 16px; min-height: 18px; }
+  #msg.ok { color: #059669; }
+  #msg.err { color: #dc2626; }
+
+  /* 卡片 */
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+  .card {
+    background: #fff; border: 1px solid #e5e7eb; border-radius: 10px;
+    padding: 14px 16px; position: relative;
+  }
+  .card .id { font-size: 11px; color: #9ca3af; }
+  .card .name { font-size: 17px; font-weight: 700; margin: 2px 0 8px; }
+  .card .row { font-size: 13px; color: #4b5563; }
+  .card .row b { color: #111; font-weight: 600; }
+  .card .del {
+    position: absolute; top: 10px; right: 10px;
+    width: 24px; height: 24px; border: none; border-radius: 6px;
+    background: #fee2e2; color: #b91c1c; cursor: pointer; font-size: 14px; line-height: 1;
+  }
+  .card .del:hover { background: #fecaca; }
+  .empty { color: #9ca3af; font-size: 14px; padding: 20px 0; text-align: center; }
+</style>
+</head>
+<body>
+
+  <h1>用戶 CRUD — 前端模擬</h1>
+  <p class="sub">這頁示範「前端 → API → 後端 → JSON → 前端更新畫面」的完整流程。</p>
+
+  <div class="api-bar">
+    <span class="dot" id="dot"></span>
+    <span>API：<code id="apiBase"></code></span>
+    <span id="apiState">連線中…</span>
+  </div>
+
+  <!-- 新增（POST /users） -->
+  <form id="addForm">
+    <h2>➕ 新增用戶</h2>
+    <div>
+      <label>名字</label>
+      <input name="name" placeholder="小明" required>
+    </div>
+    <div>
+      <label>出生年月日</label>
+      <input name="birthday" placeholder="2000-01-01" required>
+    </div>
+    <div>
+      <label>身高（cm）</label>
+      <input name="height" type="number" step="0.1" placeholder="170" required>
+    </div>
+    <div>
+      <label>體重（kg）</label>
+      <input name="weight" type="number" step="0.1" placeholder="65" required>
+    </div>
+    <button type="submit">送出（POST /users）</button>
+  </form>
+
+  <div id="msg"></div>
+
+  <!-- 用戶清單（GET /users） -->
+  <div class="cards" id="cards"></div>
+
+<script>
+  // ── 設定 API 位置 ──────────────────────────────
+  // 用 file:// 直接開這個檔時，連到本機後端；
+  // 若是被 FastAPI 服務（http://127.0.0.1:8000/app），就用同源網址。
+  const API_BASE = location.protocol === "file:"
+    ? "http://127.0.0.1:8000"
+    : location.origin;
+
+  document.getElementById("apiBase").textContent = API_BASE;
+
+  const $cards = document.getElementById("cards");
+  const $msg = document.getElementById("msg");
+
+  // 顯示訊息（成功綠色 / 失敗紅色）
+  function showMsg(text, ok = true) {
+    $msg.textContent = text;
+    $msg.className = ok ? "ok" : "err";
+    if (text) setTimeout(() => { $msg.textContent = ""; $msg.className = ""; }, 3000);
+  }
+
+  // 更新右上角連線狀態
+  function setState(ok) {
+    const dot = document.getElementById("dot");
+    const state = document.getElementById("apiState");
+    dot.className = "dot " + (ok ? "ok" : "err");
+    state.textContent = ok ? "已連線" : "連不到後端，請先啟動 uvicorn";
+  }
+
+  // ── Read：抓全部用戶並畫成卡片 ──────────────────
+  async function loadUsers() {
+    try {
+      const res = await fetch(`${API_BASE}/users`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const users = await res.json();
+      setState(true);
+      renderUsers(users);
+    } catch (err) {
+      setState(false);
+      $cards.innerHTML = `<div class="empty">無法載入資料：${err.message}</div>`;
+    }
+  }
+
+  function renderUsers(users) {
+    if (users.length === 0) {
+      $cards.innerHTML = `<div class="empty">目前沒有用戶，從上面新增一筆吧！</div>`;
+      return;
+    }
+    // 不直接操作舊節點，整段重畫
+    $cards.innerHTML = users.map(u => `
+      <div class="card">
+        <button class="del" title="刪除" onclick="removeUser(${u.id})">✕</button>
+        <div class="id">id #${u.id}</div>
+        <div class="name">${escapeHtml(u.name)}</div>
+        <div class="row">生日：<b>${escapeHtml(u.birthday)}</b></div>
+        <div class="row">身高：<b>${u.height}</b> cm</div>
+        <div class="row">體重：<b>${u.weight}</b> kg</div>
+      </div>
+    `).join("");
+  }
+
+  // ── Create：送表單到 POST /users ────────────────
+  document.getElementById("addForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const payload = {
+      name: form.name.value.trim(),
+      birthday: form.birthday.value.trim(),
+      height: parseFloat(form.height.value),
+      weight: parseFloat(form.weight.value),
+    };
+    try {
+      const res = await fetch(`${API_BASE}/users`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const created = await res.json();
+      showMsg(`已新增 ${created.name}（id #${created.id}）`, true);
+      form.reset();
+      loadUsers();
+    } catch (err) {
+      showMsg(`新增失敗：${err.message}`, false);
+    }
+  });
+
+  // ── Delete：DELETE /users/{id} ─────────────────
+  async function removeUser(id) {
+    if (!confirm(`確定刪除 id #${id}？`)) return;
+    try {
+      const res = await fetch(`${API_BASE}/users/${id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      showMsg(`已刪除 id #${id}`, true);
+      loadUsers();
+    } catch (err) {
+      showMsg(`刪除失敗：${err.message}`, false);
+    }
+  }
+
+  // 防 XSS：把使用者輸入的字元轉義再塞進 HTML
+  function escapeHtml(str) {
+    return String(str).replace(/[&<>"']/g, c => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+    }[c]));
+  }
+
+  // 進頁面先載入一次
+  loadUsers();
+</script>
+</body>
+</html>
