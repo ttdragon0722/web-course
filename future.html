@@ -571,6 +571,80 @@
   .sum-banner .b-desc { font-size: 11pt; color: #cbd5e1; line-height: 1.6; }
   .sum-banner .b-desc strong { color: #fff; }
 
+  /* ── 實作（動手做）── */
+  .task-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8mm;
+    margin-top: 2mm;
+    min-height: 0;
+  }
+  .task-panel {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  .task-panel .tp-head {
+    font-size: 13pt; font-weight: 700;
+    padding: 3.5mm 6mm; border-bottom: 1px solid var(--line);
+  }
+  .task-panel.must  .tp-head { background: #f0f9ff; color: #0369a1; }
+  .task-panel.bonus .tp-head { background: #fffbeb; color: #b45309; }
+  .task-panel.step  .tp-head { background: #f0f9ff; color: #0369a1; }
+  .task-panel.help  .tp-head { background: #fef2f2; color: #b91c1c; }
+  .task-panel .tp-body { padding: 4mm 6mm; flex: 1; }
+  .task-panel .tp-body ol { margin: 0; }
+  .task-panel .tp-body ol li { font-size: 11.5pt; margin-bottom: 2.5mm; }
+  .task-panel .tp-body ul li { font-size: 11.5pt; }
+
+  .checklist { list-style: none; padding: 0; margin: 0; }
+  .checklist li {
+    list-style: none; position: relative;
+    padding-left: 7mm; margin-bottom: 2.5mm;
+    font-size: 11.5pt; line-height: 1.5; color: #2d2d2d;
+  }
+  .checklist li::before {
+    content: "\2610"; position: absolute; left: 0; top: -1px;
+    width: auto; height: auto; background: none; border-radius: 0;
+    color: #9ca3af; font-size: 12pt;
+  }
+  .checklist .pick {
+    display: block; margin-top: 1.5mm;
+    font-size: 9.5pt; color: var(--muted);
+  }
+  .tag {
+    display: inline-block; background: var(--code-bg); color: #111;
+    font-family: "JetBrains Mono", Consolas, monospace;
+    font-size: 9pt; padding: 1px 6px; border-radius: 4px; margin: 0 1px;
+  }
+
+  /* Prompt 示範框 */
+  .prompt-pre {
+    background: #0f172a; border: 1px solid #1e293b; color: #e2e8f0;
+    border-radius: 8px; padding: 6mm 7mm; margin: 3mm 0 4mm;
+    font-family: "JetBrains Mono", "Fira Code", Consolas, monospace;
+    font-size: 12pt; line-height: 1.8; white-space: pre-wrap;
+  }
+  .prompt-pre .ph { color: #fbbf24; font-weight: 600; }
+  .prompt-pre .cmt { color: #64748b; }
+
+  /* 發表大字報三點 */
+  .present-three {
+    display: flex; gap: 12mm; margin-top: 12mm; justify-content: center;
+  }
+  .present-three .pt { text-align: center; max-width: 64mm; }
+  .present-three .pt .n {
+    font-size: 34pt; font-weight: 700; color: #111; line-height: 1;
+  }
+  .present-three .pt .t { font-size: 15pt; font-weight: 700; margin-top: 3mm; }
+  .present-three .pt .d {
+    font-size: 10.5pt; color: var(--muted); margin-top: 2mm; line-height: 1.55;
+  }
+
   /* 列印優化 */
   @page { size: A4 landscape; margin: 0; }
 
@@ -1033,6 +1107,117 @@
     </div>
   </div>
   <div class="page-section">04 · 重點總結</div>
+</section>
+
+<!-- 14. 實作目標 -->
+<section class="slide">
+  <div class="eyebrow">05 · 動手做</div>
+  <h1>實作目標</h1>
+  <div class="title-rule"></div>
+  <blockquote><strong>主題：</strong>做一個「虛構品牌的單頁官網」—— 手搖飲店、你最愛的遊戲 / 偶像、貓咪咖啡廳、個人作品集……主題自選，挑一個<strong>你有感覺</strong>的。</blockquote>
+  <div class="task-grid">
+    <div class="task-panel must">
+      <div class="tp-head">必做 — 5 關都要過</div>
+      <div class="tp-body">
+        <ul class="checklist">
+          <li>一個 <strong>Navbar</strong>（用到 Tailwind 的 flex / 間距）</li>
+          <li>一個 <strong>Hero Section</strong>（大標題 + slogan + 一個按鈕）</li>
+          <li>至少 <strong>3 張卡片 Card</strong>（排成一排，手機上會換行）</li>
+          <li>一個 <strong>JavaScript 互動</strong>
+            <span class="pick">三選一：選單收合 / 深色模式切換 / 計數器按鈕（+1）</span>
+          </li>
+          <li>用 <strong>Tailwind</strong> 排版，手機、電腦都<strong>不跑版</strong>（RWD）</li>
+        </ul>
+      </div>
+    </div>
+    <div class="task-panel bonus">
+      <div class="tp-head">加分 — 行有餘力再挑戰</div>
+      <div class="tp-body">
+        <ul class="checklist">
+          <li>一個<strong>動畫</strong>（hover 變色、淡入，或試 <span class="tag">GSAP</span> <span class="tag">ScrollTrigger</span>）</li>
+          <li>一個 <strong>Carousel 旋轉木馬</strong></li>
+        </ul>
+        <p class="note" style="margin-top: 4mm;">先把「必做」做完再碰加分；加分沒做不扣分，做了是亮點。</p>
+      </div>
+    </div>
+  </div>
+  <div class="page-section">05 · 動手做</div>
+</section>
+
+<!-- 15. Prompt（講師示範） -->
+<section class="slide">
+  <div class="eyebrow">05 · 動手做</div>
+  <h1>Prompt — 講師示範</h1>
+  <div class="title-rule"></div>
+  <p class="lead">同一個 AI，會不會用差很多 —— 先學「怎麼開口」。給你一個起手式：</p>
+  <div class="prompt-pre">你是一位<span class="ph">資深前端工程師</span>。
+請用 HTML + Tailwind 幫我做一個「<span class="ph">手搖飲店</span>」的單頁網站，
+要包含 <span class="ph">navbar、hero section、3 張卡片</span>。
+<span class="cmt"># 先只給我 HTML 結構，不要 JavaScript —— 我要自己看懂再慢慢加</span></div>
+  <ul>
+    <li><strong>結構化：</strong>先講目標 → 再給細節 → 最後加限制</li>
+    <li><strong>先要「結構」不要 JS：</strong>逼自己看懂每一段，而不是一次吞下全部</li>
+    <li><strong>角色扮演：</strong>開頭先設定身份，回答品質會明顯不同</li>
+  </ul>
+  <blockquote>真的不知道怎麼寫？先請 AI 幫你「<strong>潤稿</strong>」，潤完再拿去生成 —— 永遠比亂寫好。</blockquote>
+  <div class="page-section">05 · 動手做</div>
+</section>
+
+<!-- 16. 實作方向 -->
+<section class="slide">
+  <div class="eyebrow">05 · 動手做</div>
+  <h1>實作方向</h1>
+  <div class="title-rule"></div>
+  <p class="lead">照這個節奏推進；卡住了先自救，再來問我。</p>
+  <div class="task-grid">
+    <div class="task-panel step">
+      <div class="tp-head">推進五步</div>
+      <div class="tp-body">
+        <ol>
+          <li>選一個你有感覺的主題</li>
+          <li>用起手式 Prompt 生出 HTML 骨架</li>
+          <li>一段一段看懂，改成你的內容</li>
+          <li>加上一個 JavaScript 互動</li>
+          <li>用手機尺寸看一下會不會跑版</li>
+        </ol>
+      </div>
+    </div>
+    <div class="task-panel help">
+      <div class="tp-head">卡住了怎麼辦</div>
+      <div class="tp-body">
+        <ul>
+          <li>先按 <span class="tag">F12</span> 看 Console 有沒有紅字</li>
+          <li>不會排版就查 Tailwind 關鍵字：<span class="tag">flex</span> <span class="tag">gap</span> <span class="tag">grid</span></li>
+          <li>問我時帶上「你試過什麼、錯在哪」</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <blockquote>我是你的<strong>除錯教練</strong>，不是代工 —— 我給你關鍵字和方向，code 你自己改。</blockquote>
+  <div class="page-section">05 · 動手做</div>
+</section>
+
+<!-- 17. 發表（大字報） -->
+<section class="slide statement">
+  <div class="big-text" style="font-size: 50pt;">上台發表 🎤</div>
+  <div class="big-sub">每人 2～3 分鐘，必講三件事</div>
+  <div class="present-three">
+    <div class="pt">
+      <div class="n">1</div>
+      <div class="t">Demo</div>
+      <div class="d">展示成品，操作你的 JavaScript 互動給大家看</div>
+    </div>
+    <div class="pt">
+      <div class="n">2</div>
+      <div class="t">我改了什麼</div>
+      <div class="d">打開 code 指一段，現場改個顏色 / 文字、重整給大家看</div>
+    </div>
+    <div class="pt">
+      <div class="n">3</div>
+      <div class="t">我卡過的一關</div>
+      <div class="d">講一個遇到的問題、怎麼解決的（包含你怎麼問 AI）</div>
+    </div>
+  </div>
 </section>
 
 <script src="ppt/script.js"></script>
